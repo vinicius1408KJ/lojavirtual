@@ -17,47 +17,24 @@ export function Cart() {
         if (!coupon) return;
         setLoading(true);
 
-        // Priority 1: Check LocalStorage (Admin changes)
-        const localCoupons = localStorage.getItem('dlsports_coupons');
-        if (localCoupons) {
-            const coupons = JSON.parse(localCoupons);
-            const foundCoupon = coupons.find((c: any) => c.code === coupon.toUpperCase() && c.active);
-
-            if (foundCoupon) {
-                let discountAmount = 0;
-                if (foundCoupon.discount_type === 'percent') {
-                    discountAmount = cartTotal * (foundCoupon.discount_value / 100);
-                } else {
-                    discountAmount = foundCoupon.discount_value;
-                }
-
-                setDiscount(discountAmount);
-                alert(`Cupom ${foundCoupon.code} aplicado com sucesso!`);
-                setLoading(false);
-                return;
-            }
-        }
-
-        // Priority 2: Supabase / Mock Fallback
         try {
             const { data, error } = await supabase.rpc('validate_and_apply_coupon', {
                 coupon_code: coupon,
                 cart_total: cartTotal
             });
 
+            if (error) throw error;
+
             if (data && data.valid) {
                 setDiscount(data.discount_amount);
-                alert('Cupom aplicado com sucesso!');
-            } else if (coupon === 'DLS10') {
-                // Fallback Mock specific
-                setDiscount(cartTotal * 0.1);
-                alert('Cupom aplicado com sucesso! (MOCK)');
+                alert(`Cupom ${coupon} aplicado com sucesso!`);
             } else {
                 alert('Cupom inválido ou expirado');
                 setDiscount(0);
             }
         } catch (err) {
-            // Validation simple fallback if RPC fails
+            console.error('Erro ao validar cupom:', err);
+            // Keep fallback only for development safety or demo
             if (coupon === 'DLS10') {
                 setDiscount(cartTotal * 0.1);
                 alert('Cupom aplicado com sucesso! (Fallback)');
