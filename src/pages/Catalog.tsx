@@ -47,13 +47,20 @@ export function Catalog() {
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
             // Text Search
-            if (searchQuery && !product.name.toLowerCase().includes(searchQuery) && !product.team.toLowerCase().includes(searchQuery)) {
+            const q = searchQuery;
+            const nameMatch = (product.name || '').toLowerCase().includes(q);
+            const teamMatch = (product.team || '').toLowerCase().includes(q);
+            const clubMatch = (product.club || '').toLowerCase().includes(q);
+
+            if (searchQuery && !nameMatch && !teamMatch && !clubMatch) {
                 return false;
             }
 
             // Club Filter
-            if (clubFilter && product.team !== clubFilter) {
-                return false;
+            if (clubFilter) {
+                const teamIs = (product.team || '').toLowerCase() === clubFilter.toLowerCase();
+                const clubIs = (product.club || '').toLowerCase() === clubFilter.toLowerCase();
+                if (!teamIs && !clubIs) return false;
             }
 
             // Category Filter
