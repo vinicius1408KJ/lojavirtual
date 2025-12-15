@@ -23,6 +23,16 @@ export function Home() {
 
     useEffect(() => {
         async function fetchFeatured() {
+            // Priority 1: LocalStorage (Sync with Admin)
+            const localData = localStorage.getItem('dlsports_products');
+            if (localData) {
+                const products = JSON.parse(localData);
+                const activeProducts = products.filter((p: Product) => p.active !== false).slice(0, 4);
+                setFeaturedProducts(activeProducts);
+                return;
+            }
+
+            // Priority 2: Supabase (if connected)
             try {
                 const { data, error } = await supabase.from('products').select('*').eq('active', true).limit(4);
                 if (!error && data && data.length > 0) {
