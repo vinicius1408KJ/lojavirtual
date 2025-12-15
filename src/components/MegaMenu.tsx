@@ -138,7 +138,10 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                                     </li>
                                 ))}
                                 <li>
-                                    <Link to="#" className="text-dlsports-green font-bold text-sm hover:underline mt-2 inline-block">
+                                    <Link
+                                        to={`/nacionais?search=${encodeURIComponent(col.title)}`}
+                                        className="text-dlsports-green font-bold text-sm hover:underline mt-2 inline-block"
+                                    >
                                         + Ver todos
                                     </Link>
                                 </li>
