@@ -36,12 +36,21 @@ export function Products() {
 
     const handleSave = () => {
         let newProducts;
-        if (currentProduct.id) {
-            newProducts = products.map(p => p.id === currentProduct.id ? { ...p, ...currentProduct } as Product : p);
+        let finalProduct = { ...currentProduct };
+
+        // Ensure slug exists
+        if (!finalProduct.slug && finalProduct.name) {
+            finalProduct.slug = finalProduct.name.toLowerCase()
+                .replace(/[^\w\s-]/g, '') // remove special chars
+                .replace(/\s+/g, '-');     // replace spaces with hyphens
+        }
+
+        if (finalProduct.id) {
+            newProducts = products.map(p => p.id === finalProduct.id ? { ...p, ...finalProduct } as Product : p);
             alert('Produto atualizado com sucesso!');
         } else {
             const newId = Math.random().toString(36).substr(2, 9);
-            newProducts = [...products, { ...currentProduct, id: newId } as Product];
+            newProducts = [...products, { ...finalProduct, id: newId } as Product];
             alert('Produto criado com sucesso!');
         }
         updateProducts(newProducts);

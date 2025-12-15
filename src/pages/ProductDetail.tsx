@@ -10,8 +10,15 @@ export function ProductDetail() {
     const { addToCart } = useCart();
     const [selectedSize, setSelectedSize] = useState<string>('');
 
-    // In a real app, fetch from Supabase by slug
-    const product = PRODUCTS.find(p => p.slug === slug);
+    // Priority 1: Check LocalStorage
+    const localData = localStorage.getItem('dlsports_products');
+    let allProducts = PRODUCTS;
+
+    if (localData) {
+        allProducts = JSON.parse(localData);
+    }
+
+    const product = allProducts.find((p: any) => p.slug === slug);
 
     if (!product) {
         return <div className="text-center py-20">Produto não encontrado</div>;
