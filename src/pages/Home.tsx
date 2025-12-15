@@ -59,7 +59,7 @@ export function Home() {
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Hero Section */}
-            <section className="relative h-[80vh] flex items-center overflow-hidden">
+            <section className="relative h-[85vh] flex items-center overflow-hidden bg-black">
                 {/* Carousel Background */}
                 <div className="absolute inset-0 z-0">
                     {[
@@ -75,38 +75,48 @@ export function Home() {
                             <img
                                 src={img}
                                 alt={`Banner ${index + 1}`}
-                                className="w-full h-full object-cover object-top"
+                                className={`w-full h-full object-cover object-center transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
+                                    }`}
                             />
+                            {/* Dark overlay for better text readability */}
+                            <div className="absolute inset-0 bg-black/40"></div>
                         </div>
                     ))}
 
-                    <div className="absolute inset-0 bg-dlsports-green/80 mix-blend-multiply"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    {/* Gradient Overlay - Stronger on left for text */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent"></div>
                 </div>
 
-                <div className="container mx-auto px-4 z-10 relative mt-12">
-                    <div className="max-w-3xl">
-                        <span className="inline-block px-4 py-2 bg-black/40 backdrop-blur-sm border border-dlsports-neon/30 rounded-full text-dlsports-neon font-bold tracking-wider text-sm mb-6 animate-fade-in text-shadow">
+                <div className="container mx-auto px-4 z-10 relative">
+                    <div className="max-w-4xl pt-12 md:pt-0">
+                        <span className="inline-block px-4 py-2 bg-dlsports-neon/10 backdrop-blur-md border border-dlsports-neon/50 rounded-full text-dlsports-neon font-bold tracking-widest text-xs md:text-sm mb-6 animate-fade-in shadow-[0_0_15px_rgba(181,255,0,0.3)]">
                             NOVA COLEÇÃO 24/25
                         </span>
-                        <h1 className="text-6xl md:text-8xl font-black text-white italic tracking-tighter mb-6 leading-[0.9] drop-shadow-xl">
+                        <h1 className="text-5xl md:text-8xl font-black text-white italic tracking-tighter mb-6 leading-[0.95] drop-shadow-2xl">
                             VISTA A <br />
-                            <span className="text-dlsports-neon drop-shadow-[0_0_20px_rgba(181,255,0,0.5)]">GLÓRIA</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400 drop-shadow-[0_0_25px_rgba(181,255,0,0.4)]">
+                                GLÓRIA ETERNA
+                            </span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-gray-200 font-medium max-w-2xl mb-10 leading-relaxed shadow-neutral-900 drop-shadow-md">
-                            As camisas mais exclusivas dos maiores clubes do mundo chegaram na DLSPORTS.
+                        <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-xl mb-10 leading-relaxed drop-shadow-md">
+                            As camisas dos maiores campeões do mundo. <br />
+                            <span className="text-dlsports-neon">Exclusividade e estilo</span> para quem vive o jogo.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4">
+
+                        <div className="flex flex-col sm:flex-row gap-4 items-start">
                             <Link
                                 to="/nacionais"
-                                className="group bg-dlsports-neon text-dlsports-green px-8 py-4 rounded-full font-black text-lg tracking-wide hover:scale-105 transition-all flex items-center justify-between gap-4 shadow-[0_0_20px_rgba(181,255,0,0.3)] hover:shadow-[0_0_30px_rgba(181,255,0,0.5)]"
+                                className="group relative overflow-hidden bg-dlsports-neon text-dlsports-green px-10 py-5 rounded-full font-black text-lg tracking-wide hover:scale-105 transition-all shadow-[0_0_30px_rgba(181,255,0,0.4)] flex items-center gap-3"
                             >
-                                COMPRAR AGORA
-                                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                                <span className="relative z-10 flex items-center gap-2">
+                                    COMPRAR AGORA <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                                <div className="absolute inset-0 bg-white/30 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                             </Link>
                             <Link
                                 to="/europeus"
-                                className="group bg-black text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg tracking-wide hover:bg-white hover:text-black transition-all"
+                                className="group px-10 py-5 rounded-full font-bold text-lg tracking-wide text-white border-2 border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm"
                             >
                                 EUROPEUS
                             </Link>
@@ -115,12 +125,12 @@ export function Home() {
                 </div>
 
                 {/* Carousel Indicators */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+                <div className="absolute bottom-10 right-10 flex gap-3 z-20">
                     {[0, 1, 2].map((i) => (
                         <button
                             key={i}
                             onClick={() => setCurrentSlide(i)}
-                            className={`w-3 h-3 rounded-full transition-all ${i === currentSlide ? 'bg-dlsports-neon w-8' : 'bg-white/50 hover:bg-white'
+                            className={`h-1.5 rounded-full transition-all duration-500 ${i === currentSlide ? 'bg-dlsports-neon w-12' : 'bg-white/30 w-4 hover:bg-white/60'
                                 }`}
                         />
                     ))}
