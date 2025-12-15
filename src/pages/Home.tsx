@@ -20,6 +20,14 @@ const CLUBS = [
 
 export function Home() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>(MOCK_PRODUCTS.filter(p => p.active !== false).slice(0, 4));
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % 3);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         async function fetchFeatured() {
@@ -52,12 +60,26 @@ export function Home() {
         <div className="bg-gray-50 min-h-screen">
             {/* Hero Section */}
             <section className="relative h-[80vh] flex items-center overflow-hidden">
+                {/* Carousel Background */}
                 <div className="absolute inset-0 z-0">
-                    <img
-                        src="/hero.png"
-                        alt="Jogador comemorando"
-                        className="w-full h-full object-cover object-top"
-                    />
+                    {[
+                        'https://d2r9epyceweg5n.cloudfront.net/stores/002/560/088/rte/comprar-camisa-do-inter-miami-ii-2-away-reserva-2025-25-26-adidas-masculino-masculina-preto-com-cinza-com-rosa-mundial-mls-messi-camisa-de-time-loja-tealto-sports-.jpg',
+                        'https://s2-ge.glbimg.com/nsWqBNFbL9VIv9LXLXoFBl536Jk=/0x0:544x680/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2024/9/b/Bf93b0QcOg57yML48MkQ/gtvc0ctwqaa81tg.jpg',
+                        'https://loukosnofutebol.com/public/arqConteudo/arqZPProduto/flamengo.jpg'
+                    ].map((img, index) => (
+                        <div
+                            key={index}
+                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                                }`}
+                        >
+                            <img
+                                src={img}
+                                alt={`Banner ${index + 1}`}
+                                className="w-full h-full object-cover object-top"
+                            />
+                        </div>
+                    ))}
+
                     <div className="absolute inset-0 bg-dlsports-green/80 mix-blend-multiply"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 </div>
@@ -90,6 +112,18 @@ export function Home() {
                             </Link>
                         </div>
                     </div>
+                </div>
+
+                {/* Carousel Indicators */}
+                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+                    {[0, 1, 2].map((i) => (
+                        <button
+                            key={i}
+                            onClick={() => setCurrentSlide(i)}
+                            className={`w-3 h-3 rounded-full transition-all ${i === currentSlide ? 'bg-dlsports-neon w-8' : 'bg-white/50 hover:bg-white'
+                                }`}
+                        />
+                    ))}
                 </div>
             </section>
 
