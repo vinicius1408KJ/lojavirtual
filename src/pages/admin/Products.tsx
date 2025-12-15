@@ -6,7 +6,12 @@ import { AddProductFromGoogle } from '../../components/AddProductFromGoogle';
 import type { Product } from '../../types';
 
 export function Products() {
-    const [products, setProducts] = useState(PRODUCTS);
+    // Initialize from LocalStorage if available, otherwise use default data
+    const [products, setProducts] = useState<Product[]>(() => {
+        const saved = localStorage.getItem('dlsports_products');
+        return saved ? JSON.parse(saved) : PRODUCTS;
+    });
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({
         name: '',
@@ -18,29 +23,38 @@ export function Products() {
         sizes: ['P', 'M', 'G', 'GG']
     });
 
+    // Helper to update state and storage
+    const updateProducts = (newProducts: Product[]) => {
+        setProducts(newProducts);
+        localStorage.setItem('dlsports_products', JSON.stringify(newProducts));
+    };
+
     const handleGoogleProductSelect = (productData: Partial<Product>) => {
         setCurrentProduct(prev => ({ ...prev, ...productData }));
-        setIsModalOpen(true); // Open modal with pre-filled data
+        setIsModalOpen(true);
     };
 
     const handleSave = () => {
-        // Logic to save to Supabase would go here
-        // For now, just update local state
+        let newProducts;
         if (currentProduct.id) {
-            setProducts(products.map(p => p.id === currentProduct.id ? { ...p, ...currentProduct } as Product : p));
+            newProducts = products.map(p => p.id === currentProduct.id ? { ...p, ...currentProduct } as Product : p);
+            alert('Produto atualizado com sucesso!');
         } else {
             const newId = Math.random().toString(36).substr(2, 9);
-            setProducts([...products, { ...currentProduct, id: newId } as Product]);
+            newProducts = [...products, { ...currentProduct, id: newId } as Product];
+            alert('Produto criado com sucesso!');
         }
+        updateProducts(newProducts);
         setIsModalOpen(false);
         setCurrentProduct({ name: '', price: 0, club: '', image_url: '', description: '', active: true, sizes: ['P', 'M', 'G', 'GG'] });
     };
 
     const toggleActive = (id: string) => {
-        setProducts(products.map(p => {
+        const newProducts = products.map(p => {
             if (p.id === id) return { ...p, active: !p.active };
             return p;
-        }));
+        });
+        updateProducts(newProducts);
     };
 
     return (
@@ -104,7 +118,9 @@ export function Products() {
                                         <button
                                             onClick={() => {
                                                 if (confirm('Tem certeza que deseja excluir este produto?')) {
-                                                    setProducts(products.filter(p => p.id !== product.id));
+                                                    const newProducts = products.filter(p => p.id !== product.id);
+                                                    updateProducts(newProducts);
+                                                    alert('Produto excluído com sucesso!');
                                                 }
                                             }}
                                             className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"

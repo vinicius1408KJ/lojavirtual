@@ -16,9 +16,18 @@ export function Catalog() {
     const searchQuery = searchParams.get('search')?.toLowerCase() || '';
     const clubFilter = searchParams.get('club');
 
-    // Fetch products from Supabase with Mock fallback
+    // Fetch products from LocalStorage (Sync with Admin) or Supabase with Mock fallback
     useEffect(() => {
         async function fetchProducts() {
+            // Priority 1: LocalStorage (Admin changes)
+            const localData = localStorage.getItem('dlsports_products');
+            if (localData) {
+                setProducts(JSON.parse(localData));
+                setLoading(false);
+                return;
+            }
+
+            // Priority 2: Supabase (if connected)
             try {
                 const { data, error } = await supabase.from('products').select('*');
                 if (error) throw error;
@@ -27,6 +36,7 @@ export function Catalog() {
                 }
             } catch (err) {
                 console.log('Supabase fetch failed, using mock data:', err);
+                // Priority 3: Mock (default state)
             } finally {
                 setLoading(false);
             }
