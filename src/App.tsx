@@ -66,7 +66,7 @@ function UserLayout() {
         </div>
         <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-gray-600 text-sm">
           <p className="flex items-center justify-center gap-4">
-            <span>© 2024 DLSPORTS. Todos os direitos reservados.</span>
+            <span>© 2024 DLSPORTS. Todos os direitos reservados. (v1.5 - Reset Ativo)</span>
             <Link to="/admin" className="text-gray-800 hover:text-dlsports-green transition-colors text-xs">Área Restrita</Link>
           </p>
         </div>
@@ -107,6 +107,16 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="coupons" element={<Coupons />} />
         </Route>
+        {/* Fallback for unknown routes */}
+        <Route path="*" element={
+          <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">404</h1>
+            <p className="text-xl text-gray-600 mb-8">Página não encontrada ou Atualização em andamento.</p>
+            <Link to="/" className="bg-dlsports-green text-white px-6 py-3 rounded-lg font-bold hover:bg-dlsports-green/90 transition-colors">
+              Voltar para o Início
+            </Link>
+          </div>
+        } />
       </Routes>
     </BrowserRouter>
   );
