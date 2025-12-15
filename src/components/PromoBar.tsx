@@ -6,9 +6,24 @@ export function PromoBar() {
     const [promoText, setPromoText] = useState('FRETE GRÁTIS PARA TODO O BRASIL NAS COMPRAS ACIMA DE R$ 299,90');
 
     useEffect(() => {
-        // Tenta buscar um cupom ativo para destacar
-        // Se não tiver DB, mantém o texto padrão
         const fetchActivePromo = async () => {
+            // Priority 1: Check LocalStorage (Admin changes)
+            const localCoupons = localStorage.getItem('dlsports_coupons');
+            if (localCoupons) {
+                const coupons = JSON.parse(localCoupons);
+                // Find the most recent active coupon (assuming last in array is newest)
+                const activeCoupon = coupons.reverse().find((c: any) => c.active);
+
+                if (activeCoupon) {
+                    const discountDisplay = activeCoupon.discount_type === 'percent'
+                        ? `${activeCoupon.discount_value}%`
+                        : `R$ ${activeCoupon.discount_value}`;
+                    setPromoText(`🔥 USE O CUPOM ${activeCoupon.code} E GANHE ${discountDisplay} DE DESCONTO! APROVEITE! 🔥`);
+                    return;
+                }
+            }
+
+            // Priority 2: Supabase (as fallback)
             try {
                 const { data, error } = await supabase
                     .from('coupons')
