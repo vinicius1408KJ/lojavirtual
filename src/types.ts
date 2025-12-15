@@ -4,7 +4,7 @@ export interface Product {
     price: number;
     image_url: string;
     club: string;
-    team: string; // Adding team as alias or specific team name if club is generic
+    team?: string; // Adding team as alias or specific team name if club is generic
     is_national: boolean;
     region?: string; // e.g. 'São Paulo', 'Rio de Janeiro', 'Inglaterra'
     category?: string; // e.g. 'Futebol', 'Treino'

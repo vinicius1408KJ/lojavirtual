@@ -4,7 +4,7 @@ import { Search, Plus, Loader2, Link as LinkIcon, Image as ImageIcon } from 'luc
 import type { Product } from '../types';
 
 interface AddProductFromGoogleProps {
-    onProductSelect: (product: Partial<Product> & { category?: 'nacional' | 'internacional' }) => void;
+    onProductSelect: (product: Partial<Product>) => void;
 }
 
 interface SearchResult {
