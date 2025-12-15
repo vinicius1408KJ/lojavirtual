@@ -10,6 +10,7 @@ import { Products } from './pages/admin/Products';
 import { Orders } from './pages/admin/Orders';
 import { Coupons } from './pages/admin/Coupons';
 import { Cart } from './pages/Cart';
+import { UserOrders } from './pages/UserOrders';
 import { ProductDetail } from './pages/ProductDetail';
 
 function UserLayout() {
@@ -89,7 +90,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/nacionais" element={<Catalog />} />
           <Route path="/europeus" element={<Catalog />} />
+          <Route path="/ofertas" element={<Catalog />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/orders" element={<UserOrders />} />
           <Route path="/produto/:slug" element={<ProductDetail />} />
         </Route>
 

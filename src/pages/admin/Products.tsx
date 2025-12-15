@@ -92,10 +92,23 @@ export function Products() {
                                 </td>
                                 <td className="p-4 text-right">
                                     <div className="flex items-center justify-end gap-2">
-                                        <button className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors">
+                                        <button
+                                            onClick={() => {
+                                                setCurrentProduct(product);
+                                                setIsModalOpen(true);
+                                            }}
+                                            className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
+                                        >
                                             <Edit className="w-4 h-4" />
                                         </button>
-                                        <button className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors">
+                                        <button
+                                            onClick={() => {
+                                                if (confirm('Tem certeza que deseja excluir este produto?')) {
+                                                    setProducts(products.filter(p => p.id !== product.id));
+                                                }
+                                            }}
+                                            className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
+                                        >
                                             <Trash className="w-4 h-4" />
                                         </button>
                                     </div>

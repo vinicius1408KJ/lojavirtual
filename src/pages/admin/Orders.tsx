@@ -101,7 +101,12 @@ export function Orders() {
                                     </span>
                                 </td>
                                 <td className="p-4 text-right">
-                                    <button className="text-blue-600 hover:underline text-sm font-bold">Detalhes</button>
+                                    <button
+                                        onClick={() => alert(`Detalhes do pedido ${order.id}:\nCliente: ${order.customer}\nTotal: R$ ${order.total.toFixed(2)}`)}
+                                        className="text-blue-600 hover:underline text-sm font-bold"
+                                    >
+                                        Detalhes
+                                    </button>
                                 </td>
                             </tr>
                         ))}

@@ -69,7 +69,10 @@ export function ProductDetail() {
                         <div className="mb-8">
                             <div className="flex justify-between items-center mb-3">
                                 <span className="font-bold text-gray-900">Selecione o Tamanho</span>
-                                <button className="text-xs text-gray-500 flex items-center gap-1 hover:text-black">
+                                <button
+                                    onClick={() => alert('Guia de Medidas:\nP: 70x50 cm\nM: 72x52 cm\nG: 74x54 cm\nGG: 76x56 cm')}
+                                    className="text-xs text-gray-500 flex items-center gap-1 hover:text-black"
+                                >
                                     <Ruler className="w-4 h-4" /> Guia de Medidas
                                 </button>
                             </div>
@@ -79,8 +82,8 @@ export function ProductDetail() {
                                         key={size}
                                         onClick={() => setSelectedSize(size)}
                                         className={`w-12 h-12 rounded-lg font-bold border-2 transition-all ${selectedSize === size
-                                                ? 'border-dlsports-green bg-dlsports-green text-white'
-                                                : 'border-gray-200 text-gray-600 hover:border-black'
+                                            ? 'border-dlsports-green bg-dlsports-green text-white'
+                                            : 'border-gray-200 text-gray-600 hover:border-black'
                                             }`}
                                     >
                                         {size}

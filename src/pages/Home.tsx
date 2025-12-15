@@ -85,12 +85,16 @@ export function Home() {
                 <h2 className="text-2xl font-bold mb-8 text-center uppercase tracking-widest text-gray-400">Escolha por Clube</h2>
                 <div className="flex flex-wrap justify-center gap-6 md:gap-12">
                     {CLUBS.map(club => (
-                        <div key={club.name} className="flex flex-col items-center gap-3 group cursor-pointer">
+                        <Link
+                            to={`/nacionais?club=${encodeURIComponent(club.name)}`}
+                            key={club.name}
+                            className="flex flex-col items-center gap-3 group cursor-pointer"
+                        >
                             <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-50 flex items-center justify-center p-4 border border-gray-100 group-hover:border-dlsports-green group-hover:shadow-[0_0_15px_rgba(181,255,0,0.2)] transition-all duration-300">
                                 <img src={club.logo} alt={club.name} className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" />
                             </div>
                             <span className="text-sm font-bold text-gray-400 group-hover:text-dlsports-green transition-colors">{club.name}</span>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>

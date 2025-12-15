@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, ShoppingCart, User, Menu, LogOut, Package, Heart, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { LoginModal } from './LoginModal';
 import { supabase } from '../lib/supabase';
@@ -13,6 +13,15 @@ export function Header() {
     const [user, setUser] = useState<any>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/nacionais?search=${encodeURIComponent(searchTerm)}`);
+        }
+    };
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -43,14 +52,18 @@ export function Header() {
 
                     {/* Search Bar */}
                     <div className="flex-1 max-w-3xl relative">
-                        <div className="relative">
+                        <form onSubmit={handleSearch} className="relative">
                             <input
                                 type="text"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="O que você procura?"
                                 className="w-full h-12 pl-6 pr-12 rounded-full bg-gray-100 border border-transparent focus:bg-white focus:border-dlsports-green focus:outline-none focus:ring-2 focus:ring-dlsports-green/20 transition-all text-gray-700 placeholder-gray-400 group-hover:bg-white cursor-pointer"
                             />
-                            <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        </div>
+                            <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-dlsports-green transition-colors">
+                                <Search className="w-5 h-5" />
+                            </button>
+                        </form>
                     </div>
 
                     {/* Actions */}

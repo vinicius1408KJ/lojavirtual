@@ -93,7 +93,12 @@ export function Coupons() {
                                 <button onClick={() => toggleActive(coupon.id)} className={`w-8 h-4 rounded-full transition-colors relative ${coupon.active ? 'bg-green-500' : 'bg-gray-300'}`}>
                                     <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform ${coupon.active ? 'left-4.5' : 'left-0.5'}`} style={{ left: coupon.active ? '18px' : '2px' }} />
                                 </button>
-                                <button onClick={() => handleDelete(coupon.id)} className="text-gray-400 hover:text-red-500 p-1">
+                                <button
+                                    onClick={() => {
+                                        if (confirm('Excluir este cupom?')) handleDelete(coupon.id);
+                                    }}
+                                    className="text-gray-400 hover:text-red-500 p-1"
+                                >
                                     <Trash className="w-4 h-4" />
                                 </button>
                             </div>

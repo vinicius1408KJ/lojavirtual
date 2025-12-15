@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Filter } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import { PRODUCTS as MOCK_PRODUCTS } from '../data';
@@ -6,10 +7,14 @@ import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
 
 export function Catalog() {
+    const [searchParams] = useSearchParams();
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [priceRange, setPriceRange] = useState<string>('all');
     const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
     const [loading, setLoading] = useState(true);
+
+    const searchQuery = searchParams.get('search')?.toLowerCase() || '';
+    const clubFilter = searchParams.get('club');
 
     // Fetch products from Supabase with Mock fallback
     useEffect(() => {
@@ -22,7 +27,6 @@ export function Catalog() {
                 }
             } catch (err) {
                 console.log('Supabase fetch failed, using mock data:', err);
-                // setProducts(MOCK_PRODUCTS); // already initial state
             } finally {
                 setLoading(false);
             }
@@ -32,6 +36,16 @@ export function Catalog() {
 
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
+            // Text Search
+            if (searchQuery && !product.name.toLowerCase().includes(searchQuery) && !product.team.toLowerCase().includes(searchQuery)) {
+                return false;
+            }
+
+            // Club Filter
+            if (clubFilter && product.team !== clubFilter) {
+                return false;
+            }
+
             // Category Filter
             if (selectedCategory === 'nacional' && !product.is_national) return false;
             if (selectedCategory === 'europeu' && product.is_national) return false;
@@ -42,7 +56,7 @@ export function Catalog() {
 
             return true;
         });
-    }, [selectedCategory, priceRange, products]);
+    }, [selectedCategory, priceRange, products, searchQuery, clubFilter]);
 
     return (
         <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">

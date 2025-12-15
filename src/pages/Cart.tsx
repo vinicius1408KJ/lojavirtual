@@ -124,7 +124,10 @@ export function Cart() {
                         </button>
                     </div>
 
-                    <button className="w-full bg-dlsports-neon text-dlsports-green font-black py-4 rounded-lg uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+                    <button
+                        onClick={() => alert('Compra finalizada com sucesso! (Simulação)')}
+                        className="w-full bg-dlsports-neon text-dlsports-green font-black py-4 rounded-lg uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all"
+                    >
                         Finalizar Compra <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
