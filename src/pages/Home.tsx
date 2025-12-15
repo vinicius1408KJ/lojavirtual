@@ -26,7 +26,10 @@ export function Home() {
             // Priority 1: LocalStorage (Sync with Admin)
             const localData = localStorage.getItem('dlsports_products');
             if (localData) {
-                const products = JSON.parse(localData);
+                const products = JSON.parse(localData).map((p: Product) => ({
+                    ...p,
+                    slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+                }));
                 const activeProducts = products.filter((p: Product) => p.active !== false).slice(0, 4);
                 setFeaturedProducts(activeProducts);
                 return;

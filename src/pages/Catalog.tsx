@@ -22,7 +22,12 @@ export function Catalog() {
             // Priority 1: LocalStorage (Admin changes)
             const localData = localStorage.getItem('dlsports_products');
             if (localData) {
-                setProducts(JSON.parse(localData));
+                const parsedData = JSON.parse(localData);
+                const validatedData = parsedData.map((p: Product) => ({
+                    ...p,
+                    slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+                }));
+                setProducts(validatedData);
                 setLoading(false);
                 return;
             }

@@ -15,7 +15,10 @@ export function ProductDetail() {
     let allProducts = PRODUCTS;
 
     if (localData) {
-        allProducts = JSON.parse(localData);
+        allProducts = JSON.parse(localData).map((p: any) => ({
+            ...p,
+            slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+        }));
     }
 
     const product = allProducts.find((p: any) => p.slug === slug);

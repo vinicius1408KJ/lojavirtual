@@ -9,7 +9,13 @@ export function Products() {
     // Initialize from LocalStorage if available, otherwise use default data
     const [products, setProducts] = useState<Product[]>(() => {
         const saved = localStorage.getItem('dlsports_products');
-        return saved ? JSON.parse(saved) : PRODUCTS;
+        if (saved) {
+            return JSON.parse(saved).map((p: Product) => ({
+                ...p,
+                slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
+            }));
+        }
+        return PRODUCTS;
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
