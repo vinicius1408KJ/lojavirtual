@@ -18,7 +18,7 @@ function UserLayout() {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <div className="bg-red-600 text-white text-center text-xs font-bold py-1">
-        DEBUG ATIVO: v1.7 - Cupons no Banco de Dados 🛢️
+        DEBUG ATIVO: v1.8 - Correção de Cache de Cupom 🧹
       </div>
       <PromoBar />
       <Header />

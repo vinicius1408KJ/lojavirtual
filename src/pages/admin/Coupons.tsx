@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { Ticket, Plus, Trash } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface Coupon {
     id: string;
@@ -10,14 +12,11 @@ interface Coupon {
     usage_count: number;
 }
 
-// Mock Data
-import { supabase } from '../../lib/supabase';
-
-// Mock Data removed in favor of DB
-
 export function Coupons() {
     const [coupons, setCoupons] = useState<Coupon[]>([]);
     const [loading, setLoading] = useState(true);
+    const [newCouponCode, setNewCouponCode] = useState('');
+    const [newCouponValue, setNewCouponValue] = useState(10);
 
     useEffect(() => {
         fetchCoupons();
@@ -30,17 +29,20 @@ export function Coupons() {
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
-            if (data) setCoupons(data);
+            if (error) {
+                console.error('Supabase error fetching coupons:', error);
+                throw error;
+            }
+            if (data) {
+                console.log('Coupons fetched:', data);
+                setCoupons(data);
+            }
         } catch (error) {
             console.error('Erro ao buscar cupons:', error);
-            // Fallback empty or alert
         } finally {
             setLoading(false);
         }
     };
-    const [newCouponCode, setNewCouponCode] = useState('');
-    const [newCouponValue, setNewCouponValue] = useState(10);
 
     const handleCreateCoupon = async () => {
         if (!newCouponCode) return;
@@ -50,7 +52,7 @@ export function Coupons() {
                 .from('coupons')
                 .insert([{
                     code: newCouponCode.toUpperCase(),
-                    discount_type: 'percent',
+                    discount_type: 'percent', // Simplify for demo: always percent
                     discount_value: newCouponValue,
                     active: true,
                     usage_count: 0
@@ -62,10 +64,11 @@ export function Coupons() {
             if (data) {
                 setCoupons([data, ...coupons]);
                 setNewCouponCode('');
+                alert('Cupom criado com sucesso! Ele já está ativo no site.');
             }
         } catch (error) {
             console.error('Erro ao criar cupom:', error);
-            alert('Erro ao criar cupom. Tente novamente.');
+            alert('Erro ao criar cupom. Verifique o console.');
         }
     };
 
@@ -81,11 +84,12 @@ export function Coupons() {
             setCoupons(coupons.map(c => c.id === id ? { ...c, active: !currentStatus } : c));
         } catch (error) {
             console.error('Erro ao atualizar cupom:', error);
+            alert('Erro ao atualizar status. Tente novamente.');
         }
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Excluir este cupom?')) return;
+        if (!confirm('Excluir este cupom permanentemente?')) return;
 
         try {
             const { error } = await supabase
@@ -97,15 +101,21 @@ export function Coupons() {
             setCoupons(coupons.filter(c => c.id !== id));
         } catch (error) {
             console.error('Erro ao deletar cupom:', error);
+            alert('Erro ao excluir cupom.');
         }
     };
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-6">Gerenciar Cupons</h2>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Gerenciar Cupons</h2>
+                <div className="text-xs text-gray-500">
+                    Banco de Dados: {loading ? 'Carregando...' : 'Conectado'}
+                </div>
+            </div>
 
             {/* Creator */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 flex items-end gap-4">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 flex items-end gap-4 animate-fade-in">
                 <div className="flex-1">
                     <label className="block text-sm font-bold text-gray-700 mb-2">Código do Cupom</label>
                     <div className="relative">
@@ -114,7 +124,7 @@ export function Coupons() {
                             type="text"
                             value={newCouponCode}
                             onChange={(e) => setNewCouponCode(e.target.value)}
-                            placeholder="Ex: BLACKFRIDAY"
+                            placeholder="Ex: NATAL25"
                             className="w-full h-12 pl-12 pr-4 rounded-lg border border-gray-300 focus:border-dlsports-green focus:ring-2 focus:ring-dlsports-green/20 outline-none uppercase font-mono"
                         />
                     </div>
@@ -132,11 +142,17 @@ export function Coupons() {
                     onClick={handleCreateCoupon}
                     className="h-12 px-6 bg-dlsports-green text-white font-bold rounded-lg hover:bg-dlsports-green/90 transition-colors flex items-center gap-2"
                 >
-                    <Plus className="w-5 h-5" /> Criar
+                    <Plus className="w-5 h-5" /> Criar Cupom
                 </button>
             </div>
 
             {/* List */}
+            {coupons.length === 0 && !loading && (
+                <div className="text-center py-12 text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                    Nenhum cupom criado ainda.
+                </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {coupons.map(coupon => (
                     <div key={coupon.id} className={`bg-white rounded-xl p-6 border-2 transition-all group ${coupon.active ? 'border-gray-100 hover:border-dlsports-green' : 'border-gray-100 opacity-60'}`}>
@@ -146,12 +162,17 @@ export function Coupons() {
                                 {coupon.code}
                             </div>
                             <div className="flex items-center gap-2">
-                                <button onClick={() => toggleActive(coupon.id, coupon.active)} className={`w-8 h-4 rounded-full transition-colors relative ${coupon.active ? 'bg-green-500' : 'bg-gray-300'}`}>
+                                <button
+                                    onClick={() => toggleActive(coupon.id, coupon.active)}
+                                    className={`w-8 h-4 rounded-full transition-colors relative ${coupon.active ? 'bg-green-500' : 'bg-gray-300'}`}
+                                    title={coupon.active ? "Desativar" : "Ativar"}
+                                >
                                     <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform ${coupon.active ? 'left-4.5' : 'left-0.5'}`} style={{ left: coupon.active ? '18px' : '2px' }} />
                                 </button>
                                 <button
                                     onClick={() => handleDelete(coupon.id)}
                                     className="text-gray-400 hover:text-red-500 p-1"
+                                    title="Excluir"
                                 >
                                     <Trash className="w-4 h-4" />
                                 </button>
