@@ -179,6 +179,17 @@ export function Products() {
                             </div>
 
                             <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Região / Estado (opcional)</label>
+                                <input
+                                    type="text"
+                                    value={currentProduct.region || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, region: e.target.value })}
+                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none"
+                                    placeholder="Ex: Rio de Janeiro, Inglaterra, etc."
+                                />
+                            </div>
+
+                            <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
                                 <input
                                     type="text"

@@ -48,17 +48,18 @@ function UserLayout() {
           <div>
             <h4 className="font-bold text-white mb-4">AJUDA</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#" className="hover:text-dlsports-neon transition-colors">Trocas e Devoluções</a></li>
-              <li><a href="#" className="hover:text-dlsports-neon transition-colors">Fretes e Entregas</a></li>
-              <li><a href="#" className="hover:text-dlsports-neon transition-colors">Fale Conosco</a></li>
+              <li><Link to="/orders" className="hover:text-dlsports-neon transition-colors">Meus Pedidos</Link></li>
+              <li><Link to="/nacionais" className="hover:text-dlsports-neon transition-colors">Produtos Nacionais</Link></li>
+              <li><Link to="/europeus" className="hover:text-dlsports-neon transition-colors">Produtos Europeus</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-white mb-4">PAGAMENTO</h4>
             <div className="flex gap-2">
-              <div className="w-10 h-6 bg-gray-800 rounded"></div>
-              <div className="w-10 h-6 bg-gray-800 rounded"></div>
-              <div className="w-10 h-6 bg-gray-800 rounded"></div>
+              {/* Placeholders for payment icons */}
+              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
+              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
+              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
             </div>
           </div>
         </div>

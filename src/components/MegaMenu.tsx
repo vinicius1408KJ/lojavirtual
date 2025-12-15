@@ -129,7 +129,10 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                             <ul className="space-y-2">
                                 {col.items.map(item => (
                                     <li key={item}>
-                                        <Link to="#" className="text-gray-500 hover:text-dlsports-green text-sm transition-colors block py-0.5">
+                                        <Link
+                                            to={`/nacionais?search=${encodeURIComponent(item)}`}
+                                            className="text-gray-500 hover:text-dlsports-green text-sm transition-colors block py-0.5"
+                                        >
                                             {item}
                                         </Link>
                                     </li>
