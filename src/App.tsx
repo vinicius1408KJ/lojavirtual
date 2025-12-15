@@ -12,6 +12,7 @@ import { Coupons } from './pages/admin/Coupons';
 import { Cart } from './pages/Cart';
 import { UserOrders } from './pages/UserOrders';
 import { ProductDetail } from './pages/ProductDetail';
+import { Reset } from './pages/Reset';
 
 function UserLayout() {
   return (
@@ -96,6 +97,8 @@ function App() {
           <Route path="/orders" element={<UserOrders />} />
           <Route path="/produto/:slug" element={<ProductDetail />} />
         </Route>
+
+        <Route path="/reset" element={<Reset />} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<Login />} />
