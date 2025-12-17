@@ -46,6 +46,28 @@ export function Cart() {
         setLoading(false);
     };
 
+    const WHATSAPP_NUMBER = '5511999999999'; // Substitua pelo número real do vendedor
+
+    const handleWhatsAppCheckout = () => {
+        let message = "Olá! Vim pelo site da DL Sports.\n";
+        message += "Esses são os produtos do meu carrinho:\n\n";
+
+        items.forEach(item => {
+            message += `Produto: ${item.name}\n`;
+            message += `Tamanho: ${item.size}\n`;
+            message += `Quantidade: ${item.quantity}\n`;
+            message += `Valor unitário: R$ ${item.price.toFixed(2)}\n\n`;
+        });
+
+        message += `Total do pedido: R$ ${total.toFixed(2)}\n\n`;
+        message += "Gostaria de confirmar disponibilidade, frete e forma de pagamento.";
+
+        const encodedMessage = encodeURIComponent(message);
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+        window.open(url, '_blank');
+    };
+
     if (items.length === 0) {
         return (
             <div className="container mx-auto px-4 py-20 text-center">
@@ -120,10 +142,10 @@ export function Cart() {
                     </div>
 
                     <button
-                        onClick={() => alert('Compra finalizada com sucesso! (Simulação)')}
-                        className="w-full bg-dlsports-neon text-dlsports-green font-black py-4 rounded-lg uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all"
+                        onClick={handleWhatsAppCheckout}
+                        className="w-full bg-[#25D366] text-white font-black py-4 rounded-lg uppercase tracking-wider flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                     >
-                        Finalizar Compra <ArrowRight className="w-5 h-5" />
+                        FINALIZAR VENDA PELO WHATSAPP <ArrowRight className="w-5 h-5" />
                     </button>
                 </div>
             </div>
