@@ -107,10 +107,7 @@ export const MENU_DATA: MenuData[] = [
             price: 'Confira'
         }
     },
-    { id: 'futebol', label: 'FUTEBOL', link: '/futebol', hasMegaMenu: false },
-    { id: 'treino', label: 'TREINO', link: '/treino', hasMegaMenu: false },
-    { id: 'esportes', label: 'ESPORTES', link: '/esportes', hasMegaMenu: false },
-    { id: 'calcados', label: 'CALÇADOS', link: '/calcados', hasMegaMenu: false },
+
 ];
 
 export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {

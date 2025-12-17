@@ -8,24 +8,45 @@ import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
 
 const CLUBS = [
+    { name: 'Atlético-MG', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Clube_Atl%C3%A9tico_Mineiro_logo.svg' },
+    { name: 'Athletico-PR', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Club_Athletico_Paranaense_2019.svg' },
+    { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Esporte_Clube_Bahia_logo.svg' },
+    { name: 'Botafogo', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Botafogo_de_Futebol_e_Regatas_logo.svg' },
+    { name: 'Ceará', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Cear%C3%A1_Sporting_Club_logo.svg' },
+    { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Sport_Club_Corinthians_Paulista_crest.svg' },
+    { name: 'Cruzeiro', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg' },
     { name: 'Flamengo', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Flamengo_braz_logo.svg' },
+    { name: 'Fluminense', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Fluminense_FC_escudo.png' },
+    { name: 'Fortaleza', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Fortaleza_Esporte_Clube_logo.svg' },
+    { name: 'Grêmio', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Gr%C3%AAmio_Foot-Ball_Porto_Alegrense_logo.svg/1024px-Gr%C3%AAmio_Foot-Ball_Porto_Alegrense_logo.svg.png' },
+    { name: 'Internacional', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg' },
+    { name: 'Juventude', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Esporte_Clube_Juventude_symbol.svg' },
+    { name: 'Mirassol', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/Mirassol_Futebol_Clube_logo.png' },
     { name: 'Palmeiras', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg' },
-    { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/pt/b/b4/Corinthians_simbolo.png' },
+    { name: 'Bragantino', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Red_Bull_Bragantino_logo.svg' },
+    { name: 'Santos', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg' },
     { name: 'São Paulo', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg' },
-    { name: 'Real Madrid', logo: 'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg' },
-    { name: 'Barcelona', logo: 'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg' },
-    { name: 'Man. City', logo: 'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg' },
-    { name: 'Arsenal', logo: 'https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg' }
+    { name: 'Sport', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Sport_Club_do_Recife_logo.svg' },
+    { name: 'Vasco', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/67/Club_de_Regatas_Vasco_da_Gama_-_2021.svg' },
+    { name: 'Vitória', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Esporte_Clube_Vit%C3%B3ria_logo.svg' },
 ];
 
 export function Home() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>(MOCK_PRODUCTS.filter(p => p.active !== false).slice(0, 4));
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [bannerNationalSlide, setBannerNationalSlide] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % 3);
         }, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setBannerNationalSlide((prev) => (prev + 1) % 3);
+        }, 4000); // Slightly faster for inner banner to feel dynamic
         return () => clearInterval(timer);
     }, []);
 
@@ -57,9 +78,9 @@ export function Home() {
     }, []);
 
     return (
-        <div className="bg-gray-50 min-h-screen">
+        <div className="bg-gray-50 min-h-screen font-sans">
             {/* Hero Section */}
-            <section className="relative h-[85vh] flex items-center overflow-hidden bg-black">
+            <section className="relative h-[90vh] flex items-center overflow-hidden bg-black">
                 {/* Carousel Background */}
                 <div className="absolute inset-0 z-0">
                     {[
@@ -69,56 +90,77 @@ export function Home() {
                     ].map((img, index) => (
                         <div
                             key={index}
-                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-                                }`}
+                            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
                         >
                             <img
                                 src={img}
                                 alt={`Banner ${index + 1}`}
-                                className={`w-full h-full object-cover object-center transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'
-                                    }`}
+                                className={`w-full h-full object-cover object-center transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'}`}
                             />
-                            {/* Dark overlay for better text readability */}
-                            <div className="absolute inset-0 bg-black/40"></div>
+                            {/* Dark Overlay with Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+                            <div className="absolute inset-0 bg-black/20"></div>
                         </div>
                     ))}
-
-                    {/* Gradient Overlay - Stronger on left for text */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent"></div>
                 </div>
 
                 <div className="container mx-auto px-4 z-10 relative">
-                    <div className="max-w-4xl pt-12 md:pt-0">
-                        <span className="inline-block px-4 py-2 bg-dlsports-neon/10 backdrop-blur-md border border-dlsports-neon/50 rounded-full text-dlsports-neon font-bold tracking-widest text-xs md:text-sm mb-6 animate-fade-in shadow-[0_0_15px_rgba(181,255,0,0.3)]">
-                            NOVA COLEÇÃO 24/25
-                        </span>
-                        <h1 className="text-5xl md:text-8xl font-black text-white italic tracking-tighter mb-6 leading-[0.95] drop-shadow-2xl">
-                            VISTA A <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400 drop-shadow-[0_0_25px_rgba(181,255,0,0.4)]">
-                                GLÓRIA ETERNA
+                    <div className="max-w-3xl pt-20 md:pt-0">
+                        {/* Tag Premium */}
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-8 animate-fade-in-up">
+                            <span className="w-2 h-2 rounded-full bg-dlsports-neon animate-pulse"></span>
+                            <span className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">Lançamentos 2025 Disponíveis</span>
+                        </div>
+
+                        {/* Title */}
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white italic tracking-tighter mb-6 leading-[0.9] drop-shadow-2xl animate-fade-in-up delay-100">
+                            VISTA SEU TIME.<br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
+                                VIVA O JOGO.
                             </span>
                         </h1>
-                        <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-xl mb-10 leading-relaxed drop-shadow-md">
-                            As camisas dos maiores campeões do mundo. <br />
-                            <span className="text-dlsports-neon">Exclusividade e estilo</span> para quem vive o jogo.
+
+                        {/* Subtitle */}
+                        <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-xl mb-10 leading-relaxed drop-shadow-md animate-fade-in-up delay-200">
+                            A maior coleção de camisas oficiais do Brasil. Qualidade premium, entrega rápida e satisfação garantida.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 items-start">
+                        {/* Social Proof Mini */}
+                        <div className="flex items-center gap-4 mb-10 animate-fade-in-up delay-300">
+                            <div className="flex -space-x-4">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-200 overflow-hidden">
+                                        <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Cliente" className="w-full h-full object-cover" />
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="text-white text-sm">
+                                <div className="flex text-dlsports-neon mb-0.5">
+                                    <Star className="w-4 h-4 fill-current" />
+                                    <Star className="w-4 h-4 fill-current" />
+                                    <Star className="w-4 h-4 fill-current" />
+                                    <Star className="w-4 h-4 fill-current" />
+                                    <Star className="w-4 h-4 fill-current" />
+                                </div>
+                                <span className="font-bold">+5.000 clientes satisfeitos</span>
+                            </div>
+                        </div>
+
+                        {/* CTAs */}
+                        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
                             <Link
                                 to="/nacionais"
-                                className="group relative overflow-hidden bg-dlsports-neon text-dlsports-green px-10 py-5 rounded-full font-black text-lg tracking-wide hover:scale-105 transition-all shadow-[0_0_30px_rgba(181,255,0,0.4)] flex items-center gap-3"
+                                className="group relative overflow-hidden bg-dlsports-neon text-dlsports-green px-8 md:px-10 py-4 md:py-5 rounded-lg font-black text-lg tracking-wide hover:scale-105 transition-all shadow-[0_0_30px_rgba(181,255,0,0.4)] flex items-center justify-center gap-3"
                             >
                                 <span className="relative z-10 flex items-center gap-2">
                                     COMPRAR AGORA <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </span>
-                                <div className="absolute inset-0 bg-white/30 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                             </Link>
                             <Link
                                 to="/europeus"
-                                className="group px-10 py-5 rounded-full font-bold text-lg tracking-wide text-white border-2 border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm"
+                                className="px-8 md:px-10 py-4 md:py-5 rounded-lg font-bold text-lg tracking-wide text-white border border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center justify-center text-center"
                             >
-                                EUROPEUS
+                                VER LANÇAMENTOS 2025
                             </Link>
                         </div>
                     </div>
@@ -137,60 +179,170 @@ export function Home() {
                 </div>
             </section>
 
+            {/* Benefits Banner */}
+            <div className="bg-black text-white py-6 border-b border-white/10">
+                <div className="container mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-4 text-xs md:text-sm font-bold tracking-wider uppercase text-center">
+                    <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Envio Imediato para todo Brasil</span>
+                    <span className="flex items-center gap-2 hidden md:flex"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Parcelamento em até 10x sem juros</span>
+                    <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> 5% OFF no PIX</span>
+                </div>
+            </div>
+
+            {/* Dual Category Banner (National vs European) */}
+            <section className="container mx-auto px-4 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* National Banner */}
+                    <Link to="/nacionais" className="group relative h-64 md:h-80 rounded-3xl overflow-hidden bg-gray-100 flex items-center justify-between px-8 md:px-12 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-900/10 border border-gray-200">
+                        {/* Text Content */}
+                        <div className="relative z-10 flex flex-col items-start gap-2">
+                            <span className="text-yellow-500 font-extrabold text-sm tracking-widest uppercase">Season 2025</span>
+                            <h3 className="text-3xl md:text-5xl font-black italic text-gray-900 leading-none">
+                                Times <br />Nacionais
+                            </h3>
+                            <p className="text-gray-500 font-medium text-xs md:text-sm mb-2">A partir de <strong className="text-gray-900 text-lg md:text-2xl">R$ 129,90</strong></p>
+                            <span className="bg-black text-white px-6 py-2 rounded-lg font-bold text-xs uppercase tracking-wider group-hover:bg-dlsports-green group-hover:text-white transition-colors">
+                                Ver Coleção
+                            </span>
+                        </div>
+                        {/* Image/Graphic Carousel */}
+                        <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/3">
+                            {[
+                                'https://static.netshoes.com.br/produtos/camisa-vasco-iii-2425-sn-kombat-jogador-kappa-masculina/04/D24-6504-004/D24-6504-004_zoom1.jpg?ts=1765386947',
+                                'https://static.netshoes.com.br/produtos/camisa-sao-paulo-i-2526-torcedor-new-balance-masculina/24/39V-1638-024/39V-1638-024_zoom1.jpg?ts=1765855271&ims=1088x',
+                                'https://imgcentauro-a.akamaihd.net/800x800/9948763XA2.jpg'
+                            ].map((img, index) => (
+                                <div
+                                    key={index}
+                                    className={`absolute inset-0 bg-contain bg-right bg-no-repeat transition-opacity duration-1000 ${index === bannerNationalSlide ? 'opacity-90' : 'opacity-0'}`}
+                                    style={{ backgroundImage: `url("${img}")` }}
+                                ></div>
+                            ))}
+                        </div>
+                        {/* Decorative Elements */}
+                        <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-yellow-400/20 rounded-full blur-3xl group-hover:bg-green-400/30 transition-colors"></div>
+                    </Link>
+
+                    {/* European Banner */}
+                    <Link to="/europeus" className="group relative h-64 md:h-80 rounded-3xl overflow-hidden bg-gray-100 flex items-center justify-between px-8 md:px-12 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-900/10 border border-gray-200">
+                        {/* Text Content */}
+                        <div className="relative z-10 flex flex-col items-start gap-2">
+                            <span className="text-blue-600 font-extrabold text-sm tracking-widest uppercase">Todas as ligas Europeias</span>
+                            <h3 className="text-3xl md:text-5xl font-black italic text-gray-900 leading-none">
+                                Times <br />Europeus
+                            </h3>
+                            <p className="text-gray-500 font-medium text-xs md:text-sm mb-2">A partir de <strong className="text-gray-900 text-lg md:text-2xl">R$ 149,90</strong></p>
+                            <span className="bg-black text-white px-6 py-2 rounded-lg font-bold text-xs uppercase tracking-wider group-hover:bg-blue-600 transition-colors">
+                                Ver Coleção
+                            </span>
+                        </div>
+                        {/* Image/Graphic Carousel */}
+                        <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/3">
+                            {[
+                                'https://imgcentauro-a.akamaihd.net/800x800/9971A4TKA2.jpg',
+                                'https://imgcentauro-a.akamaihd.net/1200x1200/98876205A5.jpg',
+                                'https://cdn.vnda.com.br/1500x/grandestorcidas/2024/08/15/10_10_15_892_10_8_0_033_whatsapp20image202024081520at20100950.jpeg?v=1723727416'
+                            ].map((img, index) => (
+                                <div
+                                    key={index}
+                                    className={`absolute inset-0 bg-contain bg-right bg-no-repeat transition-opacity duration-1000 ${index === bannerNationalSlide ? 'opacity-90' : 'opacity-0'}`}
+                                    style={{ backgroundImage: `url("${img}")` }}
+                                ></div>
+                            ))}
+                        </div>
+                        {/* Decorative Elements */}
+                        <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-blue-400/20 rounded-full blur-3xl group-hover:bg-blue-600/30 transition-colors"></div>
+                    </Link>
+                </div>
+            </section>
+
             {/* Clubs Section */}
-            <section className="py-12 bg-white container mx-auto px-4">
-                <h2 className="text-2xl font-bold mb-8 text-center uppercase tracking-widest text-gray-400">Escolha por Clube</h2>
-                <div className="flex flex-wrap justify-center gap-6 md:gap-12">
-                    {CLUBS.map(club => (
-                        <Link
-                            to={`/nacionais?club=${encodeURIComponent(club.name)}`}
-                            key={club.name}
-                            className="flex flex-col items-center gap-3 group cursor-pointer"
-                        >
-                            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-50 flex items-center justify-center p-4 border border-gray-100 group-hover:border-dlsports-green group-hover:shadow-[0_0_15px_rgba(181,255,0,0.2)] transition-all duration-300">
-                                <img src={club.logo} alt={club.name} className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" />
-                            </div>
-                            <span className="text-sm font-bold text-gray-400 group-hover:text-dlsports-green transition-colors">{club.name}</span>
-                        </Link>
-                    ))}
+            <section className="py-16 bg-white border-b border-gray-100">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-10">
+                        <h2 className="text-2xl md:text-3xl font-black italic tracking-tighter text-gray-900 mb-2 uppercase">Brasileirão Betano 2025</h2>
+                        <div className="w-16 h-1 bg-dlsports-neon mx-auto"></div>
+                    </div>
+
+                    {/* Responsive Scroll / Marquee Feel */}
+                    <div className="relative">
+                        <div className="flex overflow-x-auto gap-8 md:gap-12 pb-8 scrollbar-hide snap-x px-4 justify-start md:justify-center flex-wrap md:flex-nowrap">
+                            {CLUBS.map(club => (
+                                <Link
+                                    to={`/nacionais?club=${encodeURIComponent(club.name)}`}
+                                    key={club.name}
+                                    className="group flex flex-col items-center gap-3 min-w-[80px] md:min-w-[100px] snap-center hover:scale-110 transition-transform duration-300"
+                                >
+                                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center p-3 shadow-sm border border-gray-100 group-hover:border-dlsports-green group-hover:shadow-[0_0_15px_rgba(181,255,0,0.2)] transition-all">
+                                        <img src={club.logo} alt={club.name} className="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300" />
+                                    </div>
+                                    <span className="text-[10px] md:text-xs font-bold text-gray-400 group-hover:text-dlsports-green transition-colors uppercase tracking-wider text-center w-full truncate">{club.name}</span>
+                                </Link>
+                            ))}
+                        </div>
+                        {/* Gradient Fade for Scroll hints */}
+                        <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden"></div>
+                        <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent pointer-events-none md:hidden"></div>
+                    </div>
                 </div>
             </section>
 
             {/* Featured Section */}
-            <section className="py-20 container mx-auto px-4 bg-gray-50">
-                <div className="flex items-center justify-between mb-12">
-                    <h2 className="text-3xl md:text-4xl font-black text-dlsports-green italic tracking-tighter">
-                        DESTAQUES DA SEMANA
-                    </h2>
-                    <Link to="/nacionais" className="text-dlsports-green font-bold flex items-center gap-2 hover:text-dlsports-neon hover:bg-black px-4 py-2 rounded-full transition-all">
-                        VER TODOS <ArrowRight className="w-5 h-5" />
-                    </Link>
-                </div>
+            <section className="py-20 bg-gray-100">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                        <div>
+                            <span className="text-dlsports-green font-bold tracking-widest text-sm uppercase mb-2 block">Destaques da Semana</span>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 italic tracking-tighter">
+                                MAIS VENDIDOS <span className="text-stroke-neon text-transparent" style={{ WebkitTextStroke: '1px #000' }}>2025</span>
+                            </h2>
+                        </div>
+                        <Link to="/nacionais" className="group flex items-center gap-2 font-bold text-gray-900 hover:text-dlsports-green transition-colors text-lg">
+                            Ver catálogo completo
+                            <span className="p-1 rounded-full bg-black text-white group-hover:bg-dlsports-green transition-colors">
+                                <ArrowRight className="w-4 h-4" />
+                            </span>
+                        </Link>
+                    </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {featuredProducts.map(product => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {featuredProducts.map(product => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            {/* Trust Section */}
-            <section className="bg-black text-white py-16">
-                <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div className="p-6 border border-white/10 rounded-2xl">
-                        <Star className="w-10 h-10 text-dlsports-neon mx-auto mb-4" />
-                        <h3 className="text-xl font-bold mb-2">Produtos Oficiais</h3>
-                        <p className="text-gray-400">Garantia de autenticidade em todas as peças.</p>
+            {/* Testimonials Section (Social Proof) */}
+            <section className="py-20 bg-white">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <span className="text-dlsports-neon font-black text-xl mb-2 block tracking-widest">FEEDBACK</span>
+                        <h2 className="text-3xl md:text-5xl font-black italic text-gray-900 mb-6">QUEM COMPROU APROVOU</h2>
+                        <p className="text-gray-500 max-w-2xl mx-auto">Confira o que nossos clientes estão falando sobre a qualidade e experiência de compra na DL Sports.</p>
                     </div>
-                    <div className="p-6 border border-white/10 rounded-2xl">
-                        <div className="w-10 h-10 text-dlsports-neon mx-auto mb-4 font-black flex items-center justify-center text-2xl">10x</div>
-                        <h3 className="text-xl font-bold mb-2">Parcelamento Facilitado</h3>
-                        <p className="text-gray-400">Em até 10x sem juros em todos os cartões.</p>
-                    </div>
-                    <div className="p-6 border border-white/10 rounded-2xl">
-                        <div className="w-10 h-10 text-dlsports-neon mx-auto mb-4 font-black flex items-center justify-center text-2xl">🛫</div>
-                        <h3 className="text-xl font-bold mb-2">Envio para todo Brasil</h3>
-                        <p className="text-gray-400">Frete grátis nas compras acima de R$ 299,90.</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { name: 'Ricardo S.', time: 'Há 2 dias', text: 'Qualidade surreal! O tecido é idêntico ao de jogador. Chegou em 3 dias aqui em SP.' },
+                            { name: 'Matheus O.', time: 'Semana passada', text: 'Melhor loja de camisas que já comprei. O suporte no WhatsApp é nota 10.' },
+                            { name: 'Gabriela M.', time: 'Há 1 mês', text: 'Comprei de presente pro meu namorado e ele amou. Veio tudo certinho e bem embalado.' }
+                        ].map((review, i) => (
+                            <div key={i} className="bg-gray-50 p-8 rounded-2xl border border-gray-100 hover:shadow-lg transition-shadow">
+                                <div className="flex items-center gap-1 text-yellow-400 mb-4">
+                                    {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-5 h-5 fill-current" />)}
+                                </div>
+                                <p className="text-gray-700 italic mb-6">"{review.text}"</p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold text-gray-600">
+                                        {review.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-gray-900">{review.name}</p>
+                                        <p className="text-xs text-gray-400">{review.time}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

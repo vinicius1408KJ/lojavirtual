@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route, Outlet, Link } from 'react-router-dom';
 import { PromoBar } from './components/PromoBar';
 import { Header } from './components/Header';
+import { WhatsAppFloat } from './components/WhatsAppFloat';
 import { Home } from './pages/Home';
 import { Catalog } from './pages/Catalog';
 import { Login } from './pages/admin/Login';
@@ -22,6 +23,7 @@ function UserLayout() {
       </div>
       <PromoBar />
       <Header />
+      <WhatsAppFloat />
       <main className="flex-grow">
         <Outlet />
       </main>
