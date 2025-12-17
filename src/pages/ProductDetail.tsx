@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Ruler, Truck, ShieldCheck, Star, CreditCard, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
+import { ShoppingCart, Ruler, ShieldCheck, Star, CreditCard, CheckCircle2, Truck } from 'lucide-react';
 import { PRODUCTS } from '../data';
 import { useCart } from '../context/CartContext';
 import { toast } from '../lib/toast';
