@@ -19,7 +19,7 @@ export function Header() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            navigate(`/nacionais?search=${encodeURIComponent(searchTerm)}`);
+            navigate(`/catalog?search=${encodeURIComponent(searchTerm)}`);
         }
     };
 

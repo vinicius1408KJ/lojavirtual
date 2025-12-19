@@ -22,6 +22,12 @@ interface MenuData {
 
 export const MENU_DATA: MenuData[] = [
     {
+        id: 'home',
+        label: 'INÍCIO',
+        link: '/',
+        hasMegaMenu: false
+    },
+    {
         id: 'brasileiros',
         label: 'BRASILEIROS',
         link: '/nacionais',
@@ -40,74 +46,69 @@ export const MENU_DATA: MenuData[] = [
                 items: ['Atlético-MG', 'Cruzeiro', 'América-MG']
             },
             {
-                title: 'Rio Grande do Sul',
-                items: ['Grêmio', 'Internacional', 'Juventude']
+                title: 'Sul do Brasil',
+                items: ['Grêmio', 'Internacional', 'Juventude', 'Coritiba', 'Athletico-PR']
             }
         ],
         highlightImage: {
             src: 'https://images.unsplash.com/photo-1628891435256-3f7125ebad68?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
             alt: 'Vitória',
             title: 'Camisas Oficiais',
-            price: 'a partir de R$ 79,90'
+            price: 'Qualidade Premium'
         }
     },
     {
         id: 'internacionais',
-        label: 'INTERNACIONAIS',
+        label: 'EUROPEUS',
         link: '/europeus',
         hasMegaMenu: true,
         columns: [
             {
-                title: 'Liga Inglesa',
-                items: ['Arsenal', 'Liverpool', 'Manchester City', 'Manchester United', 'Chelsea']
+                title: 'Premier League',
+                items: ['Arsenal', 'Liverpool', 'Manchester City', 'Manchester United', 'Chelsea', 'Tottenham']
             },
             {
-                title: 'Liga Espanhola',
+                title: 'La Liga',
                 items: ['Real Madrid', 'Barcelona', 'Atlético de Madrid']
             },
             {
-                title: 'Liga Italiana',
-                items: ['Juventus', 'Milan', 'Inter de Milão', 'Roma']
-            },
-            {
-                title: 'Liga Alemã',
-                items: ['Bayern de Munique', 'Borussia Dortmund']
+                title: 'Série A / Outros',
+                items: ['Juventus', 'Milan', 'Inter de Milão', 'Roma', 'Bayern de Munique', 'Borussia Dortmund', 'PSG']
             }
         ],
         highlightImage: {
             src: 'https://images.unsplash.com/photo-1626025437642-0b05076ca301?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
             alt: 'Milan',
-            title: 'Clubes Puma',
-            price: 'Confira'
+            title: 'Clubes Internacionais',
+            price: 'As Melhores'
         }
     },
     {
         id: 'selecoes',
         label: 'SELEÇÕES',
-        link: '/selecoes', // Rota placeholder
+        link: '/selecoes',
         hasMegaMenu: true,
         columns: [
             {
-                title: 'América do Sul',
-                items: ['Brasil', 'Argentina', 'Uruguai', 'Colômbia']
+                title: 'América',
+                items: ['Brasil', 'Argentina', 'Uruguai', 'México', 'EUA']
             },
             {
                 title: 'Europa',
-                items: ['Alemanha', 'Espanha', 'França', 'Inglaterra', 'Itália', 'Portugal']
+                items: ['Alemanha', 'Espanha', 'França', 'Inglaterra', 'Itália', 'Portugal', 'Bélgica']
             },
             {
-                title: 'Outros',
-                items: ['Japão', 'EUA', 'México']
+                title: 'Ásia / África',
+                items: ['Japão', 'Coreia do Sul', 'Nigéria', 'Marrocos']
             }
         ],
         highlightImage: {
             src: 'https://images.unsplash.com/photo-1549492193-4700d813725b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            alt: 'Seleções Adidas',
-            title: 'Seleções Adidas',
-            price: 'Confira'
+            alt: 'Seleções',
+            title: 'Brasil 2024',
+            price: 'Lançamentos'
         }
     },
-
 ];
 
 export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {

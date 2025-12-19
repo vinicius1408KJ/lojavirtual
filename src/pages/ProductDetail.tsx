@@ -307,18 +307,21 @@ export function ProductDetail() {
                     {/* Description Tabs */}
                     <div className="border-t border-gray-100">
                         <div className="container mx-auto px-6 py-12">
-                            <h3 className="text-xl font-bold mb-6">Detalhes do Produto</h3>
-                            <div className="prose max-w-none text-gray-600">
-                                <p className="mb-4">
-                                    {product.description || 'A nova camisa oficial traz tecnologia de ponta para garantir conforto e performance. Desenvolvida com tecido respirável que afasta o suor da pele, mantendo você seco durante todo o jogo. O design moderno e arrojado representa a tradição e a glória do clube.'}
-                                </p>
-                                <ul className="list-disc pl-5 space-y-2">
-                                    <li><strong>Composição:</strong> 100% Poliéster Reciclado de alta performance.</li>
-                                    <li><strong>Tecnologia:</strong> Dri-Fit / Aeroready (absorção de suor).</li>
-                                    <li><strong>Origem:</strong> Importado.</li>
-                                    <li><strong>Garantia:</strong> Contra defeito de fabricação.</li>
-                                </ul>
-                            </div>
+                            {product.description && (
+                                <div className="mb-6">
+                                    <h3 className="text-xl font-bold mb-4">Descrição</h3>
+                                    <p className="text-gray-600 leading-relaxed">
+                                        {product.description}
+                                    </p>
+                                </div>
+                            )}
+                            <h4 className="font-bold text-gray-900 mb-4 mt-8 uppercase tracking-wider text-xs border-b pb-2">Especificações Técnicas</h4>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-8 text-sm mt-4">
+                                <li className="flex items-center gap-2 text-gray-600"><div className="w-1.5 h-1.5 bg-dlsports-green rounded-full"></div><strong>Composição:</strong> <span>100% Poliéster Premium</span></li>
+                                <li className="flex items-center gap-2 text-gray-600"><div className="w-1.5 h-1.5 bg-dlsports-green rounded-full"></div><strong>Tecnologia:</strong> <span>Respirável (Dri-Fit/Aeroready)</span></li>
+                                <li className="flex items-center gap-2 text-gray-600"><div className="w-1.5 h-1.5 bg-dlsports-green rounded-full"></div><strong>Origem:</strong> <span>Importado</span></li>
+                                <li className="flex items-center gap-2 text-gray-600"><div className="w-1.5 h-1.5 bg-dlsports-green rounded-full"></div><strong>Garantia:</strong> <span>Contra defeito de fabricação</span></li>
+                            </ul>
                         </div>
                     </div>
                 </div>

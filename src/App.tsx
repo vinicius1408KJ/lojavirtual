@@ -99,6 +99,7 @@ function App() {
           <Route path="/europeus" element={<Catalog />} />
           <Route path="/selecoes" element={<Catalog />} />
           <Route path="/ofertas" element={<Catalog />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<UserOrders />} />
           <Route path="/produto/:slug" element={<ProductDetail />} />
