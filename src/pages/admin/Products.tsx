@@ -36,8 +36,8 @@ export function Products() {
         active: true,
         is_national: false,
         is_selection: false,
-        is_offer: false,
         is_new: false,
+        back_image_url: '',
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     });
 
@@ -118,8 +118,8 @@ export function Products() {
             active: true,
             is_national: false,
             is_selection: false,
-            is_offer: false,
             is_new: false,
+            back_image_url: '',
             sizes: ['P', 'M', 'G', 'GG', 'XG']
         });
     };
@@ -258,28 +258,49 @@ export function Products() {
 
                         <div className="p-8 space-y-6">
                             {/* Preview Image */}
-                            <div className="flex justify-center mb-6">
-                                <div className="relative group">
-                                    {currentProduct.image_url ? (
-                                        <img
-                                            src={currentProduct.image_url}
-                                            alt="Preview"
-                                            className="w-40 h-40 object-cover rounded-lg shadow-md border border-gray-200 bg-gray-50"
-                                            onError={(e) => {
-                                                (e.target as HTMLImageElement).src = 'https://placehold.co/400x400?text=Imagem+Invalida';
-                                            }}
-                                        />
-                                    ) : (
-                                        <div className="w-40 h-40 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-400">
-                                            <LinkIcon className="w-8 h-8 mb-2" />
-                                            <span className="text-[10px] uppercase font-bold text-center px-4">URL da foto obrigatória</span>
-                                        </div>
-                                    )}
-                                    {currentProduct.image_url && (
-                                        <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
-                                            Preview Online
-                                        </div>
-                                    )}
+                            <div className="flex justify-center gap-8 mb-6">
+                                {/* Front Photo */}
+                                <div className="text-center">
+                                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Frente</p>
+                                    <div className="relative group">
+                                        {currentProduct.image_url ? (
+                                            <img
+                                                src={currentProduct.image_url}
+                                                alt="Preview Frente"
+                                                className="w-32 h-32 object-cover rounded-lg shadow-md border border-gray-200 bg-gray-50"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = 'https://placehold.co/400x400?text=Imagem+Invalida';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-32 h-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-400">
+                                                <LinkIcon className="w-8 h-8 mb-2" />
+                                                <span className="text-[8px] uppercase font-bold text-center px-4">Link Foto Frente</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Back Photo */}
+                                <div className="text-center">
+                                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">Atrás</p>
+                                    <div className="relative group">
+                                        {currentProduct.back_image_url ? (
+                                            <img
+                                                src={currentProduct.back_image_url}
+                                                alt="Preview Atrás"
+                                                className="w-32 h-32 object-cover rounded-lg shadow-md border border-gray-200 bg-gray-50"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = 'https://placehold.co/400x400?text=Imagem+Invalida';
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-32 h-32 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-400">
+                                                <LinkIcon className="w-8 h-8 mb-2" />
+                                                <span className="text-[8px] uppercase font-bold text-center px-4">Link Foto Atrás</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
@@ -327,17 +348,32 @@ export function Products() {
                                         placeholder="Ex: Rio de Janeiro"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
-                                    <div className="relative">
-                                        <input
-                                            type="text"
-                                            value={currentProduct.image_url || ''}
-                                            onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
-                                            className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm"
-                                            placeholder="Cole o link da imagem aqui"
-                                        />
-                                        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2">URL Foto Frente</label>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={currentProduct.image_url || ''}
+                                                onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
+                                                className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm"
+                                                placeholder="Cole o link da frente"
+                                            />
+                                            <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-gray-700 mb-2">URL Foto Atrás (Costas)</label>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={currentProduct.back_image_url || ''}
+                                                onChange={e => setCurrentProduct({ ...currentProduct, back_image_url: e.target.value })}
+                                                className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm"
+                                                placeholder="Cole o link das costas"
+                                            />
+                                            <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

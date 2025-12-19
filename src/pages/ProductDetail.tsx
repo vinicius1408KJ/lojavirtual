@@ -62,8 +62,11 @@ export function ProductDetail() {
         );
     }
 
-    // Mock images for gallery (using the main product image multiple times for demo)
-    const images = [product.image_url, product.image_url, product.image_url];
+    // Dynamic images for gallery
+    const galleryImages = [product.image_url];
+    if (product.back_image_url) {
+        galleryImages.push(product.back_image_url);
+    }
 
     const handleAddToCart = () => {
         if (!selectedSize) {
@@ -90,7 +93,7 @@ export function ProductDetail() {
                         <div className="p-4 md:p-8 bg-gray-50 flex flex-col items-center">
                             <div className="relative w-full max-w-[500px] aspect-[4/5] bg-white rounded-2xl shadow-lg overflow-hidden group mb-4">
                                 <img
-                                    src={images[activeImage]}
+                                    src={galleryImages[activeImage]}
                                     alt={product.name}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-zoom-in"
                                 />
@@ -103,16 +106,18 @@ export function ProductDetail() {
                                     </span>}
                                 </div>
                             </div>
-                            {/* Thumbnails */}
                             <div className="flex gap-3 overflow-x-auto pb-2 w-full max-w-[500px] scrollbar-hide">
-                                {images.map((img, idx) => (
+                                {galleryImages.map((img, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setActiveImage(idx)}
-                                        className={`w-16 h-20 md:w-20 md:h-24 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-dlsports-green opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
+                                        className={`w-16 h-20 md:w-24 md:h-28 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all relative group ${activeImage === idx ? 'border-dlsports-green ring-2 ring-dlsports-green/20' : 'border-transparent opacity-60 hover:opacity-100'
                                             }`}
                                     >
                                         <img src={img} alt="" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-x-0 bottom-0 bg-black/50 py-1 text-[8px] text-white font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                            {idx === 0 ? 'Frente' : 'Costas'}
+                                        </div>
                                     </button>
                                 ))}
                             </div>

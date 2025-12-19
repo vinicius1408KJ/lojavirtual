@@ -16,6 +16,7 @@ export interface Product {
     is_selection?: boolean;
     is_new?: boolean;
     old_price?: number;
+    back_image_url?: string;
 }
 
 export interface CartItem extends Product {
