@@ -23,21 +23,11 @@ export function AddProductFromGoogle({ onProductSelect }: AddProductFromGooglePr
 
     // MOCK DATA for 12 images (Simulating a response)
     const MOCK_RESULTS: SearchResult[] = Array(12).fill(null).map((_, i) => ({
-        url: `https://source.unsplash.com/random/800x800/?soccer,jersey,${i}`, // Unsplash random for demo
-        thumbnail: `https://source.unsplash.com/random/400x400/?soccer,jersey,${i}`,
+        url: `https://picsum.photos/seed/${i + 100}/800/800`,
+        thumbnail: `https://picsum.photos/seed/${i + 100}/400/400`,
         title: `Resultado Imagem Google ${i + 1}`,
         source: 'google.com'
     }));
-
-    // In a real scenario with SERP API:
-    /*
-    const fetchGoogleImages = async (query: string) => {
-      const API_KEY = 'YOUR_SERP_API_KEY';
-      const response = await fetch(`https://serpapi.com/search.json?q=${query}&tbm=isch&api_key=${API_KEY}`);
-      const data = await response.json();
-      return data.images_results;
-    }
-    */
 
     const handleSearch = async () => {
         if (!searchTerm) return;
@@ -45,20 +35,15 @@ export function AddProductFromGoogle({ onProductSelect }: AddProductFromGooglePr
 
         // Simulate API Call
         setTimeout(() => {
-            // Here we would effectively fetch from API. 
-            // For the demo, we use placeholders or specific urls if known
-            // Generating some realistic looking dummy results for the specific search
             const generatedResults = MOCK_RESULTS.map((item, idx) => ({
                 ...item,
                 title: `${searchTerm} - Opção ${idx + 1}`,
-                // Using a reliable placeholder service since Unsplash source is deprecated/unreliable in some contexts, 
-                // relying on specific team assets if key words match, else generic.
                 thumbnail: item.thumbnail
             }));
 
             setResults(generatedResults);
             setIsLoading(false);
-        }, 1500);
+        }, 800);
     };
 
     const processProductData = (imgUrl: string, title: string) => {

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash, Edit, Power, PowerOff, X as XIcon } from 'lucide-react';
+import { Plus, Trash, Edit, Power, PowerOff, X as XIcon, Link as LinkIcon } from 'lucide-react';
 // PRODUCTS import removed
 import { supabase } from '../../lib/supabase';
 import { AddProductFromGoogle } from '../../components/AddProductFromGoogle';
@@ -73,11 +73,26 @@ export function Products() {
 
             await fetchProducts();
             setIsModalOpen(false);
-            setCurrentProduct({ name: '', price: 0, club: '', image_url: '', description: '', active: true, sizes: ['P', 'M', 'G', 'GG'] });
+            resetCurrentProduct();
         } catch (error) {
             console.error('Error saving product:', error);
             alert('Erro ao salvar produto');
         }
+    };
+
+    const resetCurrentProduct = () => {
+        setCurrentProduct({
+            name: '',
+            price: 0,
+            club: '',
+            image_url: '',
+            description: '',
+            active: true,
+            is_national: false,
+            is_selection: false,
+            is_offer: false,
+            sizes: ['P', 'M', 'G', 'GG']
+        });
     };
 
     const toggleActive = async (id: string, currentStatus: boolean) => {
@@ -132,7 +147,7 @@ export function Products() {
                     </button>
                     <button
                         onClick={() => {
-                            setCurrentProduct({ name: '', price: 0, club: '', image_url: '', description: '', active: true, sizes: ['P', 'M', 'G', 'GG'] });
+                            resetCurrentProduct();
                             setIsModalOpen(true);
                         }}
                         className="bg-dlsports-green text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-dlsports-green/90 transition-colors font-bold"
@@ -214,22 +229,36 @@ export function Products() {
 
                         <div className="p-8 space-y-6">
                             {/* Preview Image */}
-                            {currentProduct.image_url && (
-                                <div className="flex justify-center mb-6">
-                                    <div className="relative group">
-                                        <img src={currentProduct.image_url} alt="Preview" className="w-40 h-40 object-cover rounded-lg shadow-md border border-gray-200" />
-                                        <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
-                                            Imagem OK
+                            <div className="flex justify-center mb-6">
+                                <div className="relative group">
+                                    {currentProduct.image_url ? (
+                                        <img
+                                            src={currentProduct.image_url}
+                                            alt="Preview"
+                                            className="w-40 h-40 object-cover rounded-lg shadow-md border border-gray-200 bg-gray-50"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = 'https://placehold.co/400x400?text=Imagem+Invalida';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="w-40 h-40 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-400">
+                                            <LinkIcon className="w-8 h-8 mb-2" />
+                                            <span className="text-[10px] uppercase font-bold text-center px-4">URL da foto obrigatória</span>
                                         </div>
-                                    </div>
+                                    )}
+                                    {currentProduct.image_url && (
+                                        <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+                                            Preview Online
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
 
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">Nome do Produto</label>
                                 <input
                                     type="text"
-                                    value={currentProduct.name}
+                                    value={currentProduct.name || ''}
                                     onChange={e => setCurrentProduct({ ...currentProduct, name: e.target.value })}
                                     className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green focus:ring-2 focus:ring-dlsports-green/20 outline-none transition-all"
                                     placeholder="Ex: Camisa Flamengo I 24/25"
@@ -241,7 +270,7 @@ export function Products() {
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Preço (R$)</label>
                                     <input
                                         type="number"
-                                        value={currentProduct.price}
+                                        value={currentProduct.price || 0}
                                         onChange={e => setCurrentProduct({ ...currentProduct, price: parseFloat(e.target.value) })}
                                         className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none"
                                     />
@@ -250,7 +279,7 @@ export function Products() {
                                     <label className="block text-sm font-bold text-gray-700 mb-2">Clube</label>
                                     <input
                                         type="text"
-                                        value={currentProduct.club}
+                                        value={currentProduct.club || ''}
                                         onChange={e => setCurrentProduct({ ...currentProduct, club: e.target.value })}
                                         className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none"
                                         placeholder="Ex: Flamengo"
@@ -258,26 +287,30 @@ export function Products() {
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">Região / Estado (opcional)</label>
-                                <input
-                                    type="text"
-                                    value={currentProduct.region || ''}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, region: e.target.value })}
-                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none transition-all"
-                                    placeholder="Ex: Rio de Janeiro, Inglaterra, etc."
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
-                                <input
-                                    type="text"
-                                    value={currentProduct.image_url}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
-                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none transition-all text-sm text-gray-600"
-                                    placeholder="https://sua-foto.com/foto.jpg"
-                                />
+                            <div className="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-bold text-gray-700 mb-2">Região / Estado</label>
+                                    <input
+                                        type="text"
+                                        value={currentProduct.region || ''}
+                                        onChange={e => setCurrentProduct({ ...currentProduct, region: e.target.value })}
+                                        className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none"
+                                        placeholder="Ex: Rio de Janeiro"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            value={currentProduct.image_url || ''}
+                                            onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
+                                            className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm"
+                                            placeholder="Cole o link da imagem aqui"
+                                        />
+                                        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
