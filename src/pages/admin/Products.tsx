@@ -47,26 +47,53 @@ export function Products() {
 
     const handleSave = async () => {
         try {
-            let finalProduct = { ...currentProduct };
+            // Data Cleaning
+            const cleanProduct: any = { ...currentProduct };
 
-            // Ensure slug exists
-            if (!finalProduct.slug && finalProduct.name) {
-                finalProduct.slug = finalProduct.name.toLowerCase()
-                    .replace(/[^\w\s-]/g, '') // remove special chars
-                    .replace(/\s+/g, '-');     // replace spaces with hyphens
+            if (!cleanProduct.name) {
+                alert('O nome do produto é obrigatório');
+                return;
             }
 
-            if (finalProduct.id) {
+            // Ensure price is a valid number
+            cleanProduct.price = Number(cleanProduct.price) || 0;
+
+            // Handle old_price carefully (avoid NaN)
+            if (cleanProduct.old_price !== undefined && cleanProduct.old_price !== null && cleanProduct.old_price !== '') {
+                const val = Number(cleanProduct.old_price);
+                if (isNaN(val)) {
+                    delete cleanProduct.old_price;
+                } else {
+                    cleanProduct.old_price = val;
+                }
+            } else {
+                // If it's empty, send null to database instead of empty string or NaN
+                cleanProduct.old_price = null;
+            }
+
+            // Ensure slug exists
+            if (!cleanProduct.slug) {
+                cleanProduct.slug = cleanProduct.name.toLowerCase()
+                    .trim()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '') // remove accents
+                    .replace(/[^\w\s-]/g, '')       // remove special chars
+                    .replace(/\s+/g, '-')           // spaces to hyphens
+                    .replace(/-+/g, '-');            // collapse multiple hyphens
+            }
+
+            if (cleanProduct.id) {
+                const { id, created_at, ...updateData } = cleanProduct;
                 const { error } = await supabase
                     .from('products')
-                    .update(finalProduct)
-                    .eq('id', finalProduct.id);
+                    .update(updateData)
+                    .eq('id', id);
                 if (error) throw error;
                 alert('Produto atualizado com sucesso!');
             } else {
                 const { error } = await supabase
                     .from('products')
-                    .insert([finalProduct]);
+                    .insert([cleanProduct]);
                 if (error) throw error;
                 alert('Produto criado com sucesso!');
             }
@@ -74,9 +101,9 @@ export function Products() {
             await fetchProducts();
             setIsModalOpen(false);
             resetCurrentProduct();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving product:', error);
-            alert('Erro ao salvar produto');
+            alert(`Erro ao salvar produto: ${error.message || 'Verifique os dados e a conexão.'}`);
         }
     };
 
