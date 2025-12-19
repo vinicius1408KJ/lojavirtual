@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Ruler, ShieldCheck, Star, CreditCard, CheckCircle2, Truck } from 'lucide-react';
+import { ShoppingCart, Ruler, ShieldCheck, Star, CreditCard, CheckCircle2, Truck, X as XIcon } from 'lucide-react';
 // PRODUCTS import removed
 import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
@@ -190,18 +190,24 @@ export function ProductDetail() {
                                 )}
 
                                 <div className="flex flex-wrap gap-3">
-                                    {product.sizes?.map((size: string) => (
-                                        <button
-                                            key={size}
-                                            onClick={() => setSelectedSize(size)}
-                                            className={`w-12 h-12 md:w-14 md:h-14 rounded-lg font-black border-2 transition-all flex items-center justify-center text-sm md:text-base ${selectedSize === size
-                                                ? 'border-dlsports-green bg-dlsports-green text-white shadow-lg scale-105'
-                                                : 'border-gray-200 text-gray-600 hover:border-black hover:bg-gray-50'
-                                                }`}
-                                        >
-                                            {size}
-                                        </button>
-                                    ))}
+                                    {product.sizes && product.sizes.length > 0 ? (
+                                        product.sizes.map((size: string) => (
+                                            <button
+                                                key={size}
+                                                onClick={() => setSelectedSize(size)}
+                                                className={`w-12 h-12 md:w-14 md:h-14 rounded-lg font-black border-2 transition-all flex items-center justify-center text-sm md:text-base ${selectedSize === size
+                                                    ? 'border-dlsports-green bg-dlsports-green text-white shadow-lg scale-105'
+                                                    : 'border-gray-200 text-gray-600 hover:border-black hover:bg-gray-50'
+                                                    }`}
+                                            >
+                                                {size}
+                                            </button>
+                                        ))
+                                    ) : (
+                                        <div className="w-full p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 font-bold text-sm flex items-center gap-2">
+                                            <XIcon className="w-4 h-4" /> Sem estoque para pronta entrega no momento.
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -209,12 +215,16 @@ export function ProductDetail() {
                             <div className="flex flex-col gap-3 mb-10">
                                 <button
                                     onClick={handleAddToCart}
-                                    className="w-full bg-dlsports-neon text-dlsports-green font-black py-4 md:py-5 rounded-xl uppercase tracking-wider hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-[0_4px_20px_rgba(181,255,0,0.4)] hover:shadow-dlsports-neon/60 hover:-translate-y-1 text-sm md:text-base"
+                                    disabled={!product.sizes || product.sizes.length === 0}
+                                    className={`w-full font-black py-4 md:py-5 rounded-xl uppercase tracking-wider transition-all flex items-center justify-center gap-3 shadow-lg text-sm md:text-base ${(!product.sizes || product.sizes.length === 0)
+                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+                                        : 'bg-dlsports-neon text-dlsports-green hover:brightness-110 shadow-[0_4px_20px_rgba(181,255,0,0.4)] hover:shadow-dlsports-neon/60 hover:-translate-y-1'
+                                        }`}
                                 >
-                                    <div className="bg-dlsports-green/20 p-2 rounded-full">
+                                    <div className={`${(!product.sizes || product.sizes.length === 0) ? 'bg-gray-300' : 'bg-dlsports-green/20'} p-2 rounded-full`}>
                                         <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
                                     </div>
-                                    Adicionar ao Carrinho
+                                    {(!product.sizes || product.sizes.length === 0) ? 'Indisponível' : 'Adicionar ao Carrinho'}
                                 </button>
                                 <p className="text-center text-[10px] md:text-xs text-gray-400 font-medium">Compra 100% Segura e Garantida pelo Mercado Pago</p>
                             </div>

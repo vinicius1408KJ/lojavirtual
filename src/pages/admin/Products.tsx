@@ -37,7 +37,7 @@ export function Products() {
         is_national: false,
         is_selection: false,
         is_offer: false,
-        sizes: ['P', 'M', 'G', 'GG']
+        sizes: ['P', 'M', 'G', 'GG', 'XG']
     });
 
     const handleGoogleProductSelect = (productData: Partial<Product>) => {
@@ -118,7 +118,7 @@ export function Products() {
             is_national: false,
             is_selection: false,
             is_offer: false,
-            sizes: ['P', 'M', 'G', 'GG']
+            sizes: ['P', 'M', 'G', 'GG', 'XG']
         });
     };
 
@@ -369,6 +369,33 @@ export function Products() {
                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_offer ? 'translate-x-6' : 'translate-x-0'}`} />
                                     </div>
                                     <span className="font-bold text-gray-700 select-none text-xs">Em Oferta?</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-3">Tamanhos Disponíveis (Pronta Entrega)</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {['P', 'M', 'G', 'GG', 'XG'].map(size => {
+                                        const isSelected = (currentProduct.sizes || []).includes(size);
+                                        return (
+                                            <button
+                                                key={size}
+                                                type="button"
+                                                onClick={() => {
+                                                    const newSizes = isSelected
+                                                        ? (currentProduct.sizes || []).filter(s => s !== size)
+                                                        : [...(currentProduct.sizes || []), size];
+                                                    setCurrentProduct({ ...currentProduct, sizes: newSizes });
+                                                }}
+                                                className={`w-12 h-12 flex items-center justify-center rounded-lg font-bold border-2 transition-all ${isSelected
+                                                    ? 'bg-dlsports-green border-dlsports-green text-white shadow-lg shadow-dlsports-green/20'
+                                                    : 'bg-white border-gray-200 text-gray-400 hover:border-dlsports-green hover:text-dlsports-green'
+                                                    }`}
+                                            >
+                                                {size}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             </div>
 
