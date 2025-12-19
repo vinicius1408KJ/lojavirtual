@@ -258,20 +258,42 @@ export function Products() {
                                 </div>
                             </div>
 
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">Região / Estado (opcional)</label>
+                                <input
+                                    type="text"
+                                    value={currentProduct.region || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, region: e.target.value })}
+                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none transition-all"
+                                    placeholder="Ex: Rio de Janeiro, Inglaterra, etc."
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
+                                <input
+                                    type="text"
+                                    value={currentProduct.image_url}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
+                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none transition-all text-sm text-gray-600"
+                                    placeholder="https://sua-foto.com/foto.jpg"
+                                />
+                            </div>
+
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, active: !currentProduct.active })}>
-                                     <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.active ? 'bg-dlsports-green' : 'bg-gray-300'}`}>
-                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.active ? 'translate-x-6' : 'translate-x-0'}`} />
-                                     </div>
-                                     <span className="font-bold text-gray-700 select-none text-xs">Produto Ativo?</span>
-                                 </div>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.active ? 'bg-dlsports-green' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.active ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">Produto Ativo?</span>
+                                </div>
 
-                                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_national: !currentProduct.is_national })}>
-                                     <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_national ? 'bg-blue-500' : 'bg-gray-300'}`}>
-                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_national ? 'translate-x-6' : 'translate-x-0'}`} />
-                                     </div>
-                                     <span className="font-bold text-gray-700 select-none text-xs">É Nacional?</span>
-                                 </div>
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_national: !currentProduct.is_national })}>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_national ? 'bg-blue-500' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_national ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">É Nacional?</span>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
