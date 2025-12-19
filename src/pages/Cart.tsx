@@ -34,14 +34,8 @@ export function Cart() {
             }
         } catch (err) {
             console.error('Erro ao validar cupom:', err);
-            // Keep fallback only for development safety or demo
-            if (coupon === 'DLS10') {
-                setDiscount(cartTotal * 0.1);
-                alert('Cupom aplicado com sucesso! (Fallback)');
-            } else {
-                alert('Erro ao validar cupom');
-                setDiscount(0);
-            }
+            alert('Erro ao validar cupom. Verifique sua conexão.');
+            setDiscount(0);
         }
         setLoading(false);
     };

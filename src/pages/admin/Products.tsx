@@ -34,50 +34,81 @@ export function Products() {
         image_url: '',
         description: '',
         active: true,
+        is_national: false,
+        is_selection: false,
+        is_offer: false,
         sizes: ['P', 'M', 'G', 'GG']
     });
-
-    // Helper to update state and storage
-    const updateProducts = (newProducts: Product[]) => {
-        setProducts(newProducts);
-        localStorage.setItem('dlsports_products', JSON.stringify(newProducts));
-    };
 
     const handleGoogleProductSelect = (productData: Partial<Product>) => {
         setCurrentProduct(prev => ({ ...prev, ...productData }));
         setIsModalOpen(true);
     };
 
-    const handleSave = () => {
-        let newProducts;
-        let finalProduct = { ...currentProduct };
+    const handleSave = async () => {
+        try {
+            let finalProduct = { ...currentProduct };
 
-        // Ensure slug exists
-        if (!finalProduct.slug && finalProduct.name) {
-            finalProduct.slug = finalProduct.name.toLowerCase()
-                .replace(/[^\w\s-]/g, '') // remove special chars
-                .replace(/\s+/g, '-');     // replace spaces with hyphens
-        }
+            // Ensure slug exists
+            if (!finalProduct.slug && finalProduct.name) {
+                finalProduct.slug = finalProduct.name.toLowerCase()
+                    .replace(/[^\w\s-]/g, '') // remove special chars
+                    .replace(/\s+/g, '-');     // replace spaces with hyphens
+            }
 
-        if (finalProduct.id) {
-            newProducts = products.map(p => p.id === finalProduct.id ? { ...p, ...finalProduct } as Product : p);
-            alert('Produto atualizado com sucesso!');
-        } else {
-            const newId = Math.random().toString(36).substr(2, 9);
-            newProducts = [...products, { ...finalProduct, id: newId } as Product];
-            alert('Produto criado com sucesso!');
+            if (finalProduct.id) {
+                const { error } = await supabase
+                    .from('products')
+                    .update(finalProduct)
+                    .eq('id', finalProduct.id);
+                if (error) throw error;
+                alert('Produto atualizado com sucesso!');
+            } else {
+                const { error } = await supabase
+                    .from('products')
+                    .insert([finalProduct]);
+                if (error) throw error;
+                alert('Produto criado com sucesso!');
+            }
+
+            await fetchProducts();
+            setIsModalOpen(false);
+            setCurrentProduct({ name: '', price: 0, club: '', image_url: '', description: '', active: true, sizes: ['P', 'M', 'G', 'GG'] });
+        } catch (error) {
+            console.error('Error saving product:', error);
+            alert('Erro ao salvar produto');
         }
-        updateProducts(newProducts);
-        setIsModalOpen(false);
-        setCurrentProduct({ name: '', price: 0, club: '', image_url: '', description: '', active: true, sizes: ['P', 'M', 'G', 'GG'] });
     };
 
-    const toggleActive = (id: string) => {
-        const newProducts = products.map(p => {
-            if (p.id === id) return { ...p, active: !p.active };
-            return p;
-        });
-        updateProducts(newProducts);
+    const toggleActive = async (id: string, currentStatus: boolean) => {
+        try {
+            const { error } = await supabase
+                .from('products')
+                .update({ active: !currentStatus })
+                .eq('id', id);
+            if (error) throw error;
+            await fetchProducts();
+        } catch (error) {
+            console.error('Error toggling status:', error);
+            alert('Erro ao alterar status');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+
+        try {
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .eq('id', id);
+            if (error) throw error;
+            alert('Produto excluído com sucesso!');
+            await fetchProducts();
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            alert('Erro ao excluir produto');
+        }
     };
 
     if (loading) {
@@ -91,14 +122,13 @@ export function Products() {
                 <div className="flex gap-2">
                     <button
                         onClick={() => {
-                            if (confirm("Isso apagará todas as produtos criados e restaurará os originais. Continuar?")) {
-                                localStorage.removeItem('dlsports_products');
-                                window.location.reload();
+                            if (confirm("Deseja atualizar a lista de produtos?")) {
+                                fetchProducts();
                             }
                         }}
-                        className="px-4 py-2 text-gray-500 hover:text-red-500 font-bold transition-colors text-xs"
+                        className="px-4 py-2 text-gray-500 hover:text-dlsports-green font-bold transition-colors text-xs"
                     >
-                        Resetar Dados
+                        Atualizar Lista
                     </button>
                     <button
                         onClick={() => {
@@ -137,7 +167,7 @@ export function Products() {
                                 <td className="p-4 font-bold">R$ {product.price.toFixed(2)}</td>
                                 <td className="p-4">
                                     <button
-                                        onClick={() => toggleActive(product.id)}
+                                        onClick={() => toggleActive(product.id, !!product.active)}
                                         className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full border ${product.active ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-500 border-gray-200'}`}
                                     >
                                         {product.active ? <Power className="w-3 h-3" /> : <PowerOff className="w-3 h-3" />}
@@ -156,13 +186,7 @@ export function Products() {
                                             <Edit className="w-4 h-4" />
                                         </button>
                                         <button
-                                            onClick={() => {
-                                                if (confirm('Tem certeza que deseja excluir este produto?')) {
-                                                    const newProducts = products.filter(p => p.id !== product.id);
-                                                    updateProducts(newProducts);
-                                                    alert('Produto excluído com sucesso!');
-                                                }
-                                            }}
+                                            onClick={() => handleDelete(product.id)}
                                             className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
                                         >
                                             <Trash className="w-4 h-4" />
@@ -234,33 +258,47 @@ export function Products() {
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">Região / Estado (opcional)</label>
-                                <input
-                                    type="text"
-                                    value={currentProduct.region || ''}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, region: e.target.value })}
-                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none"
-                                    placeholder="Ex: Rio de Janeiro, Inglaterra, etc."
-                                />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, active: !currentProduct.active })}>
+                                     <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.active ? 'bg-dlsports-green' : 'bg-gray-300'}`}>
+                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.active ? 'translate-x-6' : 'translate-x-0'}`} />
+                                     </div>
+                                     <span className="font-bold text-gray-700 select-none text-xs">Produto Ativo?</span>
+                                 </div>
+
+                                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_national: !currentProduct.is_national })}>
+                                     <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_national ? 'bg-blue-500' : 'bg-gray-300'}`}>
+                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_national ? 'translate-x-6' : 'translate-x-0'}`} />
+                                     </div>
+                                     <span className="font-bold text-gray-700 select-none text-xs">É Nacional?</span>
+                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-bold text-gray-700 mb-2">URL da Imagem</label>
-                                <input
-                                    type="text"
-                                    value={currentProduct.image_url}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, image_url: e.target.value })}
-                                    className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm text-gray-600"
-                                    placeholder="https://..."
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-green transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, active: !currentProduct.active })}>
-                                <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.active ? 'bg-dlsports-green' : 'bg-gray-300'}`}>
-                                    <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.active ? 'translate-x-6' : 'translate-x-0'}`} />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-yellow-500 transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_selection: !currentProduct.is_selection })}>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_selection ? 'bg-yellow-500' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_selection ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">É Seleção?</span>
                                 </div>
-                                <span className="font-bold text-gray-700 select-none">Produto Ativo no Site?</span>
+
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-red-500 transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_offer: !currentProduct.is_offer })}>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_offer ? 'bg-red-500' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_offer ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">Em Oferta?</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-gray-700 mb-1">Preço Antigo (R$)</label>
+                                <input
+                                    type="number"
+                                    value={currentProduct.old_price || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, old_price: parseFloat(e.target.value) })}
+                                    className="w-full h-10 px-3 rounded-lg border border-gray-300 focus:border-red-500 outline-none text-sm"
+                                    placeholder="Preço sem desconto"
+                                />
                             </div>
 
                             <button

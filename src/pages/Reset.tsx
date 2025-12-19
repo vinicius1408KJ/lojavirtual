@@ -11,7 +11,7 @@ export function Reset() {
             localStorage.clear();
 
             // Re-initialize: Just clear, let the app fetch from Supabase
-            // localStorage.setItem('dlsports_products', JSON.stringify(PRODUCTS)); // REMOVED
+            // Success!
 
             alert('Sistema reiniciado com sucesso!');
             window.location.href = '/';

@@ -127,7 +127,7 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                                 {col.items.map(item => (
                                     <li key={item}>
                                         <Link
-                                            to={`/nacionais?search=${encodeURIComponent(item)}`}
+                                            to={`${menu.link}?search=${encodeURIComponent(item)}`}
                                             className="text-gray-500 hover:text-dlsports-green text-sm transition-colors block py-0.5"
                                         >
                                             {item}
@@ -136,7 +136,7 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                                 ))}
                                 <li>
                                     <Link
-                                        to={`/nacionais?search=${encodeURIComponent(col.title)}`}
+                                        to={`${menu.link}?search=${encodeURIComponent(col.title)}`}
                                         className="text-dlsports-green font-bold text-sm hover:underline mt-2 inline-block"
                                     >
                                         + Ver todos

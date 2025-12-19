@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { Filter } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 // MOCK_PRODUCTS import removed
@@ -8,6 +8,7 @@ import type { Product } from '../types';
 
 export function Catalog() {
     const [searchParams] = useSearchParams();
+    const { pathname } = useLocation();
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [priceRange, setPriceRange] = useState<string>('all');
     const [products, setProducts] = useState<Product[]>([]);
@@ -16,6 +17,14 @@ export function Catalog() {
 
     const searchQuery = searchParams.get('search')?.toLowerCase() || '';
     const clubFilter = searchParams.get('club');
+
+    // Auto-detect category from URL path
+    useEffect(() => {
+        if (pathname === '/nacionais') setSelectedCategory('nacional');
+        else if (pathname === '/europeus') setSelectedCategory('europeu');
+        else if (pathname === '/selecoes') setSelectedCategory('selecoes');
+        else if (pathname === '/ofertas') setSelectedCategory('ofertas');
+    }, [pathname]);
 
     // Fetch products from Supabase ONLY
     useEffect(() => {
@@ -57,7 +66,9 @@ export function Catalog() {
 
             // Category Filter
             if (selectedCategory === 'nacional' && !product.is_national) return false;
-            if (selectedCategory === 'europeu' && product.is_national) return false;
+            if (selectedCategory === 'europeu' && (product.is_national || product.is_selection)) return false;
+            if (selectedCategory === 'selecoes' && !product.is_selection) return false;
+            if (selectedCategory === 'ofertas' && !product.is_offer) return false;
 
             // Price Filter (Mock)
             if (priceRange === 'under350' && product.price >= 350) return false;
@@ -70,7 +81,12 @@ export function Catalog() {
     return (
         <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-3xl font-black italic text-dlsports-green">TODAS AS CAMISAS</h1>
+                <h1 className="text-3xl font-black italic text-dlsports-green">
+                    {selectedCategory === 'nacional' ? 'CAMISAS NACIONAIS' :
+                        selectedCategory === 'europeu' ? 'CAMISAS EUROPEIAS' :
+                            selectedCategory === 'selecoes' ? 'CAMISAS DE SELEÇÕES' :
+                                selectedCategory === 'ofertas' ? 'OFERTAS IMPERDÍVEIS' : 'TODAS AS CAMISAS'}
+                </h1>
                 <span className="text-gray-500 text-sm font-medium">{filteredProducts.length} produtos encontrados</span>
             </div>
 
@@ -119,6 +135,28 @@ export function Catalog() {
                                         className="accent-dlsports-green"
                                     />
                                     <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors">Europeus</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="category"
+                                        value="selecoes"
+                                        checked={selectedCategory === 'selecoes'}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                        className="accent-dlsports-green"
+                                    />
+                                    <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors">Seleções</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="category"
+                                        value="ofertas"
+                                        checked={selectedCategory === 'ofertas'}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                        className="accent-dlsports-green"
+                                    />
+                                    <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors font-bold text-red-500">Ofertas %</span>
                                 </label>
                             </div>
                         </div>
