@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Filter } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
-import { PRODUCTS as MOCK_PRODUCTS } from '../data';
+// MOCK_PRODUCTS import removed
 import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
 
@@ -10,38 +10,25 @@ export function Catalog() {
     const [searchParams] = useSearchParams();
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [priceRange, setPriceRange] = useState<string>('all');
-    const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const searchQuery = searchParams.get('search')?.toLowerCase() || '';
     const clubFilter = searchParams.get('club');
 
-    // Fetch products from LocalStorage (Sync with Admin) or Supabase with Mock fallback
+    // Fetch products from Supabase ONLY
     useEffect(() => {
         async function fetchProducts() {
-            // Priority 1: LocalStorage (Admin changes)
-            const localData = localStorage.getItem('dlsports_products');
-            if (localData) {
-                const parsedData = JSON.parse(localData);
-                const validatedData = parsedData.map((p: Product) => ({
-                    ...p,
-                    slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
-                }));
-                setProducts(validatedData);
-                setLoading(false);
-                return;
-            }
-
-            // Priority 2: Supabase (if connected)
             try {
                 const { data, error } = await supabase.from('products').select('*');
                 if (error) throw error;
-                if (data && data.length > 0) {
+                if (data) {
                     setProducts(data);
                 }
             } catch (err) {
-                console.log('Supabase fetch failed, using mock data:', err);
-                // Priority 3: Mock (default state)
+                console.error('Supabase fetch failed:', err);
+                setError('Falha ao carregar produtos. Verifique sua conexão.');
             } finally {
                 setLoading(false);
             }
@@ -182,6 +169,8 @@ export function Catalog() {
                 <main className="flex-1">
                     {loading ? (
                         <div className="flex items-center justify-center h-64">Carregando...</div>
+                    ) : error ? (
+                        <div className="flex items-center justify-center h-64 text-red-500 font-bold">{error}</div>
                     ) : (
                         <>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

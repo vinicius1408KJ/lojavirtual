@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Ruler, ShieldCheck, Star, CreditCard, CheckCircle2, Truck } from 'lucide-react';
-import { PRODUCTS } from '../data';
+// PRODUCTS import removed
+import { supabase } from '../lib/supabase';
+import type { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { toast } from '../lib/toast';
 
@@ -13,18 +15,51 @@ export function ProductDetail() {
     const [activeImage, setActiveImage] = useState(0);
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
-    // Priority 1: Check LocalStorage
-    const localData = localStorage.getItem('dlsports_products');
-    let allProducts = PRODUCTS;
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
-    if (localData) {
-        allProducts = JSON.parse(localData).map((p: any) => ({
-            ...p,
-            slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
-        }));
+    useEffect(() => {
+        async function fetchProduct() {
+            if (!slug) return;
+            setLoading(true);
+            try {
+                // Fetch main product
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .eq('slug', slug)
+                    .single();
+
+                if (error) throw error;
+                setProduct(data);
+
+                // Fetch related (random 2 other products) - simplified for now
+                const { data: relatedData } = await supabase
+                    .from('products')
+                    .select('*')
+                    .neq('id', data.id)
+                    .limit(2);
+
+                if (relatedData) setRelatedProducts(relatedData);
+
+            } catch (err) {
+                console.error('Error fetching product:', err);
+                setProduct(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchProduct();
+    }, [slug]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="loading-spinner">Carregando detalhes...</div>
+            </div>
+        );
     }
-
-    const product = allProducts.find((p: any) => p.slug === slug);
 
     if (!product) {
         return (
@@ -40,18 +75,12 @@ export function ProductDetail() {
     // Mock images for gallery (using the main product image multiple times for demo)
     const images = [product.image_url, product.image_url, product.image_url];
 
-    // Mock "Buy Together" products
-    const relatedProducts = allProducts.filter(p => p.id !== product.id).slice(0, 2);
-
-
     const handleAddToCart = () => {
         if (!selectedSize) {
-            // Can use a warning toast here if implemented, or simple alert for now for error
             alert('Por favor, selecione um tamanho.');
             return;
         }
         addToCart(product, selectedSize);
-        // navigate('/cart'); // Remove navigation to keep user in flow
         toast.success(`Camisa ${product.club} adicionada ao carrinho!`);
     };
 

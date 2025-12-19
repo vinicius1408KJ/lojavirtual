@@ -3,7 +3,7 @@ import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ProductCard } from '../components/ProductCard';
-import { PRODUCTS as MOCK_PRODUCTS } from '../data';
+// MOCK_PRODUCTS import removed
 import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
 
@@ -32,7 +32,9 @@ const CLUBS = [
 ];
 
 export function Home() {
-    const [featuredProducts, setFeaturedProducts] = useState<Product[]>(MOCK_PRODUCTS.filter(p => p.active !== false).slice(0, 4));
+    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [bannerNationalSlide, setBannerNationalSlide] = useState(0);
 
@@ -52,26 +54,24 @@ export function Home() {
 
     useEffect(() => {
         async function fetchFeatured() {
-            // Priority 1: LocalStorage (Sync with Admin)
-            const localData = localStorage.getItem('dlsports_products');
-            if (localData) {
-                const products = JSON.parse(localData).map((p: Product) => ({
-                    ...p,
-                    slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
-                }));
-                const activeProducts = products.filter((p: Product) => p.active !== false).slice(0, 4);
-                setFeaturedProducts(activeProducts);
-                return;
-            }
-
-            // Priority 2: Supabase (if connected)
             try {
-                const { data, error } = await supabase.from('products').select('*').eq('active', true).limit(4);
-                if (!error && data && data.length > 0) {
+                // Priority: Supabase
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .eq('active', true)
+                    .limit(4);
+
+                if (error) throw error;
+
+                if (data) {
                     setFeaturedProducts(data);
                 }
             } catch (e) {
                 console.error('Failed to fetch featured products', e);
+                setError('Não foi possível carregar os destaques.');
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchFeatured();
@@ -305,9 +305,23 @@ export function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {featuredProducts.map(product => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
+                        {isLoading ? (
+                            <div className="col-span-4 text-center py-20">
+                                <span className="loading-spinner">Carregando destaques...</span>
+                            </div>
+                        ) : error ? (
+                            <div className="col-span-4 text-center py-20 text-red-500 font-bold">
+                                {error}
+                            </div>
+                        ) : featuredProducts.length > 0 ? (
+                            featuredProducts.map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))
+                        ) : (
+                            <div className="col-span-4 text-center py-20 text-gray-500">
+                                Nenhum destaque disponível.
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>

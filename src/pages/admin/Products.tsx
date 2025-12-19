@@ -1,22 +1,30 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash, Edit, Power, PowerOff, X as XIcon } from 'lucide-react';
-import { PRODUCTS } from '../../data';
+// PRODUCTS import removed
+import { supabase } from '../../lib/supabase';
 import { AddProductFromGoogle } from '../../components/AddProductFromGoogle';
 import type { Product } from '../../types';
 
 export function Products() {
-    // Initialize from LocalStorage if available, otherwise use default data
-    const [products, setProducts] = useState<Product[]>(() => {
-        const saved = localStorage.getItem('dlsports_products');
-        if (saved) {
-            return JSON.parse(saved).map((p: Product) => ({
-                ...p,
-                slug: p.slug || p.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
-            }));
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    async function fetchProducts() {
+        try {
+            const { data, error } = await supabase.from('products').select('*');
+            if (error) throw error;
+            if (data) setProducts(data);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
         }
-        return PRODUCTS;
-    });
+    }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({
@@ -71,6 +79,10 @@ export function Products() {
         });
         updateProducts(newProducts);
     };
+
+    if (loading) {
+        return <div className="p-8 text-center text-gray-500">Carregando produtos...</div>;
+    }
 
     return (
         <div>

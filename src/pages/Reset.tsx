@@ -1,17 +1,17 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Trash2, RefreshCw } from 'lucide-react';
-import { PRODUCTS } from '../data';
+// PRODUCTS import removed
 
 export function Reset() {
     const navigate = useNavigate();
 
     const handleReset = () => {
-        if (confirm('ATENÇÃO: Isso vai apagar todos os dados salvos no seu computador e restaurar o site para o estado original. Continuar?')) {
+        if (confirm('ATENÇÃO: Isso vai apagar todos os dados salvos no seu computador e restaurar o site. Continuar?')) {
             localStorage.clear();
 
-            // Re-initialize correct data structure immediately
-            localStorage.setItem('dlsports_products', JSON.stringify(PRODUCTS));
+            // Re-initialize: Just clear, let the app fetch from Supabase
+            // localStorage.setItem('dlsports_products', JSON.stringify(PRODUCTS)); // REMOVED
 
             alert('Sistema reiniciado com sucesso!');
             window.location.href = '/';
