@@ -83,7 +83,7 @@ export function Products() {
             }
 
             if (cleanProduct.id) {
-                const { id, created_at, ...updateData } = cleanProduct;
+                const { id, created_at, updated_at, ...updateData } = cleanProduct;
                 const { error } = await supabase
                     .from('products')
                     .update(updateData)
