@@ -113,7 +113,7 @@ export function Home() {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-3xl md:text-7xl font-black italic mb-4 leading-[0.9] tracking-tighter drop-shadow-2xl animate-fade-in-up">
+                        <h1 className="text-3xl md:text-7xl font-black text-white italic mb-4 leading-[0.9] tracking-tighter drop-shadow-2xl animate-fade-in-up">
                             VISTA SEU TIME.<br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
                                 VIVA O JOGO.
