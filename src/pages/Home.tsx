@@ -113,7 +113,7 @@ export function Home() {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white italic tracking-tighter mb-6 leading-[0.9] drop-shadow-2xl animate-fade-in-up delay-100">
+                        <h1 className="text-3xl md:text-7xl font-black italic mb-4 leading-[0.9] tracking-tighter drop-shadow-2xl animate-fade-in-up">
                             VISTA SEU TIME.<br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
                                 VIVA O JOGO.
@@ -121,8 +121,8 @@ export function Home() {
                         </h1>
 
                         {/* Subtitle */}
-                        <p className="text-lg md:text-2xl text-gray-300 font-medium max-w-xl mb-10 leading-relaxed drop-shadow-md animate-fade-in-up delay-200">
-                            A maior coleção de camisas oficiais do Brasil. Qualidade premium, entrega rápida e satisfação garantida.
+                        <p className="text-sm md:text-2xl text-gray-300 font-medium max-w-xl mb-6 md:mb-10 leading-relaxed drop-shadow-md animate-fade-in-up delay-200">
+                            A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.
                         </p>
 
                         {/* Social Proof Mini */}
@@ -240,7 +240,7 @@ export function Home() {
                             {[
                                 'https://imgcentauro-a.akamaihd.net/800x800/9971A4TKA2.jpg',
                                 'https://imgcentauro-a.akamaihd.net/1200x1200/98876205A5.jpg',
-                                'https://cdn.vnda.com.br/1500x/grandestorcidas/2024/08/15/10_10_15_892_10_8_0_033_whatsapp20image202024081520at20100950.jpeg?v=1723727416'
+                                'https://cdn.vnda.com.br/1500x/grandestorcidas/2024/08/15/10_10_15_892_10_8_0_033_whatsapp20image2024081520at20100950.jpeg?v=1723727416'
                             ].map((img, index) => (
                                 <div
                                     key={index}
@@ -304,13 +304,13 @@ export function Home() {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
                         {isLoading ? (
-                            <div className="col-span-4 text-center py-20">
+                            <div className="col-span-full text-center py-20">
                                 <span className="loading-spinner">Carregando destaques...</span>
                             </div>
                         ) : error ? (
-                            <div className="col-span-4 text-center py-20 text-red-500 font-bold">
+                            <div className="col-span-full text-center py-20 text-red-500 font-bold">
                                 {error}
                             </div>
                         ) : featuredProducts.length > 0 ? (
@@ -318,7 +318,7 @@ export function Home() {
                                 <ProductCard key={product.id} product={product} />
                             ))
                         ) : (
-                            <div className="col-span-4 text-center py-20 text-gray-500">
+                            <div className="col-span-full text-center py-20 text-gray-500">
                                 Nenhum destaque disponível.
                             </div>
                         )}

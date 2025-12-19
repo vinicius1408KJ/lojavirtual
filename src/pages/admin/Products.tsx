@@ -37,6 +37,7 @@ export function Products() {
         is_national: false,
         is_selection: false,
         is_offer: false,
+        is_new: false,
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     });
 
@@ -118,6 +119,7 @@ export function Products() {
             is_national: false,
             is_selection: false,
             is_offer: false,
+            is_new: false,
             sizes: ['P', 'M', 'G', 'GG', 'XG']
         });
     };
@@ -369,6 +371,15 @@ export function Products() {
                                         <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_offer ? 'translate-x-6' : 'translate-x-0'}`} />
                                     </div>
                                     <span className="font-bold text-gray-700 select-none text-xs">Em Oferta?</span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4">
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-dlsports-neon transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_new: !currentProduct.is_new })}>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_new ? 'bg-dlsports-neon' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_new ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">Marcar como Lançamento?</span>
                                 </div>
                             </div>
 

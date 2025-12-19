@@ -19,43 +19,50 @@ export function ProductCard({ product }: ProductCardProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                 {/* Badges */}
-                <div className="absolute top-3 left-3 flex flex-col gap-2">
-                    {product.active !== false && (
-                        <span className="bg-white/90 backdrop-blur-sm text-black font-bold text-[10px] px-2 py-1 rounded-md uppercase tracking-wider shadow-sm">
+                <div className="absolute top-2 left-2 md:top-3 md:left-3 flex flex-col gap-2">
+                    {product.is_new && (
+                        <span className="bg-dlsports-neon text-dlsports-green font-black text-[8px] md:text-[10px] px-2 py-1 rounded-md uppercase tracking-wider shadow-lg animate-pulse border border-dlsports-green/20">
                             Lançamento
+                        </span>
+                    )}
+                    {product.is_offer && (
+                        <span className="bg-red-600 text-white font-black text-[8px] md:text-[10px] px-2 py-1 rounded-md uppercase tracking-wider shadow-lg">
+                            Oferta
                         </span>
                     )}
                 </div>
 
-                {/* Quick Action Button (Visual Only) */}
-                <div className="absolute bottom-4 left-4 right-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 opacity-0 group-hover:opacity-100">
+                {/* Quick Action Button (Desktop Only) */}
+                <div className="absolute bottom-4 left-4 right-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 opacity-0 group-hover:opacity-100 hidden md:block">
                     <button className="w-full bg-white text-black font-bold text-sm py-3 rounded-lg hover:bg-dlsports-neon hover:text-black transition-colors uppercase tracking-wide shadow-lg">
                         Ver Detalhes
                     </button>
                 </div>
             </div>
 
-            <div className="p-5">
-                <div className="flex justify-between items-start mb-2">
-                    <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest bg-gray-100 px-2 py-1 rounded-sm">{product.club || 'DLSports'}</p>
-                    <div className="flex text-yellow-500 text-[10px]">
+            <div className="p-3 md:p-5">
+                <div className="flex justify-between items-start mb-1 md:mb-2">
+                    <p className="text-[8px] md:text-[10px] text-gray-500 uppercase font-black tracking-widest bg-gray-100 px-1.5 py-0.5 md:px-2 md:py-1 rounded-sm truncate max-w-[60%]">
+                        {product.club || 'DLSports'}
+                    </p>
+                    <div className="flex text-yellow-500 text-[8px] md:text-[10px]">
                         ★★★★★
                     </div>
                 </div>
 
-                <h3 className="font-bold text-gray-900 mb-1 leading-snug text-sm md:text-base line-clamp-2 h-10 group-hover:text-dlsports-green transition-colors">
+                <h3 className="font-bold text-gray-900 mb-1 leading-tight text-xs md:text-base line-clamp-2 h-8 md:h-10 group-hover:text-dlsports-green transition-colors">
                     {product.name}
                 </h3>
 
-                <div className="mt-4 flex items-end justify-between border-t pt-3 border-gray-50">
+                <div className="mt-2 md:mt-4 flex flex-col md:flex-row md:items-end justify-between border-t pt-2 md:pt-3 border-gray-50">
                     <div className="flex flex-col">
-                        <span className="text-xs text-gray-400 line-through">
+                        <span className="text-[10px] md:text-xs text-gray-400 line-through">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * 1.5)}
                         </span>
-                        <span className="text-lg font-black text-gray-900">
+                        <span className="text-sm md:text-lg font-black text-gray-900 leading-none">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                         </span>
-                        <span className="text-[10px] text-green-600 font-bold">
+                        <span className="text-[8px] md:text-[10px] text-green-600 font-bold mt-1">
                             5% OFF no PIX
                         </span>
                     </div>

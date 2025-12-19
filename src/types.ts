@@ -14,6 +14,7 @@ export interface Product {
     active?: boolean;
     is_offer?: boolean;
     is_selection?: boolean;
+    is_new?: boolean;
     old_price?: number;
 }
 
