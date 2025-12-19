@@ -17,7 +17,6 @@ export function ProductDetail() {
 
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
-    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         async function fetchProduct() {
@@ -33,15 +32,6 @@ export function ProductDetail() {
 
                 if (error) throw error;
                 setProduct(data);
-
-                // Fetch related (random 2 other products) - simplified for now
-                const { data: relatedData } = await supabase
-                    .from('products')
-                    .select('*')
-                    .neq('id', data.id)
-                    .limit(2);
-
-                if (relatedData) setRelatedProducts(relatedData);
 
             } catch (err) {
                 console.error('Error fetching product:', err);
@@ -269,37 +259,6 @@ export function ProductDetail() {
                                 </div>
                             </div>
 
-                            {/* Buy Together */}
-                            {relatedProducts.length > 0 && (
-                                <div className="border-t pt-8">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-6 uppercase tracking-wide">Compre Junto e Economize</h3>
-                                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <div className="flex items-center gap-4 mb-4 overflow-x-auto pb-2">
-                                            {/* Current Product */}
-                                            <div className="flex-shrink-0 w-20 relative">
-                                                <img src={images[0]} className="w-20 h-20 object-cover rounded-lg border border-gray-200" />
-                                                <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full flex items-center justify-center font-bold text-gray-400 shadow-sm z-10">+</div>
-                                            </div>
-
-                                            {/* Related Mock */}
-                                            {relatedProducts.map((rp: any) => (
-                                                <div key={rp.id} className="flex-shrink-0 w-20">
-                                                    <img src={rp.image_url} className="w-20 h-20 object-cover rounded-lg border border-gray-200" />
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <p className="text-sm font-bold text-gray-600">Leve o Kit completo</p>
-                                                <p className="text-xs text-green-600 font-bold">Economize 15%</p>
-                                            </div>
-                                            <button className="text-xs font-bold bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
-                                                Ver Oferta
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
 
                         </div>
                     </div>

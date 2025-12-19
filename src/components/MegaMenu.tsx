@@ -135,14 +135,6 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                                         </Link>
                                     </li>
                                 ))}
-                                <li>
-                                    <Link
-                                        to={`${menu.link}?search=${encodeURIComponent(col.title)}`}
-                                        className="text-dlsports-green font-bold text-sm hover:underline mt-2 inline-block"
-                                    >
-                                        + Ver todos
-                                    </Link>
-                                </li>
                             </ul>
                         </div>
                     ))}

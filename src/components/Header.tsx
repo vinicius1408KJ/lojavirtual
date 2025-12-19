@@ -220,13 +220,6 @@ export function Header() {
                                                                 {item}
                                                             </Link>
                                                         ))}
-                                                        <Link
-                                                            to={`${menu.link}?search=${encodeURIComponent(col.title)}`}
-                                                            onClick={() => setIsMenuOpen(false)}
-                                                            className="px-3 py-1.5 text-xs font-bold text-dlsports-green underline"
-                                                        >
-                                                            + Ver todos
-                                                        </Link>
                                                     </div>
                                                 </div>
                                             ))}

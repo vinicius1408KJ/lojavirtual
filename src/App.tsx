@@ -61,12 +61,25 @@ function UserLayout() {
           </div>
           <div>
             <h4 className="font-bold text-white mb-4">PAGAMENTO</h4>
-            <div className="flex gap-2">
-              {/* Placeholders for payment icons */}
-              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
-              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
-              <div className="w-10 h-6 bg-gray-800 rounded border border-gray-700"></div>
+            <div className="flex flex-wrap gap-2">
+              {/* PIX */}
+              <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
+                <img src="https://logopng.com.br/logos/pix-123.png" alt="Pix" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
+              </div>
+              {/* Visa */}
+              <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" className="h-2 md:h-3 brightness-0 invert opacity-70 group-hover:opacity-100" />
+              </div>
+              {/* Mastercard */}
+              <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
+              </div>
+              {/* Elo */}
+              <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Logo_Elo_eletro.svg/1200px-Logo_Elo_eletro.svg.png" alt="Elo" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
+              </div>
             </div>
+            <p className="text-[10px] text-gray-400 mt-4 leading-tight font-medium uppercase tracking-widest">Tecnologia de pagamento segura via Mercado Pago</p>
           </div>
         </div>
         <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-gray-600 text-sm">
