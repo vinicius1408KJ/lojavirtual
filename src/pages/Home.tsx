@@ -25,7 +25,7 @@ const CLUBS = [
     { name: 'Bragantino', logo: 'https://upload.wikimedia.org/wikipedia/pt/thumb/9/9e/RedBullBragantino.png/250px-RedBullBragantino.png' },
     { name: 'Santos', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg' },
     { name: 'São Paulo', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg' },
-    { name: 'Sport', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6z5kYn16ToRJOZdMtAZ9Iawf1Qr0hLS0CA&s' },
+    { name: 'Sport', logo: 'https://upload.wikimedia.org/wikipedia/pt/1/17/Sport_Club_do_Recife.png' },
     { name: 'Vasco', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNq1bLlC-tnaYJgVzgxqp77gO96emrEA2sNA&s' },
     { name: 'Vitória', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBr1LqFnNsphU07fu3xbBxVzfcFFJ-sT6lg&s' },
     { name: 'Ceará', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Cear%C3%A1_Sporting_Club_logo.svg' },
