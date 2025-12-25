@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Ruler, ShieldCheck, Star, CreditCard, CheckCircle2, Truck, X as XIcon } from 'lucide-react';
+import { ShoppingCart, Ruler, ShieldCheck, Star, CheckCircle2, Truck, X as XIcon } from 'lucide-react';
 // PRODUCTS import removed
 import { supabase } from '../lib/supabase';
 import type { Product } from '../types';
@@ -149,14 +149,6 @@ export function ProductDetail() {
                                     <span className="text-xs md:text-sm text-gray-400 line-through mb-1.5 opacity-60">
                                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * 1.4)}
                                     </span>
-                                </div>
-                                <div className="flex items-center gap-2 text-xs md:text-sm text-gray-600 font-medium">
-                                    <CreditCard className="w-3 h-3 md:w-4 md:h-4" />
-                                    <span>Em até <strong>10x sem juros</strong> no cartão</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-xs md:text-sm text-dlsports-green font-bold mt-1">
-                                    <div className="w-4 h-4 flex items-center justify-center bg-dlsports-neon rounded-full text-[10px]">%</div>
-                                    <span>5% de desconto no PIX</span>
                                 </div>
                             </div>
 

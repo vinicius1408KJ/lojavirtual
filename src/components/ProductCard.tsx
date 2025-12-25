@@ -62,9 +62,6 @@ export function ProductCard({ product }: ProductCardProps) {
                         <span className="text-sm md:text-lg font-black text-gray-900 leading-none">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                         </span>
-                        <span className="text-[8px] md:text-[10px] text-green-600 font-bold mt-1">
-                            5% OFF no PIX
-                        </span>
                     </div>
 
                     <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dlsports-green group-hover:text-white transition-colors">

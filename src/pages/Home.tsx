@@ -183,8 +183,8 @@ export function Home() {
             <div className="bg-black text-white py-6 border-b border-white/10">
                 <div className="container mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-4 text-xs md:text-sm font-bold tracking-wider uppercase text-center">
                     <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Envio Imediato para todo Brasil</span>
-                    <span className="flex items-center gap-2 hidden md:flex"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Parcelamento em até 10x sem juros</span>
-                    <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> 5% OFF no PIX</span>
+                    <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Qualidade Premium Garantida</span>
+                    <span className="flex items-center gap-2"><div className="w-2 h-2 bg-dlsports-neon rounded-full" /> Troca Fácil e Grátis</span>
                 </div>
             </div>
 
