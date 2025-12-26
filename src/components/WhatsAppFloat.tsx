@@ -4,7 +4,7 @@ import { MessageCircle } from 'lucide-react';
 export function WhatsAppFloat() {
     return (
         <a
-            href="https://wa.me/5511999999999?text=Olá! Vim pelo site da DL Sports e gostaria de tirar uma dúvida."
+            href="https://wa.me/5599984542661?text=Olá! Vim pelo site da DL Sports e gostaria de tirar uma dúvida."
             target="_blank"
             rel="noopener noreferrer"
             className="fixed bottom-6 right-6 z-50 flex items-center gap-2 group"

@@ -40,7 +40,7 @@ export function Cart() {
         setLoading(false);
     };
 
-    const WHATSAPP_NUMBER = '5511999999999'; // Substitua pelo número real do vendedor
+    const WHATSAPP_NUMBER = '5599984542661'; // Substitua pelo número real do vendedor
 
     const handleWhatsAppCheckout = () => {
         let message = "Olá! Vim pelo site da DL Sports.\n";
