@@ -56,9 +56,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
                 <div className="mt-2 md:mt-4 flex flex-col md:flex-row md:items-end justify-between border-t pt-2 md:pt-3 border-gray-50">
                     <div className="flex flex-col">
-                        <span className="text-[10px] md:text-xs text-gray-400 line-through">
-                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * 1.5)}
-                        </span>
+                        {product.old_price && product.old_price > product.price && (
+                            <span className="text-[10px] md:text-xs text-gray-400 line-through">
+                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.old_price)}
+                            </span>
+                        )}
                         <span className="text-sm md:text-lg font-black text-gray-900 leading-none">
                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                         </span>

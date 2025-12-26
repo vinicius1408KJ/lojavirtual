@@ -137,9 +137,11 @@ export function ProductDetail() {
                                     <span className="text-3xl md:text-4xl font-black text-dlsports-green">
                                         {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
                                     </span>
-                                    <span className="text-xs md:text-sm text-gray-400 line-through mb-1.5 opacity-60">
-                                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price * 1.4)}
-                                    </span>
+                                    {product.old_price && product.old_price > product.price && (
+                                        <span className="text-xs md:text-sm text-gray-400 line-through mb-1.5 opacity-60">
+                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.old_price)}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
