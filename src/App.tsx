@@ -61,7 +61,7 @@ function UserLayout() {
             <div className="flex flex-wrap gap-2">
               {/* PIX */}
               <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
-                <img src="https://logopng.com.br/logos/pix-123.png" alt="Pix" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
+                <img src="https://baixarfavicon.com.br/wp-content/themes/baixarfavicon/ferramentas/logos-pix-png/logos/logo-pix-1024x1024.png" alt="Pix" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
               </div>
               {/* Visa */}
               <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
@@ -73,15 +73,15 @@ function UserLayout() {
               </div>
               {/* Elo */}
               <div className="bg-white/5 p-2 rounded border border-white/10 flex items-center justify-center group hover:bg-white/10 transition-all">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Logo_Elo_eletro.svg/1200px-Logo_Elo_eletro.svg.png" alt="Elo" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWZsiT04HvsWTslhJGqWMspwzWxWm-d6BykA&s" alt="Elo" className="h-4 md:h-5 brightness-0 invert opacity-70 group-hover:opacity-100" />
               </div>
             </div>
-            <p className="text-[10px] text-gray-400 mt-4 leading-tight font-medium uppercase tracking-widest">Tecnologia de pagamento segura via Mercado Pago</p>
+            <p className="text-[10px] text-gray-400 mt-4 leading-tight font-medium uppercase tracking-widest">Tecnologia de pagamento segura</p>
           </div>
         </div>
         <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center text-gray-600 text-sm">
           <p className="flex items-center justify-center gap-4">
-            <span>© 2024 DLSPORTS. Todos os direitos reservados. (v1.5 - Reset Ativo)</span>
+            <span>© 2024 DLSPORTS. Todos os direitos reservados.</span>
             <Link to="/admin" className="text-gray-800 hover:text-dlsports-green transition-colors text-xs">Área Restrita</Link>
           </p>
         </div>
