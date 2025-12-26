@@ -82,7 +82,7 @@ export function ProductDetail() {
             {/* Breadcrumb */}
             <div className="bg-white border-b border-gray-200 py-4">
                 <div className="container mx-auto px-4 text-xs text-gray-500 uppercase tracking-wider">
-                    Home / {product.category || 'Nacionais'} / <span className="text-black font-bold">{product.name}</span>
+                    Home / {product.is_national ? 'Nacionais' : product.is_selection ? 'Seleções' : 'Europeus'} / <span className="text-black font-bold">{product.name}</span>
                 </div>
             </div>
 
@@ -129,16 +129,7 @@ export function ProductDetail() {
                                 {product.name}
                             </h1>
                             <div className="flex items-center gap-2 mb-6 text-xs md:text-sm text-gray-500">
-                                <span className="font-bold text-black">Modelo 2024/25</span>
-                                <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                                <div className="flex text-yellow-500">
-                                    <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
-                                    <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
-                                    <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
-                                    <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
-                                    <Star className="w-3 h-3 md:w-4 md:h-4 fill-current" />
-                                </div>
-                                <span className="text-black font-bold text-xs">(128 avaliações)</span>
+                                {product.club && <span className="font-bold text-black uppercase">{product.club}</span>}
                             </div>
 
                             <div className="mb-6 md:mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
@@ -213,7 +204,7 @@ export function ProductDetail() {
                                     </div>
                                     {(!product.sizes || product.sizes.length === 0) ? 'Indisponível' : 'Adicionar ao Carrinho'}
                                 </button>
-                                <p className="text-center text-[10px] md:text-xs text-gray-400 font-medium">Compra 100% Segura e Garantida pelo Mercado Pago</p>
+                                <p className="text-center text-[10px] md:text-xs text-gray-400 font-medium">Compra 100% Segura e Garantida</p>
                             </div>
 
                             {/* Benefits Bullets */}
