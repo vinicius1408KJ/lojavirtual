@@ -8,7 +8,7 @@ import { Catalog } from './pages/Catalog';
 import { Login } from './pages/admin/Login';
 import { DashboardLayout } from './pages/admin/DashboardLayout';
 import { Products } from './pages/admin/Products';
-import { Orders } from './pages/admin/Orders';
+
 import { Coupons } from './pages/admin/Coupons';
 import { Cart } from './pages/Cart';
 import { UserOrders } from './pages/UserOrders';
@@ -121,7 +121,7 @@ function App() {
         <Route path="/admin" element={<Login />} />
         <Route path="/admin" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Products />} />
-          <Route path="orders" element={<Orders />} />
+
           <Route path="coupons" element={<Coupons />} />
         </Route>
         {/* Fallback for unknown routes */}

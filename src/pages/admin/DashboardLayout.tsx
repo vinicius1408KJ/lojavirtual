@@ -1,4 +1,4 @@
-import { Package, ShoppingBag, LogOut, Ticket } from 'lucide-react';
+import { Package, LogOut, Ticket } from 'lucide-react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 export function DashboardLayout() {
@@ -23,13 +23,7 @@ export function DashboardLayout() {
                         <Package className="w-5 h-5" />
                         Produtos
                     </Link>
-                    <NavLink
-                        to="/admin/orders"
-                        className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold ${isActive ? 'bg-white/10 text-dlsports-neon' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
-                    >
-                        <ShoppingBag className="w-5 h-5" />
-                        Pedidos
-                    </NavLink>
+
                     <NavLink
                         to="/admin/coupons"
                         className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold ${isActive ? 'bg-white/10 text-dlsports-neon' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
