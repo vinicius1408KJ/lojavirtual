@@ -32,7 +32,7 @@ function UserLayout() {
               A maior loja de camisas de futebol do Brasil. Produtos oficiais e exclusivos para você vestir a glória.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-dlsports-neon hover:text-black transition-all">
+              <a href="https://www.instagram.com/dlsports_10" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-dlsports-neon hover:text-black transition-all">
                 <InstagramIcon className="w-5 h-5" />
               </a>
               <a href="https://wa.me/5599984542661" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-dlsports-neon hover:text-black transition-all">
