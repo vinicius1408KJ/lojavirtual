@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MessageSquare, CheckCircle, Clock, Trash2, ExternalLink, Zap } from 'lucide-react';
 
 // Mock data updated to reflect WhatsApp Conversion flow
@@ -37,7 +37,7 @@ const MOCK_CONVERSIONS = [
 ];
 
 export function Orders() {
-    const [leads, setLeads] = useState<any[]>(MOCK_CONVERSIONS);
+    const [leads, _setLeads] = useState<any[]>(MOCK_CONVERSIONS);
     const [selectedLead, setSelectedLead] = useState<any>(null);
 
     const getStatusColor = (status: string) => {
