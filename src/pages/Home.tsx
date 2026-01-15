@@ -109,7 +109,7 @@ export function Home() {
                         {/* Tag Premium */}
                         <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-8 animate-fade-in-up">
                             <span className="w-2 h-2 rounded-full bg-dlsports-neon animate-pulse"></span>
-                            <span className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">Lançamentos 2025 Disponíveis</span>
+                            <span className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">Lançamentos 25/2026 Disponíveis</span>
                         </div>
 
                         {/* Title */}
