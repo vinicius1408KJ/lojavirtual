@@ -60,7 +60,9 @@ export function Home() {
                     .from('products')
                     .select('*')
                     .eq('active', true)
-                    .limit(4);
+                    .order('sort_order', { ascending: true })
+                    .order('created_at', { ascending: false })
+                    .limit(8);
 
                 if (error) throw error;
 
@@ -188,13 +190,13 @@ export function Home() {
                 </div>
             </div>
 
-            {/* Dual Category Banner (National vs European) */}
+            {/* Dual Category Banner (National vs European vs Retro) */}
             <section className="container mx-auto px-4 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* National Banner */}
                     <Link to="/nacionais" className="group relative h-64 md:h-80 rounded-3xl overflow-hidden bg-gray-100 flex items-center justify-between px-8 md:px-12 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-900/10 border border-gray-200">
                         {/* Text Content */}
-                        <div className="relative z-10 flex flex-col items-start gap-2">
+                        <div className="relative z-10 flex flex-col items-start gap-2 bg-gradient-to-r from-gray-100 via-gray-100/80 to-transparent h-full justify-center pr-12">
                             <span className="text-yellow-500 font-extrabold text-sm tracking-widest uppercase">Season 2025</span>
                             <h3 className="text-3xl md:text-5xl font-black italic text-gray-900 leading-none">
                                 Times <br />Nacionais
@@ -205,7 +207,7 @@ export function Home() {
                             </span>
                         </div>
                         {/* Image/Graphic Carousel */}
-                        <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/3">
+                        <div className="absolute right-0 top-0 h-full w-1/2">
                             {[
                                 'https://static.netshoes.com.br/produtos/camisa-vasco-iii-2425-sn-kombat-jogador-kappa-masculina/04/D24-6504-004/D24-6504-004_zoom1.jpg?ts=1765386947',
                                 'https://static.netshoes.com.br/produtos/camisa-sao-paulo-i-2526-torcedor-new-balance-masculina/24/39V-1638-024/39V-1638-024_zoom1.jpg?ts=1765855271&ims=1088x',
@@ -225,7 +227,7 @@ export function Home() {
                     {/* European Banner */}
                     <Link to="/europeus" className="group relative h-64 md:h-80 rounded-3xl overflow-hidden bg-gray-100 flex items-center justify-between px-8 md:px-12 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-900/10 border border-gray-200">
                         {/* Text Content */}
-                        <div className="relative z-10 flex flex-col items-start gap-2">
+                        <div className="relative z-10 flex flex-col items-start gap-2 bg-gradient-to-r from-gray-100 via-gray-100/80 to-transparent h-full justify-center pr-12">
                             <span className="text-blue-600 font-extrabold text-sm tracking-widest uppercase">Todas as ligas Europeias</span>
                             <h3 className="text-3xl md:text-5xl font-black italic text-gray-900 leading-none">
                                 Times <br />Europeus
@@ -236,7 +238,7 @@ export function Home() {
                             </span>
                         </div>
                         {/* Image/Graphic Carousel */}
-                        <div className="absolute right-0 top-0 h-full w-1/2 md:w-2/3">
+                        <div className="absolute right-0 top-0 h-full w-1/2">
                             {[
                                 'https://imgcentauro-a.akamaihd.net/800x800/9971A4TKA2.jpg',
                                 'https://imgcentauro-a.akamaihd.net/1200x1200/98876205A5.jpg',
@@ -251,6 +253,37 @@ export function Home() {
                         </div>
                         {/* Decorative Elements */}
                         <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-blue-400/20 rounded-full blur-3xl group-hover:bg-blue-600/30 transition-colors"></div>
+                    </Link>
+
+                    {/* Retro Banner */}
+                    <Link to="/retro" className="group relative h-64 md:h-80 rounded-3xl overflow-hidden bg-gray-100 flex items-center justify-between px-8 md:px-12 transition-all hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-900/10 border border-gray-200">
+                        {/* Text Content */}
+                        <div className="relative z-10 flex flex-col items-start gap-2 bg-gradient-to-r from-gray-100 via-gray-100/80 to-transparent h-full justify-center pr-12">
+                            <span className="text-orange-600 font-extrabold text-sm tracking-widest uppercase">História e Glória</span>
+                            <h3 className="text-3xl md:text-5xl font-black italic text-gray-900 leading-none">
+                                Camisas <br />Retrô
+                            </h3>
+                            <p className="text-gray-500 font-medium text-xs md:text-sm mb-2">A partir de <strong className="text-gray-900 text-lg md:text-2xl">R$ 169,90</strong></p>
+                            <span className="bg-black text-white px-6 py-2 rounded-lg font-bold text-xs uppercase tracking-wider group-hover:bg-orange-600 transition-colors">
+                                Ver Coleção
+                            </span>
+                        </div>
+                        {/* Image/Graphic Carousel */}
+                        <div className="absolute right-0 top-0 h-full w-1/2">
+                            {[
+                                'https://i.ibb.co/DP2ZB26v/retro1.jpg',
+                                'https://i.ibb.co/zVpbW7BR/retro2.jpg',
+                                'https://i.ibb.co/pBV7YtC2/retro3.jpg'
+                            ].map((img, index) => (
+                                <div
+                                    key={index}
+                                    className={`absolute inset-0 bg-contain bg-right bg-no-repeat transition-opacity duration-1000 ${index === bannerNationalSlide ? 'opacity-90' : 'opacity-0'}`}
+                                    style={{ backgroundImage: `url("${img}")` }}
+                                ></div>
+                            ))}
+                        </div>
+                        {/* Decorative Elements */}
+                        <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-orange-400/20 rounded-full blur-3xl group-hover:bg-orange-600/30 transition-colors"></div>
                     </Link>
                 </div>
             </section>

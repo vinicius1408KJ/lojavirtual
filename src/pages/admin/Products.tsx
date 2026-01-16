@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react';
-import { Plus, Trash, Edit, Power, PowerOff, X as XIcon, Link as LinkIcon } from 'lucide-react';
+import { Plus, Trash, Edit, Power, PowerOff, X as XIcon, Link as LinkIcon, GripVertical } from 'lucide-react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import type { DropResult } from '@hello-pangea/dnd';
 // PRODUCTS import removed
 import { supabase } from '../../lib/supabase';
 import { AddProductFromGoogle } from '../../components/AddProductFromGoogle';
@@ -16,7 +18,11 @@ export function Products() {
 
     async function fetchProducts() {
         try {
-            const { data, error } = await supabase.from('products').select('*');
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('sort_order', { ascending: true })
+                .order('created_at', { ascending: false });
             if (error) throw error;
             if (data) setProducts(data);
         } catch (error) {
@@ -38,6 +44,7 @@ export function Products() {
         is_selection: false,
         is_new: false,
         back_image_url: '',
+        sort_order: 0,
         sizes: ['P', 'M', 'G', 'GG', 'XG']
     });
 
@@ -119,7 +126,9 @@ export function Products() {
             is_national: false,
             is_selection: false,
             is_new: false,
+            is_retro: false,
             back_image_url: '',
+            sort_order: 0,
             sizes: ['P', 'M', 'G', 'GG', 'XG']
         });
     };
@@ -155,22 +164,53 @@ export function Products() {
         }
     };
 
+    const onDragEnd = async (result: DropResult) => {
+        if (!result.destination) return;
+
+        const items = Array.from(products);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        // Update local state immediately
+        setProducts(items);
+
+        // Update sort_order in Supabase for all items to be safe
+        try {
+            const updates = items.map((product, index) => ({
+                id: product.id,
+                sort_order: index
+            }));
+
+            // Using multiple updates in a loop or a RPC if available, 
+            // but for simplicity and low frequency of reordering 4 items, we can do it individually 
+            // or use a smart update.
+            for (let i = 0; i < updates.length; i++) {
+                await supabase
+                    .from('products')
+                    .update({ sort_order: updates[i].sort_order })
+                    .eq('id', updates[i].id);
+            }
+        } catch (error) {
+            console.error('Error updating sort order:', error);
+            alert('Erro ao salvar a nova ordem no servidor.');
+        }
+    };
+
     if (loading) {
         return <div className="p-8 text-center text-gray-500">Carregando produtos...</div>;
     }
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Produtos</h2>
-                <div className="flex gap-2">
+        <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h2 className="text-3xl font-black italic text-gray-900 uppercase tracking-tighter">Gerenciar Produtos</h2>
+                    <p className="text-gray-500 text-sm">Arraste os itens para definir a ordem de exibição no site.</p>
+                </div>
+                <div className="flex gap-3">
                     <button
-                        onClick={() => {
-                            if (confirm("Deseja atualizar a lista de produtos?")) {
-                                fetchProducts();
-                            }
-                        }}
-                        className="px-4 py-2 text-gray-500 hover:text-dlsports-green font-bold transition-colors text-xs"
+                        onClick={() => fetchProducts()}
+                        className="px-4 py-2 text-gray-600 hover:text-dlsports-green font-bold transition-colors text-sm border border-gray-200 rounded-lg bg-white"
                     >
                         Atualizar Lista
                     </button>
@@ -179,68 +219,153 @@ export function Products() {
                             resetCurrentProduct();
                             setIsModalOpen(true);
                         }}
-                        className="bg-dlsports-green text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-dlsports-green/90 transition-colors font-bold"
+                        className="bg-dlsports-green text-white px-6 py-2 rounded-lg flex items-center gap-2 hover:bg-dlsports-green/90 transition-all font-black italic shadow-lg shadow-dlsports-green/20"
                     >
-                        <Plus className="w-5 h-5" /> Novo Produto
+                        <Plus className="w-5 h-5" /> NOVO PRODUTO
                     </button>
                 </div>
             </div>
 
             {/* Smart Add Component */}
-            <AddProductFromGoogle onProductSelect={handleGoogleProductSelect} />
+            <div className="mb-8">
+                <AddProductFromGoogle onProductSelect={handleGoogleProductSelect} />
+            </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th className="p-4 font-semibold text-gray-600">Produto</th>
-                            <th className="p-4 font-semibold text-gray-600">Clube</th>
-                            <th className="p-4 font-semibold text-gray-600">Preço</th>
-                            <th className="p-4 font-semibold text-gray-600">Status</th>
-                            <th className="p-4 font-semibold text-gray-600 text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {products.map((product) => (
-                            <tr key={product.id} className="hover:bg-gray-50 group">
-                                <td className="p-4 flex items-center gap-3">
-                                    <img src={product.image_url} alt={product.name} className="w-12 h-12 rounded object-cover bg-gray-100" />
-                                    <span className="font-medium text-gray-900 group-hover:text-dlsports-green transition-colors">{product.name}</span>
-                                </td>
-                                <td className="p-4 text-gray-600">{product.club}</td>
-                                <td className="p-4 font-bold">R$ {product.price.toFixed(2)}</td>
-                                <td className="p-4">
-                                    <button
-                                        onClick={() => toggleActive(product.id, !!product.active)}
-                                        className={`flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full border ${product.active ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-500 border-gray-200'}`}
-                                    >
-                                        {product.active ? <Power className="w-3 h-3" /> : <PowerOff className="w-3 h-3" />}
-                                        {product.active ? 'Ativo' : 'Inativo'}
-                                    </button>
-                                </td>
-                                <td className="p-4 text-right">
-                                    <div className="flex items-center justify-end gap-2">
-                                        <button
-                                            onClick={() => {
-                                                setCurrentProduct(product);
-                                                setIsModalOpen(true);
-                                            }}
-                                            className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
-                                        >
-                                            <Edit className="w-4 h-4" />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(product.id)}
-                                            className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
-                                        >
-                                            <Trash className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-4 border-b border-gray-100 bg-gray-50/50 hidden md:grid grid-cols-12 gap-4 text-xs font-black uppercase tracking-widest text-gray-400">
+                    <div className="col-span-1 text-center">Ordem</div>
+                    <div className="col-span-4">Produto</div>
+                    <div className="col-span-2">Clube</div>
+                    <div className="col-span-2">Preço</div>
+                    <div className="col-span-2">Status</div>
+                    <div className="col-span-1 text-right">Ações</div>
+                </div>
+
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="products-list">
+                        {(provided) => (
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                                className="divide-y divide-gray-100"
+                            >
+                                {products.map((product, index) => (
+                                    <Draggable key={product.id} draggableId={product.id} index={index}>
+                                        {(provided, snapshot) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                className={`grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center transition-all ${snapshot.isDragging ? 'bg-dlsports-green/5 shadow-2xl scale-[1.02] border-y border-dlsports-green/20 z-10' : 'hover:bg-gray-50/80'}`}
+                                            >
+                                                {/* Drag Handle & Manual Order */}
+                                                <div className="col-span-1 flex flex-col items-center gap-2">
+                                                    <div {...provided.dragHandleProps} className="p-1 hover:bg-gray-200 rounded cursor-grab active:cursor-grabbing text-gray-400">
+                                                        <GripVertical className="w-5 h-5" />
+                                                    </div>
+                                                    <input
+                                                        type="number"
+                                                        value={product.sort_order || 0}
+                                                        onChange={async (e) => {
+                                                            const newVal = parseInt(e.target.value) || 0;
+                                                            // Optimistic UI update with automatic positioning
+                                                            const updatedProducts = products.map(p =>
+                                                                p.id === product.id ? { ...p, sort_order: newVal } : p
+                                                            ).sort((a, b) => {
+                                                                if ((a.sort_order || 0) !== (b.sort_order || 0)) {
+                                                                    return (a.sort_order || 0) - (b.sort_order || 0);
+                                                                }
+                                                                // Secondary sort: most recent first (matches fetchProducts)
+                                                                const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+                                                                const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
+                                                                return timeB - timeA;
+                                                            });
+                                                            setProducts(updatedProducts);
+
+                                                            // Supabase update
+                                                            const { error } = await supabase
+                                                                .from('products')
+                                                                .update({ sort_order: newVal })
+                                                                .eq('id', product.id);
+
+                                                            if (error) {
+                                                                alert('Erro ao atualizar ordem');
+                                                                fetchProducts(); // rollback
+                                                            }
+                                                        }}
+                                                        className="w-10 h-8 text-center text-xs font-bold border border-gray-200 rounded focus:border-dlsports-green outline-none"
+                                                        title="Posição Manual"
+                                                    />
+                                                </div>
+
+                                                {/* Product Info */}
+                                                <div className="col-span-1 md:col-span-4 flex items-center gap-4">
+                                                    <div className="relative group">
+                                                        <img
+                                                            src={product.image_url}
+                                                            alt={product.name}
+                                                            className="w-14 h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shadow-sm"
+                                                        />
+                                                        {!product.active && <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-xl"><PowerOff className="w-4 h-4 text-gray-400" /></div>}
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-bold text-gray-900 leading-tight mb-1">{product.name}</p>
+                                                        <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase">{product.is_national ? 'Nacional' : 'Internacional'}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Club */}
+                                                <div className="col-span-1 md:col-span-2">
+                                                    <span className="text-sm font-medium text-gray-600 md:bg-transparent bg-gray-50 px-3 py-1 rounded-lg md:p-0">
+                                                        {product.club || '-'}
+                                                    </span>
+                                                </div>
+
+                                                {/* Price */}
+                                                <div className="col-span-1 md:col-span-2">
+                                                    <p className="font-black italic text-gray-900">R$ {product.price.toFixed(2)}</p>
+                                                    {product.old_price && <p className="text-[10px] text-red-500 line-through">R$ {product.old_price.toFixed(2)}</p>}
+                                                </div>
+
+                                                {/* Status */}
+                                                <div className="col-span-1 md:col-span-2">
+                                                    <button
+                                                        onClick={() => toggleActive(product.id, !!product.active)}
+                                                        className={`flex items-center gap-2 text-[10px] font-black uppercase px-3 py-1.5 rounded-full border transition-all ${product.active ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
+                                                    >
+                                                        {product.active ? <Power className="w-3 h-3" /> : <PowerOff className="w-3 h-3" />}
+                                                        {product.active ? 'Ativo' : 'Inativo'}
+                                                    </button>
+                                                </div>
+
+                                                {/* Actions */}
+                                                <div className="col-span-1 md:col-span-1 flex justify-end gap-2">
+                                                    <button
+                                                        onClick={() => {
+                                                            setCurrentProduct(product);
+                                                            setIsModalOpen(true);
+                                                        }}
+                                                        className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors border border-transparent hover:border-blue-100"
+                                                        title="Editar"
+                                                    >
+                                                        <Edit className="w-4 h-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(product.id)}
+                                                        className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                                                        title="Excluir"
+                                                    >
+                                                        <Trash className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
             </div>
 
             {/* Edit/Add Modal */}
@@ -417,6 +542,13 @@ export function Products() {
                                     </div>
                                     <span className="font-bold text-gray-700 select-none text-xs">Marcar como Lançamento?</span>
                                 </div>
+
+                                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-orange-500 transition-colors cursor-pointer" onClick={() => setCurrentProduct({ ...currentProduct, is_retro: !currentProduct.is_retro })}>
+                                    <div className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${currentProduct.is_retro ? 'bg-orange-500' : 'bg-gray-300'}`}>
+                                        <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${currentProduct.is_retro ? 'translate-x-6' : 'translate-x-0'}`} />
+                                    </div>
+                                    <span className="font-bold text-gray-700 select-none text-xs">É Camisa Retrô?</span>
+                                </div>
                             </div>
 
                             <div>
@@ -446,15 +578,27 @@ export function Products() {
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-xs font-bold text-gray-700 mb-1">Preço Antigo (R$)</label>
-                                <input
-                                    type="number"
-                                    value={currentProduct.old_price || ''}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, old_price: parseFloat(e.target.value) })}
-                                    className="w-full h-10 px-3 rounded-lg border border-gray-300 focus:border-red-500 outline-none text-sm"
-                                    placeholder="Preço sem desconto"
-                                />
+                            <div className="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Preço Antigo (R$)</label>
+                                    <input
+                                        type="number"
+                                        value={currentProduct.old_price || ''}
+                                        onChange={e => setCurrentProduct({ ...currentProduct, old_price: parseFloat(e.target.value) })}
+                                        className="w-full h-10 px-3 rounded-lg border border-gray-300 focus:border-red-500 outline-none text-sm"
+                                        placeholder="Preço sem desconto"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-700 mb-1">Ordem (Exibição)</label>
+                                    <input
+                                        type="number"
+                                        value={currentProduct.sort_order || 0}
+                                        onChange={e => setCurrentProduct({ ...currentProduct, sort_order: parseInt(e.target.value) })}
+                                        className="w-full h-10 px-3 rounded-lg border border-gray-300 focus:border-dlsports-green outline-none text-sm"
+                                        placeholder="0"
+                                    />
+                                </div>
                             </div>
 
                             <button

@@ -23,6 +23,7 @@ export function Catalog() {
         if (pathname === '/nacionais') setSelectedCategory('nacional');
         else if (pathname === '/europeus') setSelectedCategory('europeu');
         else if (pathname === '/selecoes') setSelectedCategory('selecoes');
+        else if (pathname === '/retro') setSelectedCategory('retro');
         else if (pathname === '/ofertas') setSelectedCategory('ofertas');
     }, [pathname]);
 
@@ -30,7 +31,11 @@ export function Catalog() {
     useEffect(() => {
         async function fetchProducts() {
             try {
-                const { data, error } = await supabase.from('products').select('*');
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('*')
+                    .order('sort_order', { ascending: true })
+                    .order('created_at', { ascending: false });
                 if (error) throw error;
                 if (data) {
                     setProducts(data);
@@ -68,6 +73,7 @@ export function Catalog() {
             if (selectedCategory === 'nacional' && !product.is_national) return false;
             if (selectedCategory === 'europeu' && (product.is_national || product.is_selection)) return false;
             if (selectedCategory === 'selecoes' && !product.is_selection) return false;
+            if (selectedCategory === 'retro' && !product.is_retro) return false;
             if (selectedCategory === 'ofertas' && !product.is_offer) return false;
 
             // Price Filter (Mock)
@@ -85,7 +91,8 @@ export function Catalog() {
                     {selectedCategory === 'nacional' ? 'CAMISAS NACIONAIS' :
                         selectedCategory === 'europeu' ? 'CAMISAS EUROPEIAS' :
                             selectedCategory === 'selecoes' ? 'CAMISAS DE SELEÇÕES' :
-                                selectedCategory === 'ofertas' ? 'OFERTAS IMPERDÍVEIS' : 'TODAS AS CAMISAS'}
+                                selectedCategory === 'retro' ? 'CAMISAS RETRÔ' :
+                                    selectedCategory === 'ofertas' ? 'OFERTAS IMPERDÍVEIS' : 'TODAS AS CAMISAS'}
                 </h1>
                 <span className="text-gray-500 text-sm font-medium">{filteredProducts.length} produtos encontrados</span>
             </div>
@@ -146,6 +153,17 @@ export function Catalog() {
                                         className="accent-dlsports-green"
                                     />
                                     <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors">Seleções</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="category"
+                                        value="retro"
+                                        checked={selectedCategory === 'retro'}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                        className="accent-dlsports-green"
+                                    />
+                                    <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors">Retrô</span>
                                 </label>
                                 <label className="flex items-center gap-2 cursor-pointer group">
                                     <input

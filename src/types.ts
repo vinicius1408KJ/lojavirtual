@@ -15,8 +15,12 @@ export interface Product {
     is_offer?: boolean;
     is_selection?: boolean;
     is_new?: boolean;
+    is_retro?: boolean;
     old_price?: number;
     back_image_url?: string;
+    sort_order?: number;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface CartItem extends Product {
