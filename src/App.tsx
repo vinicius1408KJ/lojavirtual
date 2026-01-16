@@ -108,6 +108,7 @@ function App() {
           <Route path="/nacionais" element={<Catalog />} />
           <Route path="/europeus" element={<Catalog />} />
           <Route path="/selecoes" element={<Catalog />} />
+          <Route path="/retro" element={<Catalog />} />
           <Route path="/ofertas" element={<Catalog />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/cart" element={<Cart />} />
