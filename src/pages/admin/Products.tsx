@@ -10,7 +10,7 @@ import type { Product } from '../../types';
 
 export function Products() {
     const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         fetchProducts();
@@ -27,8 +27,6 @@ export function Products() {
             if (data) setProducts(data);
         } catch (error) {
             console.error('Error fetching products:', error);
-        } finally {
-            setLoading(false);
         }
     }
 
