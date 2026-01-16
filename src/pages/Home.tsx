@@ -162,7 +162,7 @@ export function Home() {
                                 to="/europeus"
                                 className="px-8 md:px-10 py-4 md:py-5 rounded-lg font-bold text-lg tracking-wide text-white border border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center justify-center text-center"
                             >
-                                VER LANÇAMENTOS 2025
+                                VER LANÇAMENTOS
                             </Link>
                         </div>
                     </div>
@@ -292,7 +292,7 @@ export function Home() {
             <section className="py-16 bg-white border-b border-gray-100">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-10">
-                        <h2 className="text-2xl md:text-3xl font-black italic tracking-tighter text-gray-900 mb-2 uppercase">Brasileirão Betano 2025</h2>
+                        <h2 className="text-2xl md:text-3xl font-black italic tracking-tighter text-gray-900 mb-2 uppercase">Brasileirão Betano 2026</h2>
                         <div className="w-16 h-1 bg-dlsports-neon mx-auto"></div>
                     </div>
 
@@ -326,7 +326,7 @@ export function Home() {
                         <div>
                             <span className="text-dlsports-green font-bold tracking-widest text-sm uppercase mb-2 block">Destaques da Semana</span>
                             <h2 className="text-4xl md:text-5xl font-black text-gray-900 italic tracking-tighter">
-                                MAIS VENDIDOS <span className="text-stroke-neon text-transparent" style={{ WebkitTextStroke: '1px #000' }}>2025</span>
+                                MAIS VENDIDOS
                             </h2>
                         </div>
                         <Link to="/nacionais" className="group flex items-center gap-2 font-bold text-gray-900 hover:text-dlsports-green transition-colors text-lg">

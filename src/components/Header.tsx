@@ -1,16 +1,12 @@
 
-import { useState, useEffect } from 'react';
-import { Search, ShoppingCart, User, Menu, LogOut, Package, Heart, ChevronDown, X as XIcon, Star } from 'lucide-react';
+import { useState } from 'react';
+import { Search, ShoppingCart, Menu, Heart, ChevronDown, X as XIcon, Star } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { LoginModal } from './LoginModal';
-import { supabase } from '../lib/supabase';
 import { MegaMenu, MENU_DATA } from './MegaMenu';
 
 export function Header() {
     const { cartCount } = useCart();
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [user, setUser] = useState<any>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -23,20 +19,9 @@ export function Header() {
         }
     };
 
-    useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null);
-        });
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
-        });
-        return () => subscription.unsubscribe();
-    }, []);
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        setUser(null);
-    };
+
+
 
     return (
         <>
@@ -78,39 +63,7 @@ export function Header() {
                             <Search className="w-6 h-6 text-gray-700" />
                         </button>
 
-                        {/* Login */}
-                        {user ? (
-                            <div className="hidden md:flex items-center gap-2 relative group cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
-                                <div className="w-8 h-8 rounded-full bg-dlsports-green text-white flex items-center justify-center font-bold text-sm">
-                                    {user.email?.charAt(0).toUpperCase()}
-                                </div>
-                                <div className="text-xs text-left">
-                                    <p className="text-gray-500">Olá, {user.email?.split('@')[0]}</p>
-                                    <p className="font-bold text-gray-800">Minha Conta</p>
-                                </div>
 
-                                {/* Dropdown User */}
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 text-gray-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform origin-top-right z-50 border border-gray-100">
-                                    <Link to="/orders" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition-colors">
-                                        <Package className="w-4 h-4" /> Meus Pedidos
-                                    </Link>
-                                    <button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition-colors text-red-600">
-                                        <LogOut className="w-4 h-4" /> Sair
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <button
-                                onClick={() => setIsLoginOpen(true)}
-                                className="hidden md:flex items-right gap-2 hover:bg-gray-50 p-2 rounded-lg transition-colors text-left"
-                            >
-                                <User className="w-6 h-6 text-gray-700" />
-                                <div className="text-xs">
-                                    <p className="text-gray-500">Bem-vindo :)</p>
-                                    <p className="font-bold text-gray-800">Entre ou Cadastre-se</p>
-                                </div>
-                            </button>
-                        )}
 
                         {/* Heart */}
                         <Link to="#" className="hidden sm:block relative p-2 hover:bg-gray-50 rounded-lg transition-colors">
@@ -210,16 +163,20 @@ export function Header() {
                                                 <div key={idx}>
                                                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">{col.title}</h4>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {col.items.slice(0, 4).map(item => (
-                                                            <Link
-                                                                key={item}
-                                                                to={`${menu.link}?search=${encodeURIComponent(item)}`}
-                                                                onClick={() => setIsMenuOpen(false)}
-                                                                className="px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-bold text-gray-700 hover:border-dlsports-green hover:text-dlsports-green transition-all"
-                                                            >
-                                                                {item}
-                                                            </Link>
-                                                        ))}
+                                                        {col.items.slice(0, 4).map((item, i) => {
+                                                            const label = typeof item === 'string' ? item : item.label;
+                                                            const searchTerm = typeof item === 'string' ? item : item.search;
+                                                            return (
+                                                                <Link
+                                                                    key={i}
+                                                                    to={`${menu.link}?search=${encodeURIComponent(searchTerm)}`}
+                                                                    onClick={() => setIsMenuOpen(false)}
+                                                                    className="px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-bold text-gray-700 hover:border-dlsports-green hover:text-dlsports-green transition-all"
+                                                                >
+                                                                    {label}
+                                                                </Link>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             ))}
@@ -232,47 +189,9 @@ export function Header() {
                                 <Star className="w-5 h-5 fill-current" /> OFERTAS
                             </Link>
                         </div>
-
-                        {/* Account Section Footer */}
-                        <div className="p-6 bg-gray-50 border-t border-gray-100">
-                            {user ? (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-dlsports-green text-white flex items-center justify-center font-bold">
-                                            {user.email?.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-gray-500">Minha Conta</p>
-                                            <p className="font-bold text-gray-800 truncate max-w-[150px]">{user.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <Link to="/orders" onClick={() => setIsMenuOpen(false)} className="p-3 bg-white border border-gray-200 rounded-lg text-xs font-bold text-center flex items-center justify-center gap-2">
-                                            <Package className="w-4 h-4" /> PEDIDOS
-                                        </Link>
-                                        <button onClick={() => { handleLogout(); setIsMenuOpen(false); }} className="p-3 bg-white border border-red-100 text-red-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2">
-                                            <LogOut className="w-4 h-4" /> SAIR
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <button onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} className="w-full flex items-center justify-center gap-3 py-4 bg-white border-2 border-dashed border-gray-300 rounded-xl text-gray-600 font-bold hover:border-dlsports-green hover:text-dlsports-green transition-all">
-                                    <User className="w-5 h-5" /> LOGIN / CADASTRO
-                                </button>
-                            )}
-                        </div>
                     </div>
                 </div>
             </header>
-
-            <LoginModal
-                isOpen={isLoginOpen}
-                onClose={() => setIsLoginOpen(false)}
-                onSuccess={(user) => {
-                    setUser(user);
-                    setIsLoginOpen(false);
-                }}
-            />
         </>
     );
 }

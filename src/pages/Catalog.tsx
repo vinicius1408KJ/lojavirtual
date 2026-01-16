@@ -50,23 +50,27 @@ export function Catalog() {
         fetchProducts();
     }, []);
 
-    const filteredProducts = useMemo(() => {
-        return products.filter(product => {
-            // Text Search
-            const q = searchQuery;
-            const nameMatch = (product.name || '').toLowerCase().includes(q);
-            const teamMatch = (product.team || '').toLowerCase().includes(q);
-            const clubMatch = (product.club || '').toLowerCase().includes(q);
+    // Normalize Helper
+    const normalize = (str: string) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-            if (searchQuery && !nameMatch && !teamMatch && !clubMatch) {
-                return false;
-            }
+    const filteredProducts = useMemo(() => {
+        console.log('Filtering Products...', { total: products.length, category: selectedCategory, search: searchQuery });
+
+        return products.filter(product => {
+            // Text Search refinement
+            const q = normalize(searchQuery);
+            const pName = normalize(product.name || '');
+            const pTeam = normalize(product.team || '');
+            const pClub = normalize(product.club || '');
+
+            const matchesSearch = !q || pName.includes(q) || pTeam.includes(q) || pClub.includes(q);
+
+            if (!matchesSearch) return false;
 
             // Club Filter
             if (clubFilter) {
-                const teamIs = (product.team || '').toLowerCase() === clubFilter.toLowerCase();
-                const clubIs = (product.club || '').toLowerCase() === clubFilter.toLowerCase();
-                if (!teamIs && !clubIs) return false;
+                const filter = normalize(clubFilter);
+                if (pTeam !== filter && pClub !== filter) return false;
             }
 
             // Category Filter

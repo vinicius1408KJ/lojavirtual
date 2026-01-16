@@ -1,9 +1,16 @@
 
 import { Link } from 'react-router-dom';
 
+interface MenuItemObj {
+    label: string;
+    search: string;
+}
+
+type MenuItem = string | MenuItemObj;
+
 interface SubCategory {
     title: string;
-    items: string[];
+    items: MenuItem[];
 }
 
 interface MenuData {
@@ -47,14 +54,14 @@ export const MENU_DATA: MenuData[] = [
             },
             {
                 title: 'Sul do Brasil',
-                items: ['Grêmio', 'Internacional', 'Juventude', 'Coritiba', 'Athletico-PR']
+                items: ['Grêmio', { label: 'Internacional', search: 'Inter' }, 'Juventude', 'Coritiba', 'Athletico-PR', 'Chapecoense']
             }
         ],
         highlightImage: {
-            src: 'https://images.unsplash.com/photo-1628891435256-3f7125ebad68?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            alt: 'Vitória',
-            title: 'Camisas Oficiais',
-            price: 'Qualidade Premium'
+            src: 'https://wallpapers4screen.com/Uploads/22-5-2025/77439/thumb2-4k-neymar-back-view-santos-fc-white-neon-lights.jpg',
+            alt: 'Neymar Santos',
+            title: '',
+            price: 'Confira a Coleção'
         }
     },
     {
@@ -73,12 +80,12 @@ export const MENU_DATA: MenuData[] = [
             },
             {
                 title: 'Série A / Outros',
-                items: ['Juventus', 'Milan', 'Inter de Milão', 'Roma', 'Bayern de Munique', 'Borussia Dortmund', 'PSG']
+                items: ['Juventus', 'Milan', 'Inter de Milão', 'Roma', 'Bayern de Munique', 'Borussia Dortmund', 'PSG', 'Al-Nassr', 'Inter Miami']
             }
         ],
         highlightImage: {
-            src: 'https://images.unsplash.com/photo-1626025437642-0b05076ca301?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            alt: 'Milan',
+            src: 'https://a1.espncdn.com/combiner/i?img=%2Fphoto%2F2025%2F0214%2Fr1451810_1296x729_16%2D9.jpg',
+            alt: 'Clubes Internacionais',
             title: 'Clubes Internacionais',
             price: 'As Melhores'
         }
@@ -103,10 +110,10 @@ export const MENU_DATA: MenuData[] = [
             }
         ],
         highlightImage: {
-            src: 'https://images.unsplash.com/photo-1549492193-4700d813725b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-            alt: 'Seleções',
-            title: 'Brasil 2024',
-            price: 'Lançamentos'
+            src: 'https://uploads.metroimg.com/wp-content/uploads/2025/10/08131526/cristiano-ronaldo-futebol-portugal.jpg',
+            alt: 'Cristiano Ronaldo Portugal',
+            title: '',
+            price: 'Confira a Coleção'
         }
     },
 ];
@@ -125,16 +132,21 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
                         <div key={idx}>
                             <h3 className="font-bold text-gray-900 mb-4">{col.title}</h3>
                             <ul className="space-y-2">
-                                {col.items.map(item => (
-                                    <li key={item}>
-                                        <Link
-                                            to={`${menu.link}?search=${encodeURIComponent(item)}`}
-                                            className="text-gray-500 hover:text-dlsports-green text-sm transition-colors block py-0.5"
-                                        >
-                                            {item}
-                                        </Link>
-                                    </li>
-                                ))}
+                                {col.items.map((item, i) => {
+                                    const label = typeof item === 'string' ? item : item.label;
+                                    const searchTerm = typeof item === 'string' ? item : item.search;
+
+                                    return (
+                                        <li key={i}>
+                                            <Link
+                                                to={`${menu.link}?search=${encodeURIComponent(searchTerm)}`}
+                                                className="text-gray-500 hover:text-dlsports-green text-sm transition-colors block py-0.5"
+                                            >
+                                                {label}
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     ))}
@@ -142,20 +154,20 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
 
                 {/* Highlight Image */}
                 {menu.highlightImage && (
-                    <div className="w-80 ml-8 relative group cursor-pointer overflow-hidden rounded-lg">
+                    <Link to={menu.link} className="w-80 ml-8 relative group cursor-pointer overflow-hidden rounded-lg block">
                         <img
                             src={menu.highlightImage.src}
                             alt={menu.highlightImage.alt}
                             className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-6 text-white text-center">
-                            <h3 className="text-2xl font-black italic mb-1">{menu.highlightImage.title}</h3>
+                            {menu.highlightImage.title && <h3 className="text-2xl font-black italic mb-1">{menu.highlightImage.title}</h3>}
                             <p className="text-sm font-bold mb-4">{menu.highlightImage.price}</p>
                             <button className="bg-white text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-dlsports-neon transition-colors">
                                 Confira
                             </button>
                         </div>
-                    </div>
+                    </Link>
                 )}
             </div>
         </div>
