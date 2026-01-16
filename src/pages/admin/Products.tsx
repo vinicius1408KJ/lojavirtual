@@ -236,21 +236,23 @@ export function Products() {
                         </div>
                     </div>
 
-                    <button
-                        onClick={() => fetchProducts()}
-                        className="px-4 py-2 text-gray-600 hover:text-dlsports-green font-bold transition-colors text-sm border border-gray-200 rounded-lg bg-white"
-                    >
-                        Atualizar Lista
-                    </button>
-                    <button
-                        onClick={() => {
-                            resetCurrentProduct();
-                            setIsModalOpen(true);
-                        }}
-                        className="bg-dlsports-green text-white px-6 py-2 rounded-lg flex items-center gap-2 hover:bg-dlsports-green/90 transition-all font-black italic shadow-lg shadow-dlsports-green/20"
-                    >
-                        <Plus className="w-5 h-5" /> NOVO
-                    </button>
+                    <div className="flex flex-wrap gap-2 w-full md:w-auto">
+                        <button
+                            onClick={() => fetchProducts()}
+                            className="flex-1 md:flex-none px-4 py-2.5 text-gray-600 hover:text-dlsports-green font-bold transition-all text-xs border border-gray-200 rounded-xl bg-white shadow-sm active:scale-95"
+                        >
+                            Atualizar
+                        </button>
+                        <button
+                            onClick={() => {
+                                resetCurrentProduct();
+                                setIsModalOpen(true);
+                            }}
+                            className="flex-1 md:flex-none bg-dlsports-green text-white px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-dlsports-green/90 transition-all font-black italic shadow-lg shadow-dlsports-green/20 active:scale-95 text-xs"
+                        >
+                            <Plus className="w-4 h-4" /> NOVO PRODUTO
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -279,29 +281,34 @@ export function Products() {
                                     <span className="text-xs font-bold text-gray-400">#{product.sort_order}</span>
                                 </div>
                                 <div className="col-span-1 md:col-span-4 flex items-center gap-4">
-                                    <div className="relative group">
-                                        <img src={product.image_url} alt={product.name} className="w-14 h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shadow-sm" />
+                                    <div className="relative group shrink-0">
+                                        <img src={product.image_url} alt={product.name} className="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shadow-sm" />
                                         {!product.active && <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-xl"><PowerOff className="w-4 h-4 text-gray-400" /></div>}
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-gray-900 leading-tight mb-1">{product.name}</p>
-                                        <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase">{product.is_national ? 'Nacional' : 'Internacional'}</span>
+                                    <div className="min-w-0">
+                                        <p className="font-bold text-gray-900 leading-tight mb-0.5 truncate">{product.name}</p>
+                                        <span className="text-[9px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">{product.is_national ? 'Nacional' : 'Internacional'}</span>
                                     </div>
                                 </div>
-                                <div className="col-span-1 md:col-span-2">
-                                    <span className="text-sm font-medium text-gray-600 md:bg-transparent bg-gray-50 px-3 py-1 rounded-lg md:p-0">{product.club || '-'}</span>
+                                <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Clube:</span>
+                                    <span className="text-sm font-medium text-gray-600">{product.club || '-'}</span>
                                 </div>
-                                <div className="col-span-1 md:col-span-2">
-                                    <p className="font-black italic text-gray-900">R$ {product.price.toFixed(2)}</p>
-                                    {product.old_price && <p className="text-[10px] text-red-500 line-through">R$ {product.old_price.toFixed(2)}</p>}
+                                <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Preço:</span>
+                                    <div>
+                                        <p className="font-black italic text-gray-900">R$ {product.price.toFixed(2)}</p>
+                                        {product.old_price && <p className="text-[10px] text-red-500 line-through">R$ {product.old_price.toFixed(2)}</p>}
+                                    </div>
                                 </div>
-                                <div className="col-span-1 md:col-span-2">
+                                <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Status:</span>
                                     <button onClick={() => toggleActive(product.id, !!product.active)} className={`flex items-center gap-2 text-[10px] font-black uppercase px-3 py-1.5 rounded-full border transition-all ${product.active ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}>
                                         {product.active ? <Power className="w-3 h-3" /> : <PowerOff className="w-3 h-3" />}
                                         {product.active ? 'Ativo' : 'Inativo'}
                                     </button>
                                 </div>
-                                <div className="col-span-1 md:col-span-1 flex justify-end gap-2">
+                                <div className="col-span-1 md:col-span-1 flex justify-end gap-3 md:gap-2 border-t md:border-none pt-4 md:pt-0 mt-2 md:mt-0">
                                     <button onClick={() => { setCurrentProduct(product); setIsModalOpen(true); }} className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors border border-transparent hover:border-blue-100" title="Editar"><Edit className="w-4 h-4" /></button>
                                     <button onClick={() => handleDelete(product.id)} className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors border border-transparent hover:border-red-100" title="Excluir"><Trash className="w-4 h-4" /></button>
                                 </div>
@@ -369,35 +376,40 @@ export function Products() {
 
                                                     {/* Product Info */}
                                                     <div className="col-span-1 md:col-span-4 flex items-center gap-4">
-                                                        <div className="relative group">
+                                                        <div className="relative group shrink-0">
                                                             <img
                                                                 src={product.image_url}
                                                                 alt={product.name}
-                                                                className="w-14 h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shadow-sm"
+                                                                className="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover bg-gray-100 border border-gray-200 shadow-sm"
                                                             />
                                                             {!product.active && <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-xl"><PowerOff className="w-4 h-4 text-gray-400" /></div>}
                                                         </div>
-                                                        <div>
-                                                            <p className="font-bold text-gray-900 leading-tight mb-1">{product.name}</p>
-                                                            <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase">{product.is_national ? 'Nacional' : 'Internacional'}</span>
+                                                        <div className="min-w-0">
+                                                            <p className="font-bold text-gray-900 leading-tight mb-0.5 truncate">{product.name}</p>
+                                                            <span className="text-[9px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">{product.is_national ? 'Nacional' : 'Internacional'}</span>
                                                         </div>
                                                     </div>
 
                                                     {/* Club */}
-                                                    <div className="col-span-1 md:col-span-2">
-                                                        <span className="text-sm font-medium text-gray-600 md:bg-transparent bg-gray-50 px-3 py-1 rounded-lg md:p-0">
+                                                    <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                                        <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Clube:</span>
+                                                        <span className="text-sm font-medium text-gray-600">
                                                             {product.club || '-'}
                                                         </span>
                                                     </div>
 
                                                     {/* Price */}
-                                                    <div className="col-span-1 md:col-span-2">
-                                                        <p className="font-black italic text-gray-900">R$ {product.price.toFixed(2)}</p>
-                                                        {product.old_price && <p className="text-[10px] text-red-500 line-through">R$ {product.old_price.toFixed(2)}</p>}
+                                                    <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                                        <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Preço:</span>
+                                                        <div>
+                                                            <p className="font-black italic text-gray-900">R$ {product.price.toFixed(2)}</p>
+                                                            {product.old_price && <p className="text-[10px] text-red-500 line-through">R$ {product.old_price.toFixed(2)}</p>}
+                                                        </div>
                                                     </div>
 
                                                     {/* Status */}
-                                                    <div className="col-span-1 md:col-span-2">
+                                                    <div className="col-span-1 md:col-span-2 flex items-center justify-between md:block px-2 md:px-0">
+                                                        <span className="text-[10px] font-bold text-gray-400 uppercase md:hidden">Status:</span>
                                                         <button
                                                             onClick={() => toggleActive(product.id, !!product.active)}
                                                             className={`flex items-center gap-2 text-[10px] font-black uppercase px-3 py-1.5 rounded-full border transition-all ${product.active ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'}`}
@@ -408,7 +420,7 @@ export function Products() {
                                                     </div>
 
                                                     {/* Actions */}
-                                                    <div className="col-span-1 md:col-span-1 flex justify-end gap-2">
+                                                    <div className="col-span-1 md:col-span-1 flex justify-end gap-3 md:gap-2 border-t md:border-none pt-4 md:pt-0 mt-2 md:mt-0">
                                                         <button
                                                             onClick={() => {
                                                                 setCurrentProduct(product);

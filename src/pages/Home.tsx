@@ -9,26 +9,24 @@ import type { Product } from '../types';
 
 const CLUBS = [
     { name: 'Atlético-MG', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Clube_Atl%C3%A9tico_Mineiro_logo.svg' },
-    { name: 'Athletico-PR', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Club_Athletico_Paranaense_2019.svg' },
     { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Esporte_Clube_Bahia_logo.svg' },
     { name: 'Botafogo', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Botafogo_de_Futebol_e_Regatas_logo.svg' },
     { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Sport_Club_Corinthians_Paulista_crest.svg' },
     { name: 'Cruzeiro', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg' },
-    { name: 'Flamengo', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Flamengo_braz_logo.svg' },
+    { name: 'Flamengo', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png' },
     { name: 'Fluminense', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Fluminense_FC_escudo.png' },
-    { name: 'Fortaleza', logo: 'data:image/png;base64,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' },
+    { name: 'Chapecoense', logo: 'https://upload.wikimedia.org/wikipedia/pt/thumb/b/bc/Escudo_de_2018_da_Chapecoense.png/120px-Escudo_de_2018_da_Chapecoense.png' },
     { name: 'Grêmio', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Gremio_logo.svg/1718px-Gremio_logo.svg.png' },
     { name: 'Internacional', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg' },
-    { name: 'Juventude', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8z3Gj1Iar2_tIYJGnWzvHzbyvLBfHq7q1iQ&s' },
+    { name: 'Remo', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Clube_do_Remo.svg/250px-Clube_do_Remo.svg.png' },
     { name: 'Mirassol', logo: 'https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9169.png' },
     { name: 'Palmeiras', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg' },
     { name: 'Bragantino', logo: 'https://upload.wikimedia.org/wikipedia/pt/thumb/9/9e/RedBullBragantino.png/250px-RedBullBragantino.png' },
     { name: 'Santos', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/35/Santos_logo.svg' },
     { name: 'São Paulo', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg' },
-    { name: 'Sport', logo: 'https://upload.wikimedia.org/wikipedia/pt/1/17/Sport_Club_do_Recife.png' },
+    { name: 'Coritiba', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Coritiba_Foot_Ball_Club_logo.svg/250px-Coritiba_Foot_Ball_Club_logo.svg.png' },
     { name: 'Vasco', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNq1bLlC-tnaYJgVzgxqp77gO96emrEA2sNA&s' },
-    { name: 'Vitória', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBr1LqFnNsphU07fu3xbBxVzfcFFJ-sT6lg&s' },
-    { name: 'Ceará', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Cear%C3%A1_Sporting_Club_logo.svg' },
+    { name: 'Athletico-PR', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/43/Athletico_Paranaense_%28Logo_2019%29.svg' },
 ];
 
 export function Home() {
@@ -38,12 +36,74 @@ export function Home() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [bannerNationalSlide, setBannerNationalSlide] = useState(0);
 
+    const HERO_SLIDES = [
+        {
+            image: 'https://i.metroimg.com/s9w4nuAtkThT9pC_iqx7Ob6wlyyk6VHCtasAOzA1fSY/w:900/q:85/f:webp/plain/https://image.metroimg.com/wp-content/uploads/84d10e9e-jogo-1.jpg',
+            tag: 'SUPERCOPA REI 2026',
+            title: (
+                <>
+                    FLAMENGO x<br />
+                    <span className="text-white">CORINTHIANS</span>
+                </>
+            ),
+            subtitle: 'Faça parte desse clássico que para o Brasil. Camisas oficiais disponíveis.',
+            primaryCta: { text: 'VER CLÁSSICO', link: '/nacionais?club=Flamengo,Corinthians' },
+            secondaryCta: null
+        },
+        {
+            image: 'https://d2r9epyceweg5n.cloudfront.net/stores/002/560/088/rte/comprar-camisa-do-inter-miami-ii-2-away-reserva-2025-25-26-adidas-masculino-masculina-preto-com-cinza-com-rosa-mundial-mls-messi-camisa-de-time-loja-tealto-sports-.jpg',
+            tag: 'Lançamentos 25/2026 Disponíveis',
+            title: (
+                <>
+                    VISTA SEU TIME.<br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
+                        VIVA O JOGO.
+                    </span>
+                </>
+            ),
+            subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
+            primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+        },
+        {
+            image: 'https://s2-ge.glbimg.com/nsWqBNFbL9VIv9LXLXoFBl536Jk=/0x0:544x680/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2024/9/b/Bf93b0QcOg57yML48MkQ/gtvc0ctwqaa81tg.jpg',
+            tag: 'Lançamentos 25/2026 Disponíveis',
+            title: (
+                <>
+                    VISTA SEU TIME.<br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
+                        VIVA O JOGO.
+                    </span>
+                </>
+            ),
+            subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
+            primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+        },
+        {
+            image: 'https://loukosnofutebol.com/public/arqConteudo/arqZPProduto/flamengo.jpg',
+            tag: 'Lançamentos 25/2026 Disponíveis',
+            title: (
+                <>
+                    VISTA SEU TIME.<br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
+                        VIVA O JOGO.
+                    </span>
+                </>
+            ),
+            subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
+            primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+        }
+    ];
+
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % 3);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
+        const duration = currentSlide === 0 ? 5000 : 3500;
+        const timer = setTimeout(() => {
+            setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+        }, duration);
+        return () => clearTimeout(timer);
+    }, [currentSlide]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -85,17 +145,13 @@ export function Home() {
             <section className="relative h-[90vh] flex items-center overflow-hidden bg-black">
                 {/* Carousel Background */}
                 <div className="absolute inset-0 z-0">
-                    {[
-                        'https://d2r9epyceweg5n.cloudfront.net/stores/002/560/088/rte/comprar-camisa-do-inter-miami-ii-2-away-reserva-2025-25-26-adidas-masculino-masculina-preto-com-cinza-com-rosa-mundial-mls-messi-camisa-de-time-loja-tealto-sports-.jpg',
-                        'https://s2-ge.glbimg.com/nsWqBNFbL9VIv9LXLXoFBl536Jk=/0x0:544x680/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2024/9/b/Bf93b0QcOg57yML48MkQ/gtvc0ctwqaa81tg.jpg',
-                        'https://loukosnofutebol.com/public/arqConteudo/arqZPProduto/flamengo.jpg'
-                    ].map((img, index) => (
+                    {HERO_SLIDES.map((slide, index) => (
                         <div
                             key={index}
                             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
                         >
                             <img
-                                src={img}
+                                src={slide.image}
                                 alt={`Banner ${index + 1}`}
                                 className={`w-full h-full object-cover object-center transition-transform duration-[10000ms] ease-linear ${index === currentSlide ? 'scale-110' : 'scale-100'}`}
                             />
@@ -106,71 +162,108 @@ export function Home() {
                     ))}
                 </div>
 
-                <div className="container mx-auto px-4 z-10 relative">
-                    <div className="max-w-3xl pt-20 md:pt-0">
-                        {/* Tag Premium */}
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-8 animate-fade-in-up">
-                            <span className="w-2 h-2 rounded-full bg-dlsports-neon animate-pulse"></span>
-                            <span className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">Lançamentos 25/2026 Disponíveis</span>
-                        </div>
-
-                        {/* Title */}
-                        <h1 className="text-3xl md:text-7xl font-black text-white italic mb-4 leading-[0.9] tracking-tighter drop-shadow-2xl animate-fade-in-up">
-                            VISTA SEU TIME.<br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-dlsports-neon to-green-400">
-                                VIVA O JOGO.
-                            </span>
-                        </h1>
-
-                        {/* Subtitle */}
-                        <p className="text-sm md:text-2xl text-gray-300 font-medium max-w-xl mb-6 md:mb-10 leading-relaxed drop-shadow-md animate-fade-in-up delay-200">
-                            A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.
-                        </p>
-
-                        {/* Social Proof Mini */}
-                        <div className="flex items-center gap-4 mb-10 animate-fade-in-up delay-300">
-                            <div className="flex -space-x-4">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-200 overflow-hidden">
-                                        <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Cliente" className="w-full h-full object-cover" />
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="text-white text-sm">
-                                <div className="flex text-dlsports-neon mb-0.5">
-                                    <Star className="w-4 h-4 fill-current" />
-                                    <Star className="w-4 h-4 fill-current" />
-                                    <Star className="w-4 h-4 fill-current" />
-                                    <Star className="w-4 h-4 fill-current" />
-                                    <Star className="w-4 h-4 fill-current" />
+                <div className="container mx-auto px-4 z-10 relative h-full flex items-center">
+                    <div className="max-w-3xl w-full relative h-[400px] md:h-[500px]">
+                        {HERO_SLIDES.map((slide, index) => (
+                            <div
+                                key={index}
+                                className={`absolute top-0 left-0 w-full transition-all duration-700 ease-out flex flex-col justify-center ${index === currentSlide ? 'opacity-100 translate-y-0 z-10 pointer-events-auto' : 'opacity-0 translate-y-8 z-0 pointer-events-none'}`}
+                            >
+                                {/* Tag Premium */}
+                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-8 animate-fade-in-up">
+                                    <span className="w-2 h-2 rounded-full bg-dlsports-neon animate-pulse"></span>
+                                    <span className="text-white text-xs md:text-sm font-bold tracking-widest uppercase">{slide.tag}</span>
                                 </div>
-                                <span className="font-bold">+5.000 clientes satisfeitos</span>
-                            </div>
-                        </div>
 
-                        {/* CTAs */}
-                        <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
-                            <Link
-                                to="/nacionais"
-                                className="group relative overflow-hidden bg-dlsports-neon text-dlsports-green px-8 md:px-10 py-4 md:py-5 rounded-lg font-black text-lg tracking-wide hover:scale-105 transition-all shadow-[0_0_30px_rgba(181,255,0,0.4)] flex items-center justify-center gap-3"
-                            >
-                                <span className="relative z-10 flex items-center gap-2">
-                                    COMPRAR AGORA <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </span>
-                            </Link>
-                            <Link
-                                to="/europeus"
-                                className="px-8 md:px-10 py-4 md:py-5 rounded-lg font-bold text-lg tracking-wide text-white border border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center justify-center text-center"
-                            >
-                                VER LANÇAMENTOS
-                            </Link>
-                        </div>
+                                {/* Title */}
+                                <h1 className="text-4xl md:text-7xl font-black text-white italic mb-4 leading-none tracking-tighter drop-shadow-2xl animate-fade-in-up">
+                                    {slide.title}
+                                </h1>
+
+                                {/* Subtitle */}
+                                <p className="text-sm md:text-2xl text-gray-300 font-medium max-w-xl mb-6 md:mb-10 leading-relaxed drop-shadow-md animate-fade-in-up delay-200">
+                                    {slide.subtitle}
+                                </p>
+
+                                {/* Social Proof Mini */}
+                                {index !== 0 && ( /* Optional: Hide social proof on specific slides if needed, or keep for all. Keeping for all here but maybe the user wants it cleaner for the classic one. Let's keep for all for consistency. */
+                                    <div className="flex items-center gap-4 mb-10 animate-fade-in-up delay-300">
+                                        <div className="flex -space-x-4">
+                                            {[1, 2, 3, 4].map((i) => (
+                                                <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-200 overflow-hidden">
+                                                    <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Cliente" className="w-full h-full object-cover" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="text-white text-sm">
+                                            <div className="flex text-dlsports-neon mb-0.5">
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                            </div>
+                                            <span className="font-bold">+5.000 clientes satisfeitos</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {index === 0 && (
+                                    <div className="flex items-center gap-4 mb-10 animate-fade-in-up delay-300 opacity-0 md:opacity-0 hidden">
+                                        {/* Spacer to keep layout if we wanted, but flex col handles it. 
+                                             Actually, let's just render the social proof for ALL slides to avoid "jumping" content.
+                                         */}
+                                    </div>
+                                )}
+                                {index === 0 && (
+                                    <div className="flex items-center gap-4 mb-10 animate-fade-in-up delay-300">
+                                        <div className="flex -space-x-4">
+                                            {[1, 2, 3, 4].map((i) => (
+                                                <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-gray-200 overflow-hidden">
+                                                    <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Cliente" className="w-full h-full object-cover" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="text-white text-sm">
+                                            <div className="flex text-dlsports-neon mb-0.5">
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                                <Star className="w-4 h-4 fill-current" />
+                                            </div>
+                                            <span className="font-bold">+5.000 clientes satisfeitos</span>
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {/* CTAs */}
+                                <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
+                                    <Link
+                                        to={slide.primaryCta.link}
+                                        className="group relative overflow-hidden bg-dlsports-neon text-dlsports-green px-8 md:px-10 py-4 md:py-5 rounded-lg font-black text-lg tracking-wide hover:scale-105 transition-all shadow-[0_0_30px_rgba(181,255,0,0.4)] flex items-center justify-center gap-3"
+                                    >
+                                        <span className="relative z-10 flex items-center gap-2">
+                                            {slide.primaryCta.text} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        </span>
+                                    </Link>
+                                    {slide.secondaryCta && (
+                                        <Link
+                                            to={slide.secondaryCta.link}
+                                            className="px-8 md:px-10 py-4 md:py-5 rounded-lg font-bold text-lg tracking-wide text-white border border-white/30 hover:bg-white/10 hover:border-white transition-all backdrop-blur-sm flex items-center justify-center text-center"
+                                        >
+                                            {slide.secondaryCta.text}
+                                        </Link>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 {/* Carousel Indicators */}
                 <div className="absolute bottom-10 right-10 flex gap-3 z-20">
-                    {[0, 1, 2].map((i) => (
+                    {HERO_SLIDES.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => setCurrentSlide(i)}

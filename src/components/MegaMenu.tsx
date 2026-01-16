@@ -84,10 +84,10 @@ export const MENU_DATA: MenuData[] = [
             }
         ],
         highlightImage: {
-            src: 'https://a1.espncdn.com/combiner/i?img=%2Fphoto%2F2025%2F0214%2Fr1451810_1296x729_16%2D9.jpg',
+            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHQjU96CjlvOzmGI8E7pNTxWokSte3nREvIQ&s',
             alt: 'Clubes Internacionais',
-            title: 'Clubes Internacionais',
-            price: 'As Melhores'
+            title: '',
+            price: 'Confira a Coleção'
         }
     },
     {
@@ -154,17 +154,18 @@ export function MegaMenu({ activeMenu }: { activeMenu: string | null }) {
 
                 {/* Highlight Image */}
                 {menu.highlightImage && (
-                    <Link to={menu.link} className="w-80 ml-8 relative group cursor-pointer overflow-hidden rounded-lg block">
+                    <Link to={menu.link} className="w-72 ml-8 relative group cursor-pointer overflow-hidden rounded-xl block border border-gray-100 shadow-sm">
                         <img
                             src={menu.highlightImage.src}
                             alt={menu.highlightImage.alt}
-                            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                            className="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-700 group-hover:brightness-110"
                         />
-                        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-6 text-white text-center">
-                            {menu.highlightImage.title && <h3 className="text-2xl font-black italic mb-1">{menu.highlightImage.title}</h3>}
-                            <p className="text-sm font-bold mb-4">{menu.highlightImage.price}</p>
-                            <button className="bg-white text-black px-6 py-2 rounded-full font-bold text-sm hover:bg-dlsports-neon transition-colors">
-                                Confira
+                        {/* Smooth Professional Scrim */}
+                        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5 text-white text-center">
+                            {menu.highlightImage.title && <h3 className="text-xl font-black italic mb-1 drop-shadow-md">{menu.highlightImage.title}</h3>}
+                            <p className="text-[10px] uppercase tracking-[0.2em] font-black mb-3 text-white/90 drop-shadow-md">{menu.highlightImage.price}</p>
+                            <button className="bg-dlsports-neon text-black px-6 py-2 rounded-full font-black text-[11px] uppercase tracking-tighter hover:scale-105 transition-all shadow-[0_4px_20px_rgba(181,255,0,0.3)] mx-auto">
+                                Confira agora
                             </button>
                         </div>
                     </Link>

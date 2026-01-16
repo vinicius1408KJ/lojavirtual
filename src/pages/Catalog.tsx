@@ -69,8 +69,9 @@ export function Catalog() {
 
             // Club Filter
             if (clubFilter) {
-                const filter = normalize(clubFilter);
-                if (pTeam !== filter && pClub !== filter) return false;
+                const filters = clubFilter.split(',').map(f => normalize(f));
+                const matchesClub = filters.some(f => pTeam === f || pClub === f);
+                if (!matchesClub) return false;
             }
 
             // Category Filter

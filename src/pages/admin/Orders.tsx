@@ -135,8 +135,9 @@ export function Orders() {
                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Suporte Online</span>
                     </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                <div className="md:overflow-x-auto">
+                    {/* Desktop Table View */}
+                    <table className="w-full text-left hidden md:table">
                         <thead>
                             <tr className="bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400">
                                 <th className="p-6">Origem</th>
@@ -200,6 +201,40 @@ export function Orders() {
                             ))}
                         </tbody>
                     </table>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden divide-y divide-gray-100 px-4">
+                        {leads.map(lead => (
+                            <div key={lead.id} className="py-6 space-y-4">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h5 className="font-black text-gray-900">{lead.customer}</h5>
+                                        <p className="text-xs text-gray-400 font-bold tracking-tight">{lead.phone}</p>
+                                    </div>
+                                    <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase border ${getStatusColor(lead.status)}`}>
+                                        {getStatusText(lead.status)}
+                                    </span>
+                                </div>
+                                <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                    <p className="text-[8px] font-black text-gray-400 uppercase mb-2">Interesse:</p>
+                                    <ul className="space-y-1">
+                                        {lead.items.map((item: string, i: number) => (
+                                            <li key={i} className="text-xs font-bold text-gray-700 italic">- {item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <p className="text-lg font-black text-dlsports-green italic">R$ {lead.total.toFixed(2)}</p>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setSelectedLead(lead)} className="p-3 bg-gray-100 rounded-xl text-gray-500"><ExternalLink className="w-4 h-4" /></button>
+                                        <button onClick={() => openWhatsApp(lead.phone, lead.customer, lead.items)} className="bg-green-500 text-white px-4 py-3 rounded-xl font-black text-[10px] uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-green-100">
+                                            <MessageSquare className="w-4 h-4" /> Atender
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 

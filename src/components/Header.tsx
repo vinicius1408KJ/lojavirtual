@@ -35,7 +35,7 @@ export function Header() {
 
                     {/* Logo */}
                     <Link to="/" className="flex-shrink-0">
-                        <h1 className="text-2xl md:text-4xl font-black italic tracking-tighter text-dlsports-green">
+                        <h1 className="text-xl md:text-3xl lg:text-4xl font-black italic tracking-tighter text-dlsports-green">
                             DLS<span className="text-gray-800">PORTS</span>
                         </h1>
                     </Link>
