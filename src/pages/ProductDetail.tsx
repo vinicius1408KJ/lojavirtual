@@ -159,12 +159,22 @@ export function ProductDetail() {
 
                                 {isSizeGuideOpen && (
                                     <div className="mb-4 p-4 bg-gray-100 rounded-lg text-sm text-gray-700 animate-fade-in-down">
-                                        <div className="grid grid-cols-2 gap-2 font-mono text-xs">
-                                            <div className="flex justify-between border-b pb-1"><span>P</span> <span>70x50 cm</span></div>
-                                            <div className="flex justify-between border-b pb-1"><span>M</span> <span>72x52 cm</span></div>
-                                            <div className="flex justify-between border-b pb-1"><span>G</span> <span>74x54 cm</span></div>
-                                            <div className="flex justify-between border-b pb-1"><span>GG</span> <span>76x56 cm</span></div>
-                                            <div className="flex justify-between border-b pb-1"><span>XG</span> <span>78x58 cm</span></div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-mono text-xs">
+                                            <div>
+                                                <p className="font-bold mb-2 uppercase border-b border-gray-300">Adulto</p>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>P</span> <span>70x50 cm</span></div>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>M</span> <span>72x52 cm</span></div>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>G</span> <span>74x54 cm</span></div>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>GG</span> <span>76x56 cm</span></div>
+                                                <div className="flex justify-between border-b pb-1"><span>XG</span> <span>78x58 cm</span></div>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold mb-2 uppercase border-b border-gray-300">Kit Infantil</p>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>2-8</span> <span>2 a 8 anos</span></div>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>10-12</span> <span>10 a 12 anos</span></div>
+                                                <div className="flex justify-between border-b pb-1 mb-1"><span>14 (13-14)</span> <span>13 a 14 anos</span></div>
+                                                <p className="mt-2 text-[10px] text-gray-500 italic">*Kits infantis acompanham calção e camisa.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 )}

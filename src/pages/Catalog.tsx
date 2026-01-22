@@ -24,6 +24,7 @@ export function Catalog() {
         else if (pathname === '/europeus') setSelectedCategory('europeu');
         else if (pathname === '/selecoes') setSelectedCategory('selecoes');
         else if (pathname === '/retro') setSelectedCategory('retro');
+        else if (pathname === '/lancamentos') setSelectedCategory('lancamentos');
         else if (pathname === '/ofertas') setSelectedCategory('ofertas');
     }, [pathname]);
 
@@ -79,6 +80,7 @@ export function Catalog() {
             if (selectedCategory === 'europeu' && (product.is_national || product.is_selection)) return false;
             if (selectedCategory === 'selecoes' && !product.is_selection) return false;
             if (selectedCategory === 'retro' && !product.is_retro) return false;
+            if (selectedCategory === 'lancamentos' && !product.is_new) return false;
             if (selectedCategory === 'ofertas' && !product.is_offer) return false;
 
             // Price Filter (Mock)
@@ -97,7 +99,8 @@ export function Catalog() {
                         selectedCategory === 'europeu' ? 'CAMISAS EUROPEIAS' :
                             selectedCategory === 'selecoes' ? 'CAMISAS DE SELEÇÕES' :
                                 selectedCategory === 'retro' ? 'CAMISAS RETRÔ' :
-                                    selectedCategory === 'ofertas' ? 'OFERTAS IMPERDÍVEIS' : 'TODAS AS CAMISAS'}
+                                    selectedCategory === 'lancamentos' ? 'LANÇAMENTOS 2026' :
+                                        selectedCategory === 'ofertas' ? 'OFERTAS IMPERDÍVEIS' : 'TODAS AS CAMISAS'}
                 </h1>
                 <span className="text-gray-500 text-sm font-medium">{filteredProducts.length} produtos encontrados</span>
             </div>
@@ -169,6 +172,17 @@ export function Catalog() {
                                         className="accent-dlsports-green"
                                     />
                                     <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors">Retrô</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer group">
+                                    <input
+                                        type="radio"
+                                        name="category"
+                                        value="lancamentos"
+                                        checked={selectedCategory === 'lancamentos'}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                        className="accent-dlsports-green"
+                                    />
+                                    <span className="text-sm text-gray-600 group-hover:text-dlsports-green transition-colors font-bold">Lançamentos 🔥</span>
                                 </label>
                                 <label className="flex items-center gap-2 cursor-pointer group">
                                     <input

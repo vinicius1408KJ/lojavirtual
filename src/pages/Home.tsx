@@ -9,9 +9,9 @@ import type { Product } from '../types';
 
 const CLUBS = [
     { name: 'Atlético-MG', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Clube_Atl%C3%A9tico_Mineiro_logo.svg' },
-    { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Esporte_Clube_Bahia_logo.svg' },
-    { name: 'Botafogo', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Botafogo_de_Futebol_e_Regatas_logo.svg' },
-    { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Sport_Club_Corinthians_Paulista_crest.svg' },
+    { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/pt/archive/9/90/20251115020709%21ECBahia.png' },
+    { name: 'Botafogo', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Botafogo_de_Futebol_e_Regatas_logo.svg/960px-Botafogo_de_Futebol_e_Regatas_logo.svg.png' },
+    { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/Sport_Club_Corinthians_Paulista_crest.svg/960px-Sport_Club_Corinthians_Paulista_crest.svg.png' },
     { name: 'Cruzeiro', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg' },
     { name: 'Flamengo', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png' },
     { name: 'Fluminense', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Fluminense_FC_escudo.png' },
@@ -63,10 +63,10 @@ export function Home() {
             ),
             subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
             primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
-            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/lancamentos' }
         },
         {
-            image: 'https://s2-ge.glbimg.com/nsWqBNFbL9VIv9LXLXoFBl536Jk=/0x0:544x680/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2024/9/b/Bf93b0QcOg57yML48MkQ/gtvc0ctwqaa81tg.jpg',
+            image: 'https://d1a9qnv764bsoo.cloudfront.net/stores/001/876/620/rte/camisa-real-madrid-25-26-home-uniforme-titular-branca-masculina-modelo-player-mbappe-jude-bellingham-rodrygo-vini-jr-valverde-rudiger-arnold-endrick-.webp',
             tag: 'Lançamentos 25/2026 Disponíveis',
             title: (
                 <>
@@ -78,10 +78,10 @@ export function Home() {
             ),
             subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
             primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
-            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/lancamentos' }
         },
         {
-            image: 'https://loukosnofutebol.com/public/arqConteudo/arqZPProduto/flamengo.jpg',
+            image: 'https://s2-ge.glbimg.com/ZKQh8BDjrMMeEN99CDWMbW3Kdro=/2573x0/filters:format(jpeg)/https://i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2026/U/p/XFJmXiRFKsVqguaAEKfQ/processed-6f480b97-d7f5-49b4-b0b1-7beb85495d83.jpeg',
             tag: 'Lançamentos 25/2026 Disponíveis',
             title: (
                 <>
@@ -93,7 +93,7 @@ export function Home() {
             ),
             subtitle: 'A maior coleção de camisas oficiais do Brasil. Qualidade premium para quem respira futebol.',
             primaryCta: { text: 'COMPRAR AGORA', link: '/nacionais' },
-            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/europeus' }
+            secondaryCta: { text: 'VER LANÇAMENTOS', link: '/lancamentos' }
         }
     ];
 
@@ -391,7 +391,7 @@ export function Home() {
 
                     {/* Responsive Scroll / Marquee Feel */}
                     <div className="relative">
-                        <div className="flex overflow-x-auto gap-8 md:gap-12 pb-8 scrollbar-hide snap-x px-4 justify-start md:justify-center flex-wrap md:flex-nowrap">
+                        <div className="flex overflow-x-auto gap-8 md:gap-12 pb-8 scrollbar-hide snap-x px-4 justify-start flex-wrap md:flex-nowrap">
                             {CLUBS.map(club => (
                                 <Link
                                     to={`/nacionais?club=${encodeURIComponent(club.name)}`}

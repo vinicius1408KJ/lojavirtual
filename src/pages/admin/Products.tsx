@@ -636,8 +636,34 @@ export function Products() {
 
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-3">Tamanhos Disponíveis (Pronta Entrega)</label>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <p className="w-full text-[10px] font-black uppercase text-gray-400 mb-1">Adulto</p>
                                     {['P', 'M', 'G', 'GG', 'XG'].map(size => {
+                                        const isSelected = (currentProduct.sizes || []).includes(size);
+                                        return (
+                                            <button
+                                                key={size}
+                                                type="button"
+                                                onClick={() => {
+                                                    const newSizes = isSelected
+                                                        ? (currentProduct.sizes || []).filter(s => s !== size)
+                                                        : [...(currentProduct.sizes || []), size];
+                                                    setCurrentProduct({ ...currentProduct, sizes: newSizes });
+                                                }}
+                                                className={`w-12 h-12 flex items-center justify-center rounded-lg font-bold border-2 transition-all ${isSelected
+                                                    ? 'bg-dlsports-green border-dlsports-green text-white shadow-lg shadow-dlsports-green/20'
+                                                    : 'bg-white border-gray-200 text-gray-400 hover:border-dlsports-green hover:text-dlsports-green'
+                                                    }`}
+                                            >
+                                                {size}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="flex flex-wrap gap-2">
+                                    <p className="w-full text-[10px] font-black uppercase text-gray-400 mb-1">Infantil (Kits)</p>
+                                    {['2', '4', '6', '8', '10', '12', '14', '13-14'].map(size => {
                                         const isSelected = (currentProduct.sizes || []).includes(size);
                                         return (
                                             <button

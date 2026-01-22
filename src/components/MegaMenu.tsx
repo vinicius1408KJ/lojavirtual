@@ -35,6 +35,12 @@ export const MENU_DATA: MenuData[] = [
         hasMegaMenu: false
     },
     {
+        id: 'lancamentos',
+        label: 'LANÇAMENTOS',
+        link: '/lancamentos',
+        hasMegaMenu: false
+    },
+    {
         id: 'brasileiros',
         label: 'BRASILEIROS',
         link: '/nacionais',

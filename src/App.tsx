@@ -51,9 +51,9 @@ function UserLayout() {
           <div>
             <h4 className="font-bold text-white mb-4">AJUDA</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link to="/orders" className="hover:text-dlsports-neon transition-colors">Meus Pedidos</Link></li>
               <li><Link to="/nacionais" className="hover:text-dlsports-neon transition-colors">Produtos Nacionais</Link></li>
               <li><Link to="/europeus" className="hover:text-dlsports-neon transition-colors">Produtos Europeus</Link></li>
+              <li><Link to="/selecoes" className="hover:text-dlsports-neon transition-colors">Produtos de Seleção</Link></li>
             </ul>
           </div>
           <div>
@@ -112,6 +112,7 @@ function App() {
           <Route path="/europeus" element={<Catalog />} />
           <Route path="/selecoes" element={<Catalog />} />
           <Route path="/retro" element={<Catalog />} />
+          <Route path="/lancamentos" element={<Catalog />} />
           <Route path="/ofertas" element={<Catalog />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/cart" element={<Cart />} />
