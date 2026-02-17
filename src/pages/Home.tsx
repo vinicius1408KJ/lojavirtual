@@ -9,7 +9,7 @@ import type { Product } from '../types';
 
 const CLUBS = [
     { name: 'Atlético-MG', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Clube_Atl%C3%A9tico_Mineiro_logo.svg' },
-    { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/pt/archive/9/90/20251115020709%21ECBahia.png' },
+    { name: 'Bahia', logo: 'https://upload.wikimedia.org/wikipedia/pt/9/90/ECBahia.png' },
     { name: 'Botafogo', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Botafogo_de_Futebol_e_Regatas_logo.svg/960px-Botafogo_de_Futebol_e_Regatas_logo.svg.png' },
     { name: 'Corinthians', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/Sport_Club_Corinthians_Paulista_crest.svg/960px-Sport_Club_Corinthians_Paulista_crest.svg.png' },
     { name: 'Cruzeiro', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Cruzeiro_Esporte_Clube_%28logo%29.svg' },
@@ -38,16 +38,16 @@ export function Home() {
 
     const HERO_SLIDES = [
         {
-            image: 'https://i.metroimg.com/s9w4nuAtkThT9pC_iqx7Ob6wlyyk6VHCtasAOzA1fSY/w:900/q:85/f:webp/plain/https://image.metroimg.com/wp-content/uploads/84d10e9e-jogo-1.jpg',
-            tag: 'SUPERCOPA REI 2026',
+            image: 'https://www.estadao.com.br/resizer/v2/GZ6VQ6YTDREK5AJSH6E3VJIDL4.jpg?quality=80&auth=be71c0e428564166768c4450499481de17b0b42beaa5a65fb7f08c6e0a9facf9&width=1200',
+            tag: 'COPA DO MUNDO 2026',
             title: (
                 <>
-                    FLAMENGO x<br />
-                    <span className="text-white">CORINTHIANS</span>
+                    RUMO AO HEXA.<br />
+                    <span className="text-white">COPA DO MUNDO</span>
                 </>
             ),
-            subtitle: 'Faça parte desse clássico que para o Brasil. Camisas oficiais disponíveis.',
-            primaryCta: { text: 'VER CLÁSSICO', link: '/nacionais?club=Flamengo,Corinthians' },
+            subtitle: 'Prepare-se para o maior espetáculo da terra. Camisas das seleções disponíveis.',
+            primaryCta: { text: 'VER SELEÇÕES', link: '/selecoes' },
             secondaryCta: null
         },
         {
